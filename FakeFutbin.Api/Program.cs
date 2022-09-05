@@ -1,4 +1,6 @@
 using FakeFutbin.Api.Data;
+using FakeFutbin.Api.Repositories;
+using FakeFutbin.Api.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//DI for FakeFutbinDbContext
+//DI for FakeFutbinDbContext, PlayerRepository
 builder.Services.AddDbContextPool<FakeFutbinDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("FakeFutbinConnection"))
 );
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
 
 var app = builder.Build();
