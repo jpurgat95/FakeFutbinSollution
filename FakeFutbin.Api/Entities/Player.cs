@@ -1,4 +1,6 @@
-﻿namespace FakeFutbin.Api.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FakeFutbin.Api.Entities;
 
 public class Player
 {
@@ -10,5 +12,7 @@ public class Player
     public string ImageURL { get; set; }
     public int MarketValue { get; set; }
     public int Qty { get; set; }
-    public int NationalityId { get; set; }
+
+    [ForeignKey("NationalityId")]
+    public PlayerNationality PlayerNationality { get; set; }
 }
