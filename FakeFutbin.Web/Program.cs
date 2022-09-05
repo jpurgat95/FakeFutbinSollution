@@ -1,4 +1,5 @@
 using FakeFutbin.Web;
+using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -8,8 +9,8 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //Local Host addres pasted
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7242/") });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7242") });
 //DI registrations
-builder.Services.AddScoped<IPlayerService, IPlayerService>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 await builder.Build().RunAsync();

@@ -31,14 +31,7 @@ public class PlayerRepository : IPlayerRepository
 
     public async Task<IEnumerable<Player>> GetPlayers()
     {
-        var players = await _fakeFutbinDbContext.Players
-            .Include(p=> p.PlayerNationality)
-            .ToArrayAsync();
+        var players = await _fakeFutbinDbContext.Players.ToListAsync();
         return players;
-    }
-
-    public Task<IEnumerable<Player>> GetPlayersByNationality(int id)
-    {
-        throw new NotImplementedException();
     }
 }

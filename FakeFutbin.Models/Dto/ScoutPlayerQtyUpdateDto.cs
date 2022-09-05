@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FakeFutbin.Models.Dto;
 
-internal class ScoutPlayerQtyUpdateDto
+public class ScoutPlayerQtyUpdateDto
 {
     public int ScoutPlayerId { get; set; }
     public int Qty { get; set; }

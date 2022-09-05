@@ -24,13 +24,14 @@ public class PlayerController : ControllerBase
 		try
 		{
 			var players = await _playerRepository.GetPlayers();
-			if (players == null)
+			var playerNationalities = await _playerRepository.GetNationalities();
+			if (players == null || playerNationalities == null)
 			{
                 return NotFound();
             }
 			else
 			{
-				var playerDto = players.ConvertToDto();
+				var playerDto = players.ConvertToDto(playerNationalities);
 				return Ok(playerDto);
 			}	
 		}

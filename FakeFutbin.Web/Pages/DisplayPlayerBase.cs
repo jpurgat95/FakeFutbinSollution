@@ -1,5 +1,10 @@
-﻿namespace FakeFutbin.Web.Pages;
+﻿using FakeFutbin.Models.Dto;
+using Microsoft.AspNetCore.Components;
 
-public class DisplayPlayerBase
+namespace FakeFutbin.Web.Pages;
+
+public class DisplayPlayerBase : ComponentBase
 {
+    [Parameter]
+    public IEnumerable<PlayerDto> Players { get; set; }
 }
