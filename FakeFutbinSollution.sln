@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeFutbin.Web", "FakeFutbi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeFutbin.Api", "FakeFutbin.Api\FakeFutbin.Api.csproj", "{765A33AB-FDA8-4999-8B3D-98E7CD39E2D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeFutbin.Models", "FakeFutbin.Models\FakeFutbin.Models.csproj", "{077310FB-BB8D-46EF-A109-229ACA18D5DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeFutbin.Models", "FakeFutbin.Models\FakeFutbin.Models.csproj", "{077310FB-BB8D-46EF-A109-229ACA18D5DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
