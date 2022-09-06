@@ -1,0 +1,36 @@
+﻿@page "/PlayerDetails/{Id:int}"
+@inherits PlayerDetailsBase
+
+@if (Player == null && ErrorMessage == null)
+{
+    <DisplaySpinner/>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+        <h3 class="mb-5"><b>Player Details</b></h3>
+    <div class="row">
+        <div class="col">
+            <img class="img-fluid" src="@Player.ImageURL">
+        </div>
+        <div class="col">
+            <h3><b>@Player.Name</b></h3>
+            <h5>
+                <p class="mb-2">Age: @Player.Age</p>
+                <p class="mb-2">Raiting: @Player.Raiting</p>
+                <p class="mb-2">Position: @Player.Position</p>
+                <p class="mb-2">
+                <b>
+                @Player.MarketValue.ToString("C")&nbsp;(@Player.Qty players on market)
+                </b>
+            </p>
+            </h5>
+            <div>
+                <button class="btn btn-success"><b>Add to Cart</b></button>
+            </div>
+        </div>
+    </div>
+}

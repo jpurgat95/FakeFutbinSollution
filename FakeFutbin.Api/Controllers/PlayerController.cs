@@ -41,4 +41,32 @@ public class PlayerController : ControllerBase
 				"Error retrivieng data from database");
 		}
 	}
+
+	[HttpGet("{id:int}")]
+	public async Task<ActionResult<PlayerDto>> GetPlayer(int id)
+	{
+		try
+		{
+			var player = await _playerRepository.GetPlayer(id);
+			if (player == null)
+			{
+				return BadRequest();
+			}
+			else
+			{
+				var playerNationality = await _playerRepository.GetNationality(player.NationalityId);
+				if (playerNationality == null)
+				{
+					return NotFound();
+				}
+				var playerDto = player.ConvertToDto(playerNationality);
+				return Ok(playerDto);
+			}
+		}
+		catch (Exception)
+		{
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                            "Error retrivieng data from database");
+        }
+	}
 }

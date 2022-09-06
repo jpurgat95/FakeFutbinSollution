@@ -19,14 +19,16 @@ public class PlayerRepository : IPlayerRepository
         return nationalities;
     }
 
-    public Task<PlayerNationality> GetNationality(int id)
+    public async Task<PlayerNationality> GetNationality(int id)
     {
-        throw new NotImplementedException();
+        var nationality = await _fakeFutbinDbContext.PlayerNationalities.SingleOrDefaultAsync(c => c.Id ==id);
+        return nationality;
     }
 
-    public Task<Player> GetPlayer(int id)
+    public async Task<Player> GetPlayer(int id)
     {
-        throw new NotImplementedException();
+        var player = await _fakeFutbinDbContext.Players.FindAsync(id);
+        return player;
     }
 
     public async Task<IEnumerable<Player>> GetPlayers()

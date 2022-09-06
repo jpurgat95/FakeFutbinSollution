@@ -9,9 +9,17 @@ public class PlayersBase : ComponentBase
     [Inject]
     public IPlayerService PlayerService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
+    public string ErrorMessage { get; set; }
     protected override async Task OnInitializedAsync()
     {
-        Players = await PlayerService.GetPlayers();
+        try
+        {
+            Players = await PlayerService.GetPlayers();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
     }
     protected IOrderedEnumerable<IGrouping<int, PlayerDto>> GetGroupedPlayersByNationality()
     {

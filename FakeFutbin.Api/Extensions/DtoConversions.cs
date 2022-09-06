@@ -38,4 +38,22 @@ public static class DtoConversions
                 }).ToList();
     }
 
+    public static PlayerDto ConvertToDto(this Player player,
+                                        PlayerNationality playerNationality)
+    {
+        return new PlayerDto
+        {
+            Id = player.Id,
+            Name = player.Name,
+            Age = player.Age,
+            Raiting = player.Raiting,
+            Position = player.Position,
+            ImageURL = player.ImageURL,
+            MarketValue = player.MarketValue,
+            Qty = player.Qty,
+            NationalityId = player.NationalityId,
+            NationalityName = playerNationality.Name
+        };
+    }
+
 }
