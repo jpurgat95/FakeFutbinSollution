@@ -1,0 +1,42 @@
+﻿@page "/Scout"
+@inherits ScoutBase
+
+@if (ScoutPlayers == null && ErrorMessage == null)
+{
+    <DisplaySpinner></DisplaySpinner>
+}
+else if(ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+    <h3 class="mb-5"><b>Scout</b></h3>
+    <div class = "row mb-5">
+        <div class ="col-md-9">
+            @foreach(var player in ScoutPlayers)
+            {
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <img src="@player.PlayerImageURL" width="300" class="img-thumbnail">
+                    </div>
+                    <div class = "col-md-8">
+                        <h5>@player.PlayerName</h5>
+                        <div class="mb-4">Age: @player.PlayerAge</div>
+                        <div class="mb-4"> Raiting: @player.PlayerRaiting</div>
+                        <span>Price: <b>@player.MarketValue.ToString("C")</b></span>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-3">
+            <h5>Scout Summary</h5>
+            <div class="mt-2">
+                <div>Total - </div>
+                <a href="#" class="btn btn-success">
+                    <span class="oi oi-credit-card"></span>&nbsp; Proceed to Checkout 
+                </a>
+            </div>
+        </div>
+    </div>
+}

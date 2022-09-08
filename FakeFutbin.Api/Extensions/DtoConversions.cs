@@ -56,4 +56,43 @@ public static class DtoConversions
         };
     }
 
+    public static IEnumerable<ScoutPlayerDto> ConvertToDto(this IEnumerable<ScoutPlayer> scoutPlayers,
+                                                           IEnumerable<Player> players)
+    {
+        return (from scoutPlayer in scoutPlayers
+                join player in players
+                on scoutPlayer.PlayerId equals player.Id
+                select new ScoutPlayerDto
+                {
+                    Id = scoutPlayer.Id,
+                    PlayerId = scoutPlayer.PlayerId,
+                    PlayerName = player.Name,
+                    PlayerAge = player.Age,
+                    PlayerRaiting = player.Raiting,
+                    PlayerImageURL = player.ImageURL,
+                    MarketValue = player.MarketValue,
+                    ScoutId = scoutPlayer.ScoutId,
+                    Qty = scoutPlayer.Qty,
+                    TotalValue = player.MarketValue * scoutPlayer.Qty,
+                }).ToList();
+    } 
+
+    public static ScoutPlayerDto ConvertToDto(this ScoutPlayer scoutPlayer,
+                                             Player player)
+    {
+        return new ScoutPlayerDto
+        {
+            Id = scoutPlayer.Id,
+            PlayerId = scoutPlayer.PlayerId,
+            PlayerName = player.Name,
+            PlayerAge = player.Age,
+            PlayerRaiting = player.Raiting,
+            PlayerImageURL = player.ImageURL,
+            MarketValue = player.MarketValue,
+            ScoutId = scoutPlayer.ScoutId,
+            Qty = scoutPlayer.Qty,
+            TotalValue = player.MarketValue * scoutPlayer.Qty,
+        };
+    }
+
 }

@@ -13,11 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//DI for FakeFutbinDbContext, PlayerRepository
+//DI for FakeFutbinDbContext, PlayerRepository, ScoutRepository
 builder.Services.AddDbContextPool<FakeFutbinDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("FakeFutbinConnection"))
 );
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IScoutRepository, ScoutRepository>();
 
 
 var app = builder.Build();

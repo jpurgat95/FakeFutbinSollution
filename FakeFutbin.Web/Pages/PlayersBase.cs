@@ -9,6 +9,8 @@ public class PlayersBase : ComponentBase
     [Inject]
     public IPlayerService PlayerService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
     public string ErrorMessage { get; set; }
     protected override async Task OnInitializedAsync()
     {

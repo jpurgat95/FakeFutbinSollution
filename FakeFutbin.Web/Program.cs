@@ -12,5 +12,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7242") });
 //DI registrations
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IScoutService, ScoutService>();
 
 await builder.Build().RunAsync();

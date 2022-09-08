@@ -10,6 +10,10 @@ public class PlayerDetailsBase : ComponentBase
     public int Id { get; set; }
     [Inject]
     public IPlayerService PlayerService { get; set; }
+    [Inject]
+    public IScoutService ScoutService { get; set; }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
     public PlayerDto Player { get; set; }
     public string ErrorMessage { get; set; }
     protected override async Task OnInitializedAsync()
@@ -22,6 +26,20 @@ public class PlayerDetailsBase : ComponentBase
         {
 
             ErrorMessage = ex.Message;
+        }
+    }
+
+    protected async Task AddToScout_Click(ScoutPlayerToAddDto scoutPlayerToAddDto)
+    {
+        try
+        {
+            var cartItemDto = await ScoutService.AddPlayer(scoutPlayerToAddDto);
+            NavigationManager.NavigateTo("/Scout");
+        }
+        catch (Exception)
+        {
+
+            //Log Exception
         }
     }
 }
