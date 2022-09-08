@@ -31,7 +31,7 @@ public class PlayersBase : ComponentBase
                select playerByNatGroup;
     }
 
-protected string GetNationalityName(IGrouping<int, PlayerDto> groupedPlayerDto)
+    protected string GetNationalityName(IGrouping<int, PlayerDto> groupedPlayerDto)
     {
         return groupedPlayerDto.FirstOrDefault(pg=>pg.NationalityId == groupedPlayerDto.Key)
             .NationalityName;

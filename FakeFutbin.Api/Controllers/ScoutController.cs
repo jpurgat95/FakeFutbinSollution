@@ -1,4 +1,5 @@
-﻿using FakeFutbin.Api.Extensions;
+﻿using FakeFutbin.Api.Entities;
+using FakeFutbin.Api.Extensions;
 using FakeFutbin.Api.Repositories.Contracts;
 using FakeFutbin.Models.Dto;
 using Microsoft.AspNetCore.Http;
@@ -75,7 +76,7 @@ namespace FakeFutbin.Api.Controllers
             try
             {
                 var newScoutPlayer = await _scoutRepository.AddPlayer(scoutPlayerToAddDto);
-                if(scoutPlayerToAddDto == null)
+                if(newScoutPlayer == null)
                 {
                     return NoContent();
                 }

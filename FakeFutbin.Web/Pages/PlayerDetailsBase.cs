@@ -34,7 +34,7 @@ public class PlayerDetailsBase : ComponentBase
         try
         {
             var cartItemDto = await ScoutService.AddPlayer(scoutPlayerToAddDto);
-            NavigationManager.NavigateTo("/Scout");
+            NavigationManager.NavigateTo("/Scout", true);
         }
         catch (Exception)
         {

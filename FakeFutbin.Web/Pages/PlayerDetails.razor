@@ -18,20 +18,22 @@ else
         </div>
         <div class="col-md-6">
             <h3><b>@Player.Name</b></h3>
-            <p class="mb-2">Age: @Player.Age</p>
-            <p class="mb-2">Raiting: @Player.Raiting</p>
-            <p class="mb-2">Position: @Player.Position</p>
-            <p class="mb-2">
-                <b> @Player.MarketValue.ToString("C")&nbsp;(@Player.Qty players on market)</b>
+            <p class="mb-4">Age: @Player.Age</p>
+            <p class="mb-4">Raiting: @Player.Raiting</p>
+            <p class="mb-4">Position: @Player.Position</p>
+            <p class="mb-4">
+                <b> 
+                    @Player.MarketValue.ToString("C")&nbsp;(@Player.Qty players on market)
+                </b>
             </p>
             <div>
-                <a href="/Scout" class="btn btn-success" 
-                @onclick ="() => (AddToScout_Click(new ScoutPlayerToAddDto{
+                <button class="btn-success"
+                @onclick ="()=>AddToScout_Click(new ScoutPlayerToAddDto{
                     ScoutId = HardCoded.ScoutId,
                     PlayerId = Player.Id,
                     Qty = 1
-                }))"
-                ><b>Add to Scout List</b></a>
+                })">
+                <b>Add to Scout List</b></button>
             </div>
         </div>
     </div>
