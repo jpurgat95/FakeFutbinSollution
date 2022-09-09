@@ -3,6 +3,7 @@ using FakeFutbin.Api.Entities;
 using FakeFutbin.Api.Repositories.Contracts;
 using FakeFutbin.Models.Dto;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FakeFutbin.Api.Repositories;
 
@@ -84,8 +85,15 @@ public class ScoutRepository : IScoutRepository
                       }).ToListAsync();
     }
 
-    public Task<ScoutPlayer> UpddateQty(int id, ScoutPlayerQtyUpdateDto scoutPlayerQtyUpdateDto)
+    public async Task<ScoutPlayer> UpddateQty(int id, ScoutPlayerQtyUpdateDto scoutPlayerQtyUpdateDto)
     {
-        throw new NotImplementedException();
+        var player = await _fakeFutbinDbContext.ScoutPlayers.FindAsync(id);
+        if (player != null)
+        {
+            player.Qty = scoutPlayerQtyUpdateDto.Qty;
+            await _fakeFutbinDbContext.SaveChangesAsync();
+            return player;
+        }
+        return null;
     }
 }

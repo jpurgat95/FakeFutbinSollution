@@ -118,5 +118,25 @@ namespace FakeFutbin.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpPatch ("{id:int}")]
+        public async Task<ActionResult<ScoutPlayerDto>> UpdateQty(int id, ScoutPlayerQtyUpdateDto scoutPlayerQtyUpdateDto)
+        {
+            try
+            {
+                var scoutPlayer = await _scoutRepository.UpddateQty(id, scoutPlayerQtyUpdateDto);
+                if (scoutPlayer == null)
+                {
+                    return NotFound();
+                }
+                var player = await _playerRepository.GetPlayer(scoutPlayer.PlayerId);
+                var scoutPlayerDto = scoutPlayer.ConvertToDto(player);
+
+                return Ok(scoutPlayerDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

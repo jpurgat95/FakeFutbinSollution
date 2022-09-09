@@ -7,4 +7,5 @@ public interface IScoutService
     Task<List<ScoutPlayerDto>> GetPlayers(int coachId);
     Task<ScoutPlayerDto> AddPlayer(ScoutPlayerToAddDto scoutPlayerToAddDto);
     Task<ScoutPlayerDto> DeletePlayer(int id);
+    Task<ScoutPlayerDto> UpdateQty (ScoutPlayerQtyUpdateDto scoutPlayerQtyUpdate);
 }

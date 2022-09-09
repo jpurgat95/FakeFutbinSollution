@@ -1,6 +1,8 @@
 ﻿using FakeFutbin.Models.Dto;
 using FakeFutbin.Web.Services.Contracts;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
+using System.Text;
 
 namespace FakeFutbin.Web.Services;
 
@@ -77,7 +79,29 @@ public class ScoutService : IScoutService
         }
         catch (Exception)
         {
+            //log exception
+            throw;
+        }
+    }
 
+    public async Task<ScoutPlayerDto> UpdateQty(ScoutPlayerQtyUpdateDto scoutPlayerQtyUpdateDto)
+    {
+        try
+        {
+            var jsonRequest = JsonConvert.SerializeObject(scoutPlayerQtyUpdateDto);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
+
+            var response = await _httpClient.PatchAsync($"api/Scout/{scoutPlayerQtyUpdateDto.ScoutPlayerId}",content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<ScoutPlayerDto>();
+            }
+            return null;
+        }
+        catch (Exception)
+        {
+            //log exception
             throw;
         }
     }

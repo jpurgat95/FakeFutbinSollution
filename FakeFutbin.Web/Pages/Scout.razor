@@ -26,7 +26,14 @@ else
                         <h5><b>@player.PlayerName</b></h5>
                         <div class="mb-4">Age: @player.PlayerAge</div>
                         <div class="mb-4"> Raiting: @player.PlayerRaiting</div>
-                        <span>Market Value: <b>@player.MarketValue.ToString("C")</b></span>
+                        <span>
+                            Market Value: <b>@player.MarketValue.ToString("C")</b>
+                            <input @oninput ="()=>UpdateQty_Input(player.Id)"
+                            type="number" @bind = "@player.Qty"/>
+                            <button data-playerId="@player.Id" class="btn btn-info btn-sm update-qty"
+                            @onclick ="(()=> UpdateQtyScoutPlayer_Click(player.Id, player.Qty))"
+                            >Update Qty</button>
+                        </span>
                         <div>
                             <button @onclick ="(() => DeleteScoutPlayer_Click(player.Id))"
                             class="btn btn-danger sm"><i class="fa fa-trash"></i></button>
@@ -38,7 +45,7 @@ else
         <div class="col-md-3">
             <h5>Scout Summary</h5>
             <div class="mt-2">
-                <div>Total - </div>
+                <div>Total - (@TotalQuantity players)&nbsp;<b>@TotalValue</b></div>
                 <a href="#" class="btn btn-success">
                     <span class="oi oi-credit-card"></span>&nbsp; Proceed to Checkout 
                 </a>
