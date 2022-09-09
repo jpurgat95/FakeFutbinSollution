@@ -42,9 +42,16 @@ public class ScoutRepository : IScoutRepository
         return null;
     }
 
-    public Task<ScoutPlayer> DeletePlayer(int id)
+    public async Task<ScoutPlayer> DeletePlayer(int id)
     {
-        throw new NotImplementedException();
+        var player = await _fakeFutbinDbContext.ScoutPlayers.FindAsync(id);
+
+        if(player != null)
+        {
+            _fakeFutbinDbContext.ScoutPlayers.Remove(player);
+            await _fakeFutbinDbContext.SaveChangesAsync();
+        }
+        return player;
     }
 
     public async Task<ScoutPlayer> GetPlayer(int id)

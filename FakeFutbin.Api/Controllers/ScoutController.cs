@@ -93,5 +93,30 @@ namespace FakeFutbin.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<ScoutPlayerDto>> DeletePlayer(int id)
+        {
+            try
+            {
+                var scoutPlayer = await _scoutRepository.DeletePlayer(id);
+                if (scoutPlayer == null)
+                {
+                    return NotFound();
+                }
+                var player = await _playerRepository.GetPlayer(scoutPlayer.PlayerId);
+                if (player == null)
+                {
+                    return NotFound();
+                }
+                var scoutPlayerDto = scoutPlayer.ConvertToDto(player);
+
+                return Ok(scoutPlayerDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

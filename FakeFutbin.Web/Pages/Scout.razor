@@ -12,6 +12,8 @@ else if(ErrorMessage != null)
 else
 {
     <h3 class="mb-5"><b>Scout</b></h3>
+    @if (ScoutPlayers.Count()>0)
+    {
     <div class = "row mb-5">
         <div class ="col-md-9">
             @foreach(var player in ScoutPlayers)
@@ -24,7 +26,11 @@ else
                         <h5><b>@player.PlayerName</b></h5>
                         <div class="mb-4">Age: @player.PlayerAge</div>
                         <div class="mb-4"> Raiting: @player.PlayerRaiting</div>
-                        <span>Price: <b>@player.MarketValue.ToString("C")</b></span>
+                        <span>Market Value: <b>@player.MarketValue.ToString("C")</b></span>
+                        <div>
+                            <button @onclick ="(() => DeleteScoutPlayer_Click(player.Id))"
+                            class="btn btn-danger sm"><i class="fa fa-trash"></i></button>
+                        </div>
                     </div>
                 </div>
             }
@@ -39,4 +45,10 @@ else
             </div>
         </div>
     </div>
+    }
+    else
+    {
+        <h4>There are currently no players searched by your scout</h4>
+    }
+
 }

@@ -38,7 +38,25 @@ public class ScoutService : IScoutService
         }
     }
 
-    public async Task<IEnumerable<ScoutPlayerDto>> GetPlayers(int coachId)
+    public async Task<ScoutPlayerDto> DeletePlayer(int id)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/Scout/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<ScoutPlayerDto>();
+            }
+            return default(ScoutPlayerDto);
+        }
+        catch (Exception)
+        {
+            //log exception
+            throw;
+        }
+    }
+
+    public async Task<List<ScoutPlayerDto>> GetPlayers(int coachId)
     {
         try
         {
@@ -47,9 +65,9 @@ public class ScoutService : IScoutService
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return Enumerable.Empty<ScoutPlayerDto>();
+                    return Enumerable.Empty<ScoutPlayerDto>().ToList();
                 }
-                return await response.Content.ReadFromJsonAsync<IEnumerable<ScoutPlayerDto>>();
+                return await response.Content.ReadFromJsonAsync<List<ScoutPlayerDto>>();
             }
             else
             {
