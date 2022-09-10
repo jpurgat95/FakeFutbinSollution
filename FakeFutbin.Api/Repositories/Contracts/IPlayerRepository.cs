@@ -8,4 +8,5 @@ public interface IPlayerRepository
     Task<IEnumerable<PlayerNationality>> GetNationalities();
     Task<Player> GetPlayer(int id);
     Task<PlayerNationality> GetNationality(int id);
+    Task<IEnumerable<Player>> GetPlayersByCategory(int id);
 }

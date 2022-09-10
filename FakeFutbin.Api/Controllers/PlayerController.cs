@@ -69,4 +69,38 @@ public class PlayerController : ControllerBase
                             "Error retrivieng data from database");
         }
 	}
+	[HttpGet]
+	[Route(nameof(GetPlayerNationalities))]
+	public async Task<ActionResult<IEnumerable<PlayerNationalityDto>>> GetPlayerNationalities()
+	{
+		try
+		{
+			var playerNationalities = await _playerRepository.GetNationalities();
+			var playerNationalityDto = playerNationalities.ConvertToDto();
+			return Ok(playerNationalityDto);
+		}
+		catch (Exception)
+		{
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                "Error retrieving data from the database");
+        }
+	}
+
+	[HttpGet]
+	[Route("{nationalityId}/GetPlayersByNationality")]
+	public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayersByNationality(int nationalityId)
+	{
+		try
+		{
+			var players = await _playerRepository.GetPlayersByCategory(nationalityId);
+			var playerNationalities = await _playerRepository.GetNationalities();
+			var playerDtos = players.ConvertToDto(playerNationalities);
+			return Ok(playerDtos);
+		}
+		catch (Exception)
+		{
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                            "Error retrieving data from the database");
+        }
+	}
 }

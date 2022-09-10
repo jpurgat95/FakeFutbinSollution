@@ -94,5 +94,4 @@ public static class DtoConversions
             TotalValue = player.MarketValue * scoutPlayer.Qty,
         };
     }
-
 }

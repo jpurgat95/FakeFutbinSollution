@@ -1,0 +1,23 @@
+﻿@inherits PlayerNationalitiesNavMenuBase
+
+@if(PlayerNationalityDtos == null && ErrorMessage == null)
+{
+    <DisplaySpinner/>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"/>
+}
+else
+{
+    @foreach (var playerNationality in PlayerNationalityDtos)
+    {
+        var link = "/PlayersByNationality/" + playerNationality.Id;
+
+                <div class = "nav-item px-3">
+                    <NavLink class="nav-link" href="@link">
+                                        <span class="@playerNationality.ImageURL"></span>&nbsp;@playerNationality.Name
+                    </NavLink>
+                </div>
+    }
+}

@@ -21,7 +21,7 @@ public class ScoutBase : ComponentBase
         try
         {
             ScoutPlayers = await ScoutService.GetPlayers(HardCoded.CoachId);
-            CalculateScoutSummaryTotals();
+            ScoutChanged();
         }
         catch (Exception ex)
         {
@@ -34,7 +34,7 @@ public class ScoutBase : ComponentBase
         var scoutPlayerDto = await ScoutService.DeletePlayer(id);
 
         RemoveScoutPlayer(id);
-        CalculateScoutSummaryTotals();
+        ScoutChanged();
     }
     protected async Task UpdateQtyScoutPlayer_Click(int id, int qty)
     {
@@ -49,7 +49,7 @@ public class ScoutBase : ComponentBase
                 };
                 var returnedUpdatePlayerDto = await this.ScoutService.UpdateQty(updatePlayerDto);
                 UpdatePlayerTotalValue(returnedUpdatePlayerDto);
-                CalculateScoutSummaryTotals();
+                ScoutChanged();
                 await MakeUpdateQtyButtonVisible(id, false);
             }
             else
@@ -107,5 +107,11 @@ public class ScoutBase : ComponentBase
     {
         var scoutPlayerDto = GetScoutPlayer(id);
         ScoutPlayers.Remove(scoutPlayerDto);
+    }
+
+    private void ScoutChanged()
+    {
+        CalculateScoutSummaryTotals();
+        ScoutService.RaiseEventOnScoutChanged(TotalQuantity);
     }
 }

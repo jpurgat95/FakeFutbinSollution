@@ -1,4 +1,5 @@
 ﻿using FakeFutbin.Models.Dto;
+using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 
@@ -8,6 +9,8 @@ public class PlayersBase : ComponentBase
 {
     [Inject]
     public IPlayerService PlayerService { get; set; }
+    [Inject]
+    public IScoutService ScoutService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
@@ -17,6 +20,10 @@ public class PlayersBase : ComponentBase
         try
         {
             Players = await PlayerService.GetPlayers();
+            var scoutPlayers = await ScoutService.GetPlayers(HardCoded.ScoutId);
+            var totalQty = scoutPlayers.Sum(i=>i.Qty);
+
+            ScoutService.RaiseEventOnScoutChanged(totalQty);
         }
         catch (Exception ex)
         {

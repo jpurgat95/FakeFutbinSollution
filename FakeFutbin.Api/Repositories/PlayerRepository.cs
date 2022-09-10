@@ -36,4 +36,12 @@ public class PlayerRepository : IPlayerRepository
         var players = await _fakeFutbinDbContext.Players.ToListAsync();
         return players;
     }
+
+    public async Task<IEnumerable<Player>> GetPlayersByCategory(int id)
+    {
+        var players = await (from player in _fakeFutbinDbContext.Players
+                             where player.NationalityId == id
+                             select player).ToListAsync();
+        return players;
+    }
 }

@@ -8,4 +8,7 @@ public interface IScoutService
     Task<ScoutPlayerDto> AddPlayer(ScoutPlayerToAddDto scoutPlayerToAddDto);
     Task<ScoutPlayerDto> DeletePlayer(int id);
     Task<ScoutPlayerDto> UpdateQty (ScoutPlayerQtyUpdateDto scoutPlayerQtyUpdate);
+
+    event Action<int> OnScoutChanged;
+    void RaiseEventOnScoutChanged(int totalQty);
 }

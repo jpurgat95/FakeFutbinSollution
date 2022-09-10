@@ -14,6 +14,9 @@ public class ScoutService : IScoutService
     {
         _httpClient = httpClient;
     }
+
+    public event Action<int> OnScoutChanged;
+
     public async Task<ScoutPlayerDto> AddPlayer(ScoutPlayerToAddDto scoutPlayerToAddDto)
     {
         try
@@ -81,6 +84,14 @@ public class ScoutService : IScoutService
         {
             //log exception
             throw;
+        }
+    }
+
+    public void RaiseEventOnScoutChanged(int totalQty)
+    {
+        if (OnScoutChanged != null)
+        {
+            OnScoutChanged.Invoke(totalQty);
         }
     }
 
