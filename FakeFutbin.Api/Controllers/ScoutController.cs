@@ -86,7 +86,7 @@ namespace FakeFutbin.Api.Controllers
                     throw new Exception($"Something went wrong when attempting to retrieve product (productId:({scoutPlayerToAddDto.PlayerId})");
                 }
                 var newScoutPlayerDto = newScoutPlayer.ConvertToDto(player);
-                return CreatedAtAction(nameof(GetPlayer), new { id = newScoutPlayerDto.Id, newScoutPlayerDto});
+                return CreatedAtAction(nameof(GetPlayer), new { id = newScoutPlayerDto.Id }, newScoutPlayerDto);
             }
             catch (Exception ex)
             {

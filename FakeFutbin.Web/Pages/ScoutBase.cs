@@ -93,7 +93,7 @@ public class ScoutBase : ComponentBase
     }
     private void SetTotalValue()
     {
-        TotalValue = this.ScoutPlayers.Sum(x=>x.TotalValue).ToString();
+        TotalValue = this.ScoutPlayers.Sum(x=>x.TotalValue).ToString("C");
     }
     private void SetTotalQuantity()
     {

@@ -3,7 +3,6 @@ using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 
 namespace FakeFutbin.Web.Pages;
-
 public class PlayerDetailsBase : ComponentBase
 {
     [Parameter]
@@ -34,7 +33,7 @@ public class PlayerDetailsBase : ComponentBase
         try
         {
             var cartItemDto = await ScoutService.AddPlayer(scoutPlayerToAddDto);
-            NavigationManager.NavigateTo("/Scout", true);
+            NavigationManager.NavigateTo("/Scout");
         }
         catch (Exception)
         {
