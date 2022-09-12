@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using FakeFutbin.Web;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
@@ -13,5 +14,12 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 //DI registrations
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IScoutService, ScoutService>();
+
+//Local Storage
+builder.Services.AddBlazoredLocalStorage();
+
+//DI registrations
+builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
+builder.Services.AddScoped<IManageScoutPlayersLocalStorageService, ManageScoutPlayersLocalStorageService>();
 
 await builder.Build().RunAsync();

@@ -25,13 +25,13 @@ public class PlayerController : ControllerBase
 		{
 			var players = await _playerRepository.GetPlayers();
 			var playerNationalities = await _playerRepository.GetNationalities();
-			if (players == null || playerNationalities == null)
+			if (players == null)
 			{
                 return NotFound();
             }
 			else
 			{
-				var playerDto = players.ConvertToDto(playerNationalities);
+				var playerDto = players.ConvertToDto();
 				return Ok(playerDto);
 			}	
 		}
@@ -54,12 +54,7 @@ public class PlayerController : ControllerBase
 			}
 			else
 			{
-				var playerNationality = await _playerRepository.GetNationality(player.NationalityId);
-				if (playerNationality == null)
-				{
-					return NotFound();
-				}
-				var playerDto = player.ConvertToDto(playerNationality);
+				var playerDto = player.ConvertToDto();
 				return Ok(playerDto);
 			}
 		}
@@ -93,8 +88,7 @@ public class PlayerController : ControllerBase
 		try
 		{
 			var players = await _playerRepository.GetPlayersByCategory(nationalityId);
-			var playerNationalities = await _playerRepository.GetNationalities();
-			var playerDtos = players.ConvertToDto(playerNationalities);
+			var playerDtos = players.ConvertToDto();
 			return Ok(playerDtos);
 		}
 		catch (Exception)

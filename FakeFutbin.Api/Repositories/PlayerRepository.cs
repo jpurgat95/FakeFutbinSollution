@@ -27,21 +27,25 @@ public class PlayerRepository : IPlayerRepository
 
     public async Task<Player> GetPlayer(int id)
     {
-        var player = await _fakeFutbinDbContext.Players.FindAsync(id);
+        var player = await _fakeFutbinDbContext.Players
+                           .Include(p => p.PlayerNationality)
+                           .SingleOrDefaultAsync(p => p.Id == id);
         return player;
     }
 
     public async Task<IEnumerable<Player>> GetPlayers()
     {
-        var players = await _fakeFutbinDbContext.Players.ToListAsync();
+        var players = await _fakeFutbinDbContext.Players
+                            .Include(p => p.PlayerNationality)
+                            .ToListAsync();
         return players;
     }
 
     public async Task<IEnumerable<Player>> GetPlayersByCategory(int id)
     {
-        var players = await (from player in _fakeFutbinDbContext.Players
-                             where player.NationalityId == id
-                             select player).ToListAsync();
+        var players = await _fakeFutbinDbContext.Players
+                            .Include(p => p.PlayerNationality)
+                            .Where(p => p.NationalityId == id).ToListAsync();
         return players;
     }
 }

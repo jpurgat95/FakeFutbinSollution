@@ -13,7 +13,6 @@ public class Player
     public int MarketValue { get; set; }
     public int Qty { get; set; }
     public int NationalityId { get; set; }
-
     [ForeignKey("NationalityId")]
     public PlayerNationality PlayerNationality { get; set; }
 }

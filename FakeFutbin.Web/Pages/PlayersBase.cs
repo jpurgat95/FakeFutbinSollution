@@ -2,6 +2,7 @@
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
+using System.Runtime.InteropServices;
 
 namespace FakeFutbin.Web.Pages;
 
@@ -11,6 +12,10 @@ public class PlayersBase : ComponentBase
     public IPlayerService PlayerService { get; set; }
     [Inject]
     public IScoutService ScoutService { get; set; }
+    [Inject]
+    public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
+    [Inject]
+    public IManageScoutPlayersLocalStorageService ManageScoutPlayersLocalStorageService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
@@ -19,8 +24,12 @@ public class PlayersBase : ComponentBase
     {
         try
         {
-            Players = await PlayerService.GetPlayers();
-            var scoutPlayers = await ScoutService.GetPlayers(HardCoded.ScoutId);
+            await ClearLocalStorage();
+
+            Players = await ManagePlayersLocalStorageService.GetCollection();
+
+            var scoutPlayers = await ManageScoutPlayersLocalStorageService.GetCollection();
+
             var totalQty = scoutPlayers.Sum(i=>i.Qty);
 
             ScoutService.RaiseEventOnScoutChanged(totalQty);
@@ -42,5 +51,11 @@ public class PlayersBase : ComponentBase
     {
         return groupedPlayerDto.FirstOrDefault(pg=>pg.NationalityId == groupedPlayerDto.Key)
             .NationalityName;
+    }
+
+    private async Task ClearLocalStorage()
+    {
+        await ManagePlayersLocalStorageService.RemoveCollection();
+        await ManageScoutPlayersLocalStorageService.RemoveCollection();
     }
 }

@@ -12,6 +12,8 @@ public class ScoutBase : ComponentBase
     public IJSRuntime Js { get; set; }
     [Inject]
     public IScoutService ScoutService { get; set; }
+    [Inject]
+    public IManageScoutPlayersLocalStorageService ManageScoutPlayersLocalStorageService { get; set; }
     public List<ScoutPlayerDto> ScoutPlayers { get; set; }
     protected string TotalValue { get; set; }
     protected int TotalQuantity { get; set; }
@@ -20,7 +22,7 @@ public class ScoutBase : ComponentBase
     {
         try
         {
-            ScoutPlayers = await ScoutService.GetPlayers(HardCoded.CoachId);
+            ScoutPlayers = await ManageScoutPlayersLocalStorageService.GetCollection();
             ScoutChanged();
         }
         catch (Exception ex)
@@ -33,7 +35,7 @@ public class ScoutBase : ComponentBase
     {
         var scoutPlayerDto = await ScoutService.DeletePlayer(id);
 
-        RemoveScoutPlayer(id);
+        await RemoveScoutPlayer(id);
         ScoutChanged();
     }
     protected async Task UpdateQtyScoutPlayer_Click(int id, int qty)
@@ -48,7 +50,7 @@ public class ScoutBase : ComponentBase
                     Qty = qty
                 };
                 var returnedUpdatePlayerDto = await this.ScoutService.UpdateQty(updatePlayerDto);
-                UpdatePlayerTotalValue(returnedUpdatePlayerDto);
+                await UpdatePlayerTotalValue(returnedUpdatePlayerDto);
                 ScoutChanged();
                 await MakeUpdateQtyButtonVisible(id, false);
             }
@@ -78,13 +80,15 @@ public class ScoutBase : ComponentBase
     {
         await Js.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
     }
-    private void UpdatePlayerTotalValue(ScoutPlayerDto scoutPlayerDto)
+    private async Task UpdatePlayerTotalValue(ScoutPlayerDto scoutPlayerDto)
     {
         var player = GetScoutPlayer(scoutPlayerDto.Id);
         if (player != null)
         {
             player.TotalValue = scoutPlayerDto.MarketValue * scoutPlayerDto.Qty;
         }
+
+        await ManageScoutPlayersLocalStorageService.SaveColleciotn(ScoutPlayers);
     }
     private void CalculateScoutSummaryTotals()
     {
@@ -103,10 +107,12 @@ public class ScoutBase : ComponentBase
     {
         return ScoutPlayers.FirstOrDefault(x => x.Id == id);
     }
-    private void RemoveScoutPlayer(int id)
+    private async Task RemoveScoutPlayer(int id)
     {
         var scoutPlayerDto = GetScoutPlayer(id);
         ScoutPlayers.Remove(scoutPlayerDto);
+
+        await ManageScoutPlayersLocalStorageService.SaveColleciotn(ScoutPlayers);
     }
 
     private void ScoutChanged()

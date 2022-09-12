@@ -6,12 +6,9 @@ namespace FakeFutbin.Api.Extensions;
 
 public static class DtoConversions
 {
-    public static IEnumerable<PlayerDto> ConvertToDto (this IEnumerable<Player> players,
-                                                       IEnumerable<PlayerNationality> playerNationalities)
+    public static IEnumerable<PlayerDto> ConvertToDto (this IEnumerable<Player> players)
     {
         return (from player in players
-                join playerNationality in playerNationalities
-                on player.NationalityId equals playerNationality.Id
                 select new PlayerDto
                 {
                     Id = player.Id,
@@ -22,7 +19,7 @@ public static class DtoConversions
                     ImageURL = player.ImageURL,
                     MarketValue = player.MarketValue,
                     Qty = player.Qty,
-                    NationalityId = player.NationalityId,
+                    NationalityId = player.PlayerNationality.Id,
                     NationalityName = player.PlayerNationality.Name
                 }).ToList();
     }
@@ -38,8 +35,7 @@ public static class DtoConversions
                 }).ToList();
     }
 
-    public static PlayerDto ConvertToDto(this Player player,
-                                        PlayerNationality playerNationality)
+    public static PlayerDto ConvertToDto(this Player player)
     {
         return new PlayerDto
         {
@@ -51,8 +47,8 @@ public static class DtoConversions
             ImageURL = player.ImageURL,
             MarketValue = player.MarketValue,
             Qty = player.Qty,
-            NationalityId = player.NationalityId,
-            NationalityName = playerNationality.Name
+            NationalityId = player.PlayerNationality.Id,
+            NationalityName = player.PlayerNationality.Name
         };
     }
 

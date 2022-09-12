@@ -10,6 +10,8 @@ public class PlayersByNationalityBase : ComponentBase
     public int NationalityId {get; set;}
     [Inject]
     public IPlayerService PlayerService { get; set; }
+    [Inject]
+    public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
     public string NationalityName { get; set; }
     public string ErrorMessage { get; set; }
@@ -17,7 +19,7 @@ public class PlayersByNationalityBase : ComponentBase
     {
         try
         {
-            Players = await PlayerService.GetPlayersByNationality(NationalityId);
+            Players = await GetPlayerCollectionByNationalityId(NationalityId);
             if (Players != null && Players.Count()>0)
             {
                 var playerDto = Players.FirstOrDefault(x=> x.NationalityId == NationalityId);
@@ -30,6 +32,20 @@ public class PlayersByNationalityBase : ComponentBase
         catch (Exception ex)
         {
             ErrorMessage = ex.Message;
+        }
+    }
+
+    private async Task<IEnumerable<PlayerDto>> GetPlayerCollectionByNationalityId(int nationalityId)
+    {
+        var playerCollection = await ManagePlayersLocalStorageService.GetCollection();
+
+        if(playerCollection != null)
+        {
+            return playerCollection.Where(x => x.NationalityId == nationalityId);
+        }
+        else
+        {
+            return await PlayerService.GetPlayersByNationality(nationalityId);
         }
     }
 }
