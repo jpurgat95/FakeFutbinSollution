@@ -14,10 +14,10 @@ else
     {
         var link = "/PlayersByNationality/" + playerNationality.Id;
 
-                <div class = "nav-item px-3">
+                <div class = "nav-item">
                     <NavLink class="nav-link" href="@link">
-                                        <span class="@playerNationality.ImageURL"></span>&nbsp;@playerNationality.Name
+                        <img src="@playerNationality.ImageURL" height="50">&nbsp;(@playerNationality.Name)
                     </NavLink>
                 </div>
     }
-}
+} 
