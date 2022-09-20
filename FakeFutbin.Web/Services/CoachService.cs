@@ -6,29 +6,29 @@ using System.Text;
 
 namespace FakeFutbin.Web.Services;
 
-public class ScoutService : IScoutService
+public class CoachService : ICoachService
 {
     private readonly HttpClient _httpClient;
 
-    public ScoutService(HttpClient httpClient)
+    public CoachService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
-    public event Action<int> OnScoutChanged;
+    public event Action<int> OnCoachChanged;
 
-    public async Task<ScoutPlayerDto> AddPlayer(ScoutPlayerToAddDto scoutPlayerToAddDto)
+    public async Task<CoachPlayerDto> AddPlayer(CoachPlayerToAddDto coachPlayerToAddDto)
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync<ScoutPlayerToAddDto>("api/Scout",scoutPlayerToAddDto);
+            var response = await _httpClient.PostAsJsonAsync<CoachPlayerToAddDto>("api/Coach", coachPlayerToAddDto);
             if (response.IsSuccessStatusCode)
             {
                 if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return default(ScoutPlayerDto);
+                    return default(CoachPlayerDto);
                 }
-                return await response.Content.ReadFromJsonAsync<ScoutPlayerDto>();
+                return await response.Content.ReadFromJsonAsync<CoachPlayerDto>();
             }
             else
             {
@@ -43,16 +43,16 @@ public class ScoutService : IScoutService
         }
     }
 
-    public async Task<ScoutPlayerDto> DeletePlayer(int id)
+    public async Task<CoachPlayerDto> DeletePlayer(int id)
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"api/Scout/{id}");
+            var response = await _httpClient.DeleteAsync($"api/Coach/{id}");
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<ScoutPlayerDto>();
+                return await response.Content.ReadFromJsonAsync<CoachPlayerDto>();
             }
-            return default(ScoutPlayerDto);
+            return default(CoachPlayerDto);
         }
         catch (Exception)
         {
@@ -61,18 +61,18 @@ public class ScoutService : IScoutService
         }
     }
 
-    public async Task<List<ScoutPlayerDto>> GetPlayers(int coachId)
+    public async Task<List<CoachPlayerDto>> GetPlayers(int coachId)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"api/Scout/{coachId}/GetPlayers");
+            var response = await _httpClient.GetAsync($"api/Coach/{coachId}/GetPlayers");
             if (response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return Enumerable.Empty<ScoutPlayerDto>().ToList();
+                    return Enumerable.Empty<CoachPlayerDto>().ToList();
                 }
-                return await response.Content.ReadFromJsonAsync<List<ScoutPlayerDto>>();
+                return await response.Content.ReadFromJsonAsync<List<CoachPlayerDto>>();
             }
             else
             {
@@ -87,26 +87,26 @@ public class ScoutService : IScoutService
         }
     }
 
-    public void RaiseEventOnScoutChanged(int totalQty)
+    public void RaiseEventOnCoachChanged(int totalQty)
     {
-        if (OnScoutChanged != null)
+        if (OnCoachChanged != null)
         {
-            OnScoutChanged.Invoke(totalQty);
+            OnCoachChanged.Invoke(totalQty);
         }
     }
 
-    public async Task<ScoutPlayerDto> UpdateQty(ScoutPlayerQtyUpdateDto scoutPlayerQtyUpdateDto)
+    public async Task<CoachPlayerDto> UpdateQty(CoachPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
     {
         try
         {
-            var jsonRequest = JsonConvert.SerializeObject(scoutPlayerQtyUpdateDto);
+            var jsonRequest = JsonConvert.SerializeObject(coachPlayerQtyUpdateDto);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
 
-            var response = await _httpClient.PatchAsync($"api/Scout/{scoutPlayerQtyUpdateDto.ScoutPlayerId}",content);
+            var response = await _httpClient.PatchAsync($"api/Coach/{coachPlayerQtyUpdateDto.CoachPlayerId}",content);
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<ScoutPlayerDto>();
+                return await response.Content.ReadFromJsonAsync<CoachPlayerDto>();
             }
             return null;
         }

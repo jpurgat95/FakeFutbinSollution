@@ -17,7 +17,7 @@ public class PlayerController : ControllerBase
 	public PlayerController(IPlayerRepository playerRepository)
 	{
 		_playerRepository = playerRepository;
-	} 
+	}
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<PlayerDto>>> GetPlayers()
 	{
@@ -27,13 +27,13 @@ public class PlayerController : ControllerBase
 			var playerNationalities = await _playerRepository.GetNationalities();
 			if (players == null)
 			{
-                return NotFound();
-            }
+				return NotFound();
+			}
 			else
 			{
 				var playerDto = players.ConvertToDto();
 				return Ok(playerDto);
-			}	
+			}
 		}
 		catch (Exception)
 		{
@@ -60,9 +60,9 @@ public class PlayerController : ControllerBase
 		}
 		catch (Exception)
 		{
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                            "Error retrivieng data from database");
-        }
+			return StatusCode(StatusCodes.Status500InternalServerError,
+							"Error retrivieng data from database");
+		}
 	}
 	[HttpGet]
 	[Route(nameof(GetPlayerNationalities))]
@@ -76,9 +76,9 @@ public class PlayerController : ControllerBase
 		}
 		catch (Exception)
 		{
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                "Error retrieving data from the database");
-        }
+			return StatusCode(StatusCodes.Status500InternalServerError,
+				"Error retrieving data from the database");
+		}
 	}
 
 	[HttpGet]
@@ -93,8 +93,8 @@ public class PlayerController : ControllerBase
 		}
 		catch (Exception)
 		{
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                            "Error retrieving data from the database");
-        }
+			return StatusCode(StatusCodes.Status500InternalServerError,
+							"Error retrieving data from the database");
+		}
 	}
 }

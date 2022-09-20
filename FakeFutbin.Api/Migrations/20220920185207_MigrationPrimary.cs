@@ -4,7 +4,7 @@
 
 namespace FakeFutbin.Api.Migrations
 {
-    public partial class MigrationInitial : Migration
+    public partial class MigrationPrimary : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,21 @@ namespace FakeFutbin.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Coaches", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CoachPlayers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CoachId = table.Column<int>(type: "int", nullable: false),
+                    PlayerId = table.Column<int>(type: "int", nullable: false),
+                    Qty = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoachPlayers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,44 +68,18 @@ namespace FakeFutbin.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ScoutPlayers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ScoutId = table.Column<int>(type: "int", nullable: false),
-                    PlayerId = table.Column<int>(type: "int", nullable: false),
-                    Qty = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ScoutPlayers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Scouts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CoachId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Scouts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Players_PlayerNationalities_NationalityId",
+                        column: x => x.NationalityId,
+                        principalTable: "PlayerNationalities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Coaches",
                 columns: new[] { "Id", "CoachName" },
-                values: new object[,]
-                {
-                    { 1, "Jose Mourinho" },
-                    { 2, "Carlo Ancelotti" }
-                });
+                values: new object[] { 1, "Jose Mourinho" });
 
             migrationBuilder.InsertData(
                 table: "PlayerNationalities",
@@ -101,7 +90,7 @@ namespace FakeFutbin.Api.Migrations
                     { 2, "/Images/Nationalities/Nationality2.jpg", "England" },
                     { 3, "/Images/Nationalities/Nationality3.jpg", "France" },
                     { 4, "/Images/Nationalities/Nationality4.jpg", "Italy" },
-                    { 5, "/Images/Nationalities/Nationality4.jpg", "Spain" }
+                    { 5, "/Images/Nationalities/Nationality5.jpg", "Spain" }
                 });
 
             migrationBuilder.InsertData(
@@ -136,14 +125,10 @@ namespace FakeFutbin.Api.Migrations
                     { 25, 38, "/Images/Spain/Spain5.jpg", 156000, "Fernando Torres", 5, "Striker", 9, 92 }
                 });
 
-            migrationBuilder.InsertData(
-                table: "Scouts",
-                columns: new[] { "Id", "CoachId" },
-                values: new object[,]
-                {
-                    { 1, 1 },
-                    { 2, 2 }
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_NationalityId",
+                table: "Players",
+                column: "NationalityId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -152,16 +137,13 @@ namespace FakeFutbin.Api.Migrations
                 name: "Coaches");
 
             migrationBuilder.DropTable(
-                name: "PlayerNationalities");
+                name: "CoachPlayers");
 
             migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
-                name: "ScoutPlayers");
-
-            migrationBuilder.DropTable(
-                name: "Scouts");
+                name: "PlayerNationalities");
         }
     }
 }

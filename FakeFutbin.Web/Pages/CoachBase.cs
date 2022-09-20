@@ -1,4 +1,5 @@
 ﻿using FakeFutbin.Models.Dto;
+using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -6,15 +7,15 @@ using Microsoft.VisualBasic;
 
 namespace FakeFutbin.Web.Pages;
 
-public class ScoutBase : ComponentBase
+public class CoachBase : ComponentBase
 {
     [Inject]
     public IJSRuntime Js { get; set; }
     [Inject]
-    public IScoutService ScoutService { get; set; }
+    public ICoachService CoachService { get; set; }
     [Inject]
-    public IManageScoutPlayersLocalStorageService ManageScoutPlayersLocalStorageService { get; set; }
-    public List<ScoutPlayerDto> ScoutPlayers { get; set; }
+    public IManageCoachPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
+    public List<CoachPlayerDto> CoachPlayers { get; set; }
     protected string TotalValue { get; set; }
     protected int TotalQuantity { get; set; }
     public string ErrorMessage { get; set; }    
@@ -22,8 +23,8 @@ public class ScoutBase : ComponentBase
     {
         try
         {
-            ScoutPlayers = await ManageScoutPlayersLocalStorageService.GetCollection();
-            ScoutChanged();
+            CoachPlayers = await ManageCoachPlayersLocalStorageService.GetCollection();
+            CoachChanged();
         }
         catch (Exception ex)
         {
@@ -31,32 +32,32 @@ public class ScoutBase : ComponentBase
         }
     }
 
-    protected async Task DeleteScoutPlayer_Click(int id)
+    protected async Task DeleteCoachPlayer_Click(int id)
     {
-        var scoutPlayerDto = await ScoutService.DeletePlayer(id);
+        var scoutPlayerDto = await CoachService.DeletePlayer(id);
 
-        await RemoveScoutPlayer(id);
-        ScoutChanged();
+        await RemoveCoachPlayer(id);
+        CoachChanged();
     }
-    protected async Task UpdateQtyScoutPlayer_Click(int id, int qty)
+    protected async Task UpdateQtyCoachPlayer_Click(int id, int qty)
     {
         try
         {
             if (qty > 0)
             {
-                var updatePlayerDto = new ScoutPlayerQtyUpdateDto
+                var updatePlayerDto = new CoachPlayerQtyUpdateDto
                 {
-                    ScoutPlayerId = id,
+                    CoachPlayerId = id,
                     Qty = qty
                 };
-                var returnedUpdatePlayerDto = await this.ScoutService.UpdateQty(updatePlayerDto);
+                var returnedUpdatePlayerDto = await this.CoachService.UpdateQty(updatePlayerDto);
                 await UpdatePlayerTotalValue(returnedUpdatePlayerDto);
-                ScoutChanged();
+                CoachChanged();
                 await MakeUpdateQtyButtonVisible(id, false);
             }
             else
             {
-                var player = this.ScoutPlayers.FirstOrDefault(x => x.Id == id);
+                var player = this.CoachPlayers.FirstOrDefault(x => x.Id == id);
                 if (player != null)
                 {
                     player.Qty = 1;
@@ -80,15 +81,15 @@ public class ScoutBase : ComponentBase
     {
         await Js.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
     }
-    private async Task UpdatePlayerTotalValue(ScoutPlayerDto scoutPlayerDto)
+    private async Task UpdatePlayerTotalValue(CoachPlayerDto coachPlayerDto)
     {
-        var player = GetScoutPlayer(scoutPlayerDto.Id);
+        var player = GetCoachPlayer(coachPlayerDto.Id);
         if (player != null)
         {
-            player.TotalValue = scoutPlayerDto.MarketValue * scoutPlayerDto.Qty;
+            player.TotalValue = coachPlayerDto.MarketValue * coachPlayerDto.Qty;
         }
 
-        await ManageScoutPlayersLocalStorageService.SaveColleciotn(ScoutPlayers);
+        await ManageCoachPlayersLocalStorageService.SaveColleciotn(CoachPlayers);
     }
     private void CalculateScoutSummaryTotals()
     {
@@ -97,27 +98,27 @@ public class ScoutBase : ComponentBase
     }
     private void SetTotalValue()
     {
-        TotalValue = this.ScoutPlayers.Sum(x=>x.TotalValue).ToString("C");
+        TotalValue = this.CoachPlayers.Sum(x=>x.TotalValue).ToString("C");
     }
     private void SetTotalQuantity()
     {
-        TotalQuantity = this.ScoutPlayers.Sum(x => x.Qty);
+        TotalQuantity = this.CoachPlayers.Sum(x => x.Qty);
     }
-    private ScoutPlayerDto GetScoutPlayer(int id)
+    private CoachPlayerDto GetCoachPlayer(int id)
     {
-        return ScoutPlayers.FirstOrDefault(x => x.Id == id);
+        return CoachPlayers.FirstOrDefault(x => x.Id == id);
     }
-    private async Task RemoveScoutPlayer(int id)
+    private async Task RemoveCoachPlayer(int id)
     {
-        var scoutPlayerDto = GetScoutPlayer(id);
-        ScoutPlayers.Remove(scoutPlayerDto);
+        var coachPlayerDto = GetCoachPlayer(id);
+        CoachPlayers.Remove(coachPlayerDto);
 
-        await ManageScoutPlayersLocalStorageService.SaveColleciotn(ScoutPlayers);
+        await ManageCoachPlayersLocalStorageService.SaveColleciotn(CoachPlayers);
     }
 
-    private void ScoutChanged()
+    private void CoachChanged()
     {
         CalculateScoutSummaryTotals();
-        ScoutService.RaiseEventOnScoutChanged(TotalQuantity);
+        CoachService.RaiseEventOnCoachChanged(TotalQuantity);
     }
 }

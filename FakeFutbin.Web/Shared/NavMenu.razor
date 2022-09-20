@@ -1,5 +1,5 @@
 ﻿@implements IDisposable
-@inject IScoutService scoutService
+@inject ICoachService coachService
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -21,8 +21,8 @@
             <PlayerNationalitiesNavMenu/>
 
         <div class="nav-item px-3 d-sm-none">
-            <NavLink class="nav-link" href="Scout">
-                <span class="fas fa-shopping-cart" aria-hidden="true"></span>&nbsp;Scout (<b>@scoutPlayersCount</b>)
+            <NavLink class="nav-link" href="Coach">
+                <span class="fas fa-shopping-cart" aria-hidden="true"></span>&nbsp;Coach (<b>@coachPlayersCount</b>)
             </NavLink>
         </div>
 
@@ -34,7 +34,7 @@
 
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private int scoutPlayersCount = 0;
+    private int coachPlayersCount = 0;
 
     private void ToggleNavMenu()
     {
@@ -43,16 +43,16 @@
 
     protected override void OnInitialized()
     {
-        scoutService.OnScoutChanged += ScoutChanged;
+        coachService.OnCoachChanged += CoachChanged;
     }
-    private void ScoutChanged(int totalQty)
+    private void CoachChanged(int totalQty)
     {
-        scoutPlayersCount = totalQty;
+        coachPlayersCount = totalQty;
         StateHasChanged();
     }
     void IDisposable.Dispose()
     {
-        scoutService.OnScoutChanged -= ScoutChanged;
+        coachService.OnCoachChanged -= CoachChanged;
     }
 
 }

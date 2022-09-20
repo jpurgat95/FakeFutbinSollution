@@ -1,9 +1,9 @@
 ﻿namespace FakeFutbin.Api.Entities;
 
-public class ScoutPlayer
+public class CoachPlayer
 {
     public int Id { get; set; }
-    public int ScoutId { get; set; }
+    public int CoachId { get; set; }
     public int PlayerId { get; set; }
     public int Qty { get; set; }
 }

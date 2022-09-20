@@ -18,7 +18,7 @@ builder.Services.AddDbContextPool<FakeFutbinDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("FakeFutbinConnection"))
 );
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IScoutRepository, ScoutRepository>();
+builder.Services.AddScoped<ICoachRepository, CoachRepository>();
 
 
 var app = builder.Build();

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeFutbin.Api.Migrations
 {
     [DbContext(typeof(FakeFutbinDbContext))]
-    [Migration("20220912025209_SpainFlagPathFixed")]
-    partial class SpainFlagPathFixed
+    [Migration("20220920185207_MigrationPrimary")]
+    partial class MigrationPrimary
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,12 +44,29 @@ namespace FakeFutbin.Api.Migrations
                         {
                             Id = 1,
                             CoachName = "Jose Mourinho"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CoachName = "Carlo Ancelotti"
                         });
+                });
+
+            modelBuilder.Entity("FakeFutbin.Api.Entities.CoachPlayer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CoachId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Qty")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CoachPlayers");
                 });
 
             modelBuilder.Entity("FakeFutbin.Api.Entities.Player", b =>
@@ -447,56 +464,6 @@ namespace FakeFutbin.Api.Migrations
                             ImageURL = "/Images/Nationalities/Nationality5.jpg",
                             Name = "Spain"
                         });
-                });
-
-            modelBuilder.Entity("FakeFutbin.Api.Entities.Scout", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CoachId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Scouts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CoachId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CoachId = 2
-                        });
-                });
-
-            modelBuilder.Entity("FakeFutbin.Api.Entities.ScoutPlayer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Qty")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ScoutId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ScoutPlayers");
                 });
 
             modelBuilder.Entity("FakeFutbin.Api.Entities.Player", b =>

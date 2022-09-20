@@ -21,7 +21,7 @@ public class PlayerRepository : IPlayerRepository
 
     public async Task<PlayerNationality> GetNationality(int id)
     {
-        var nationality = await _fakeFutbinDbContext.PlayerNationalities.SingleOrDefaultAsync(c => c.Id ==id);
+        var nationality = await _fakeFutbinDbContext.PlayerNationalities.SingleOrDefaultAsync(c => c.Id == id);
         return nationality;
     }
 

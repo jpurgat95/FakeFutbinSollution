@@ -1,0 +1,28 @@
+﻿@implements IDisposable
+@inject ICoachService coachService
+
+<a href="Coach" class="btn btn-info">
+    <i class="fa-solid fa-user"></i>&nbsp;Coach
+    <span class="badge bg-dark">@coachPlayersCount</span>
+</a>
+
+@code {
+    private int coachPlayersCount = 0;
+
+    protected override void OnInitialized()
+    {
+        coachService.OnCoachChanged += CoachChanged;
+    }
+
+    protected void CoachChanged(int totalQty)
+    {
+        coachPlayersCount = totalQty;
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        coachService.OnCoachChanged -= CoachChanged;
+    }
+
+}

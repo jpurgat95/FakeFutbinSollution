@@ -1,4 +1,5 @@
 ﻿using FakeFutbin.Models.Dto;
+using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.VisualBasic;
@@ -11,21 +12,21 @@ public class PlayerDetailsBase : ComponentBase
     [Inject]
     public IPlayerService PlayerService { get; set; }
     [Inject]
-    public IScoutService ScoutService { get; set; }
+    public ICoachService CoachService { get; set; }
     [Inject]
     public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
     [Inject]
-    public IManageScoutPlayersLocalStorageService ManageScoutPlayersLocalStorageService { get; set; }
+    public IManageCoachPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
     public PlayerDto Player { get; set; }
     public string ErrorMessage { get; set; }
-    private List<ScoutPlayerDto> ScoutPlayers { get; set; }
+    private List<CoachPlayerDto> CoachPlayers { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            ScoutPlayers = await ManageScoutPlayersLocalStorageService.GetCollection();
+            CoachPlayers = await ManageCoachPlayersLocalStorageService.GetCollection();
             Player = await GetPlayerById(Id);
         }
         catch (Exception ex)
@@ -35,18 +36,18 @@ public class PlayerDetailsBase : ComponentBase
         }
     }
 
-    protected async Task AddToScout_Click(ScoutPlayerToAddDto scoutPlayerToAddDto)
+    protected async Task AddToCoach_Click(CoachPlayerToAddDto coachPlayerToAddDto)
     {
         try
         {
-            var scoutPlayerDto = await ScoutService.AddPlayer(scoutPlayerToAddDto);
-            if(scoutPlayerDto != null)
+            var coachPlayerDto = await CoachService.AddPlayer(coachPlayerToAddDto);
+            if(coachPlayerDto != null)
             {
-                ScoutPlayers.Add(scoutPlayerDto);
-                await ManageScoutPlayersLocalStorageService.SaveColleciotn(ScoutPlayers);
+                CoachPlayers.Add(coachPlayerDto);
+                await ManageCoachPlayersLocalStorageService.SaveColleciotn(CoachPlayers);
             }
 
-            NavigationManager.NavigateTo("/Scout");
+            NavigationManager.NavigateTo("/Coach");
         }
         catch (Exception)
         {

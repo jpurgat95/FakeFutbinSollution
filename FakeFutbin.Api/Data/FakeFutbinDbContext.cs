@@ -350,23 +350,6 @@ public class FakeFutbinDbContext: DbContext
             CoachName = "Jose Mourinho"
         });
 
-        modelBuilder.Entity<Coach>().HasData(new Coach
-        {
-            Id = 2,
-            CoachName = "Carlo Ancelotti"
-        });
-        //Creating scouts for coaches
-        modelBuilder.Entity<Scout>().HasData(new Scout
-        {
-            Id = 1,
-            CoachId = 1
-        });
-
-        modelBuilder.Entity<Scout>().HasData(new Scout
-        {
-            Id = 2,
-            CoachId = 2
-        });
         //Add Nationalities
         modelBuilder.Entity<PlayerNationality>().HasData(new PlayerNationality
         {
@@ -404,8 +387,7 @@ public class FakeFutbinDbContext: DbContext
         });
     }
 
-    public DbSet<Scout> Scouts { get; set; }
-    public DbSet<ScoutPlayer> ScoutPlayers { get; set; }
+    public DbSet<CoachPlayer> CoachPlayers { get; set; }
     public DbSet<Player> Players { get; set; }
     public DbSet<PlayerNationality> PlayerNationalities { get; set; }
     public DbSet<Coach> Coaches { get; set; }

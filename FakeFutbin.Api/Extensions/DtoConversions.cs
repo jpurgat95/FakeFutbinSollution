@@ -6,7 +6,7 @@ namespace FakeFutbin.Api.Extensions;
 
 public static class DtoConversions
 {
-    public static IEnumerable<PlayerDto> ConvertToDto (this IEnumerable<Player> players)
+    public static IEnumerable<PlayerDto> ConvertToDto(this IEnumerable<Player> players)
     {
         return (from player in players
                 select new PlayerDto
@@ -24,7 +24,7 @@ public static class DtoConversions
                 }).ToList();
     }
 
-    public static IEnumerable<PlayerNationalityDto> ConvertToDto (this IEnumerable<PlayerNationality> playerNationalities)
+    public static IEnumerable<PlayerNationalityDto> ConvertToDto(this IEnumerable<PlayerNationality> playerNationalities)
     {
         return (from playerNationality in playerNationalities
                 select new PlayerNationalityDto
@@ -52,42 +52,42 @@ public static class DtoConversions
         };
     }
 
-    public static IEnumerable<ScoutPlayerDto> ConvertToDto(this IEnumerable<ScoutPlayer> scoutPlayers,
+    public static IEnumerable<CoachPlayerDto> ConvertToDto(this IEnumerable<CoachPlayer> coachPlayers,
                                                            IEnumerable<Player> players)
     {
-        return (from scoutPlayer in scoutPlayers
+        return (from coachPlayer in coachPlayers
                 join player in players
-                on scoutPlayer.PlayerId equals player.Id
-                select new ScoutPlayerDto
+                on coachPlayer.PlayerId equals player.Id
+                select new CoachPlayerDto
                 {
-                    Id = scoutPlayer.Id,
-                    PlayerId = scoutPlayer.PlayerId,
+                    Id = coachPlayer.Id,
+                    PlayerId = coachPlayer.PlayerId,
                     PlayerName = player.Name,
                     PlayerAge = player.Age,
                     PlayerRaiting = player.Raiting,
                     PlayerImageURL = player.ImageURL,
                     MarketValue = player.MarketValue,
-                    ScoutId = scoutPlayer.ScoutId,
-                    Qty = scoutPlayer.Qty,
-                    TotalValue = player.MarketValue * scoutPlayer.Qty,
+                    CoachId = coachPlayer.CoachId,
+                    Qty = coachPlayer.Qty,
+                    TotalValue = player.MarketValue * coachPlayer.Qty,
                 }).ToList();
-    } 
+    }
 
-    public static ScoutPlayerDto ConvertToDto(this ScoutPlayer scoutPlayer,
+    public static CoachPlayerDto ConvertToDto(this CoachPlayer coachPlayer,
                                              Player player)
     {
-        return new ScoutPlayerDto
+        return new CoachPlayerDto
         {
-            Id = scoutPlayer.Id,
-            PlayerId = scoutPlayer.PlayerId,
+            Id = coachPlayer.Id,
+            PlayerId = coachPlayer.PlayerId,
             PlayerName = player.Name,
             PlayerAge = player.Age,
             PlayerRaiting = player.Raiting,
             PlayerImageURL = player.ImageURL,
             MarketValue = player.MarketValue,
-            ScoutId = scoutPlayer.ScoutId,
-            Qty = scoutPlayer.Qty,
-            TotalValue = player.MarketValue * scoutPlayer.Qty,
+            CoachId = coachPlayer.CoachId,
+            Qty = coachPlayer.Qty,
+            TotalValue = player.MarketValue * coachPlayer.Qty,
         };
     }
 }

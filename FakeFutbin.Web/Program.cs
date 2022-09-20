@@ -13,13 +13,13 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7242") });
 //DI registrations
 builder.Services.AddScoped<IPlayerService, PlayerService>();
-builder.Services.AddScoped<IScoutService, ScoutService>();
+builder.Services.AddScoped<ICoachService, CoachService>();
 
 //Local Storage
 builder.Services.AddBlazoredLocalStorage();
 
 //DI registrations
 builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
-builder.Services.AddScoped<IManageScoutPlayersLocalStorageService, ManageScoutPlayersLocalStorageService>();
+builder.Services.AddScoped<IManageCoachPlayersLocalStorageService, ManageCoachPlayersLocalStorageService>();
 
 await builder.Build().RunAsync();
