@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeFutbin.Api.Migrations
 {
     [DbContext(typeof(FakeFutbinDbContext))]
-    [Migration("20220920185207_MigrationPrimary")]
-    partial class MigrationPrimary
+    [Migration("20221006153257_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
