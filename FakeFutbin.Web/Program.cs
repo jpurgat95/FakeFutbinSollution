@@ -13,9 +13,11 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //Local Host addres pasted
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7242") });
+
 //DI registrations
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<ICoachService, CoachService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 //Local Storage
 builder.Services.AddBlazoredLocalStorage();
