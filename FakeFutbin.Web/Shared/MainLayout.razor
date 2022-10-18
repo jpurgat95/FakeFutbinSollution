@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@using Blazored.Toast.Configuration
 
 <div class="page">
     <div class="sidebar">
@@ -9,9 +10,21 @@
         <div class="top-row px-4">
             <CoachMenu/>
         </div>
-
+        <div class="top-row px-4">
+             <RegisterButton /> &nbsp; <LoginLogoutButton />
+        </div>
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+<BlazoredToasts Position="ToastPosition.TopLeft"
+                Timeout="5"
+                IconType="IconType.FontAwesome"
+                SuccessClass="success-toast-override"
+                SuccessIcon="fa fa-check"
+                ErrorIcon="fa fa-times"
+                InfoIcon="fa fa-info"
+                WarningIcon="fa fa-exclamation"
+                />

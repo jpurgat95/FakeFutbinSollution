@@ -1,5 +1,15 @@
 ﻿@page "/PlayerDetails/{Id:int}"
 @inherits PlayerDetailsBase
+@attribute [Authorize(Roles = "User")]
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <span><b> You are authorized as @context.User.Identity.Name </b></span>
+    </Authorized>
+    <NotAuthorized>
+        <span>You're not authorized, buddy.</span>
+    </NotAuthorized>
+</AuthorizeView>
 
 @if (Player == null && ErrorMessage == null)
 {

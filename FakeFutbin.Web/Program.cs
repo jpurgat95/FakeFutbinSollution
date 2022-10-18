@@ -18,6 +18,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<ICoachService, CoachService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddAuthorizationCore();
 
 //Local Storage
 builder.Services.AddBlazoredLocalStorage();

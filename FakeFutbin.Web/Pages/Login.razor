@@ -1,0 +1,39 @@
+﻿@page "/login"
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+@inject IToastService toastService
+
+<h3>Login</h3>
+
+<EditForm Model="user" OnSubmit="HandleLogin">
+    <label for="username">Name</label>
+    <InputText id="username" @bind-Value="user.Username" />
+    <label for="password">Password</label>
+    <InputText id="password" @bind-Value="user.Password" type="password" />
+    <button type="submit" class="btn btn-primary">Do it!</button>
+</EditForm>
+
+@code {
+    UserDto user = new UserDto();
+
+    async Task HandleLogin()
+    {
+
+        var result = await Http.PostAsJsonAsync("api/auth/login", user);
+        if (result.IsSuccessStatusCode)
+        {
+            var token = await result.Content.ReadAsStringAsync();
+            //Console.WriteLine(token);
+            await LocalStorage.SetItemAsync("token", token);
+            await AuthStateProvider.GetAuthenticationStateAsync();
+            toastService.ShowSuccess("", "You successfully loged in!");
+            NavigationManager.NavigateTo("");
+        }
+        else
+        {
+            toastService.ShowError("Wrong user name or password", "TRY AGAIN");
+        }
+    }
+}
