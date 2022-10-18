@@ -1,4 +1,6 @@
-using Blazored.LocalStorage;
+global using Blazored.LocalStorage;
+global using Microsoft.AspNetCore.Components.Authorization;
+global using Blazored.Toast;
 using FakeFutbin.Web;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
@@ -17,6 +19,9 @@ builder.Services.AddScoped<ICoachService, CoachService>();
 
 //Local Storage
 builder.Services.AddBlazoredLocalStorage();
+
+//Toast Notification
+builder.Services.AddBlazoredToast();
 
 //DI registrations
 builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
