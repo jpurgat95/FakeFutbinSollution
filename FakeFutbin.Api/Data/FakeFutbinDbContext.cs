@@ -391,4 +391,5 @@ public class FakeFutbinDbContext: DbContext
     public DbSet<Player> Players { get; set; }
     public DbSet<PlayerNationality> PlayerNationalities { get; set; }
     public DbSet<Coach> Coaches { get; set; }
+    public DbSet<User> Users { get; set; }
 }
