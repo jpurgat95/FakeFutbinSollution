@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeFutbin.Api", "FakeFutbi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FakeFutbin.Models", "FakeFutbin.Models\FakeFutbin.Models.csproj", "{077310FB-BB8D-46EF-A109-229ACA18D5DC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationWebApi", "C:\Users\jpurg\source\repos\AuthenticationWebApi\AuthenticationWebApi\AuthenticationWebApi.csproj", "{51064231-86FB-4354-A59C-0A91A68E391D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationWebClient", "C:\Users\jpurg\source\repos\AuthenticationWebApi\AuthenticationWebClient\AuthenticationWebClient.csproj", "{40B028B8-2B3D-42F9-9E1F-960E66A5EA41}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationWebLibrary", "C:\Users\jpurg\source\repos\AuthenticationWebApi\AuthenticationWebLibrary\AuthenticationWebLibrary.csproj", "{7237150D-F871-4531-A4F4-13AAE2877096}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,18 @@ Global
 		{077310FB-BB8D-46EF-A109-229ACA18D5DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{077310FB-BB8D-46EF-A109-229ACA18D5DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{077310FB-BB8D-46EF-A109-229ACA18D5DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51064231-86FB-4354-A59C-0A91A68E391D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51064231-86FB-4354-A59C-0A91A68E391D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51064231-86FB-4354-A59C-0A91A68E391D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51064231-86FB-4354-A59C-0A91A68E391D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40B028B8-2B3D-42F9-9E1F-960E66A5EA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40B028B8-2B3D-42F9-9E1F-960E66A5EA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40B028B8-2B3D-42F9-9E1F-960E66A5EA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40B028B8-2B3D-42F9-9E1F-960E66A5EA41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7237150D-F871-4531-A4F4-13AAE2877096}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7237150D-F871-4531-A4F4-13AAE2877096}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7237150D-F871-4531-A4F4-13AAE2877096}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7237150D-F871-4531-A4F4-13AAE2877096}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
