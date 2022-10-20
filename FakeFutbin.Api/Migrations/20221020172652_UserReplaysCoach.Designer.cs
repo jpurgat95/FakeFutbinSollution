@@ -4,6 +4,7 @@ using FakeFutbin.Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeFutbin.Api.Migrations
 {
     [DbContext(typeof(FakeFutbinDbContext))]
-    partial class FakeFutbinDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221020172652_UserReplaysCoach")]
+    partial class UserReplaysCoach
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

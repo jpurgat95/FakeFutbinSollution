@@ -6,29 +6,29 @@ using System.Text;
 
 namespace FakeFutbin.Web.Services;
 
-public class CoachService : ICoachService
+public class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
 
-    public CoachService(HttpClient httpClient)
+    public UserService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
 
     public event Action<int> OnCoachChanged;
 
-    public async Task<CoachPlayerDto> AddPlayer(CoachPlayerToAddDto coachPlayerToAddDto)
+    public async Task<UserPlayerDto> AddPlayer(UserPlayerToAddDto coachPlayerToAddDto)
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync<CoachPlayerToAddDto>("api/Coach", coachPlayerToAddDto);
+            var response = await _httpClient.PostAsJsonAsync<UserPlayerToAddDto>("api/User", coachPlayerToAddDto);
             if (response.IsSuccessStatusCode)
             {
                 if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return default(CoachPlayerDto);
+                    return default(UserPlayerDto);
                 }
-                return await response.Content.ReadFromJsonAsync<CoachPlayerDto>();
+                return await response.Content.ReadFromJsonAsync<UserPlayerDto>();
             }
             else
             {
@@ -43,16 +43,16 @@ public class CoachService : ICoachService
         }
     }
 
-    public async Task<CoachPlayerDto> DeletePlayer(int id)
+    public async Task<UserPlayerDto> DeletePlayer(int id)
     {
         try
         {
-            var response = await _httpClient.DeleteAsync($"api/Coach/{id}");
+            var response = await _httpClient.DeleteAsync($"api/User/{id}");
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<CoachPlayerDto>();
+                return await response.Content.ReadFromJsonAsync<UserPlayerDto>();
             }
-            return default(CoachPlayerDto);
+            return default(UserPlayerDto);
         }
         catch (Exception)
         {
@@ -61,18 +61,18 @@ public class CoachService : ICoachService
         }
     }
 
-    public async Task<List<CoachPlayerDto>> GetPlayers(int coachId)
+    public async Task<List<UserPlayerDto>> GetPlayers(int coachId)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"api/Coach/{coachId}/GetPlayers");
+            var response = await _httpClient.GetAsync($"api/User/{coachId}/GetPlayers");
             if (response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return Enumerable.Empty<CoachPlayerDto>().ToList();
+                    return Enumerable.Empty<UserPlayerDto>().ToList();
                 }
-                return await response.Content.ReadFromJsonAsync<List<CoachPlayerDto>>();
+                return await response.Content.ReadFromJsonAsync<List<UserPlayerDto>>();
             }
             else
             {
@@ -95,18 +95,18 @@ public class CoachService : ICoachService
         }
     }
 
-    public async Task<CoachPlayerDto> UpdateQty(CoachPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
+    public async Task<UserPlayerDto> UpdateQty(UserPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
     {
         try
         {
             var jsonRequest = JsonConvert.SerializeObject(coachPlayerQtyUpdateDto);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
 
-            var response = await _httpClient.PatchAsync($"api/Coach/{coachPlayerQtyUpdateDto.CoachPlayerId}",content);
+            var response = await _httpClient.PatchAsync($"api/User/{coachPlayerQtyUpdateDto.UserPlayerId}",content);
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<CoachPlayerDto>();
+                return await response.Content.ReadFromJsonAsync<UserPlayerDto>();
             }
             return null;
         }

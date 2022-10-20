@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FakeFutbin.Models.Dto;
 
-public class CoachPlayerDto
+public class UserPlayerDto
 {
     public int Id { get; set; }
-    public int CoachId { get; set; }
+    public int UserId { get; set; }
     public int PlayerId { get; set; }
     public string PlayerName { get; set; }
     public int PlayerAge { get; set; }

@@ -12,10 +12,10 @@ public class CoachBase : ComponentBase
     [Inject]
     public IJSRuntime Js { get; set; }
     [Inject]
-    public ICoachService CoachService { get; set; }
+    public IUserService CoachService { get; set; }
     [Inject]
-    public IManageCoachPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
-    public List<CoachPlayerDto> CoachPlayers { get; set; }
+    public IManageUserPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
+    public List<UserPlayerDto> CoachPlayers { get; set; }
     protected string TotalValue { get; set; }
     protected int TotalQuantity { get; set; }
     public string ErrorMessage { get; set; }    
@@ -45,9 +45,9 @@ public class CoachBase : ComponentBase
         {
             if (qty > 0)
             {
-                var updatePlayerDto = new CoachPlayerQtyUpdateDto
+                var updatePlayerDto = new UserPlayerQtyUpdateDto
                 {
-                    CoachPlayerId = id,
+                    UserPlayerId = id,
                     Qty = qty
                 };
                 var returnedUpdatePlayerDto = await this.CoachService.UpdateQty(updatePlayerDto);
@@ -81,7 +81,7 @@ public class CoachBase : ComponentBase
     {
         await Js.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
     }
-    private async Task UpdatePlayerTotalValue(CoachPlayerDto coachPlayerDto)
+    private async Task UpdatePlayerTotalValue(UserPlayerDto coachPlayerDto)
     {
         var player = GetCoachPlayer(coachPlayerDto.Id);
         if (player != null)
@@ -104,7 +104,7 @@ public class CoachBase : ComponentBase
     {
         TotalQuantity = this.CoachPlayers.Sum(x => x.Qty);
     }
-    private CoachPlayerDto GetCoachPlayer(int id)
+    private UserPlayerDto GetCoachPlayer(int id)
     {
         return CoachPlayers.FirstOrDefault(x => x.Id == id);
     }

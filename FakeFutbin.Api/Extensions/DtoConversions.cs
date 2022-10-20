@@ -52,13 +52,13 @@ public static class DtoConversions
         };
     }
 
-    public static IEnumerable<CoachPlayerDto> ConvertToDto(this IEnumerable<CoachPlayer> coachPlayers,
+    public static IEnumerable<UserPlayerDto> ConvertToDto(this IEnumerable<UserPlayer> coachPlayers,
                                                            IEnumerable<Player> players)
     {
         return (from coachPlayer in coachPlayers
                 join player in players
                 on coachPlayer.PlayerId equals player.Id
-                select new CoachPlayerDto
+                select new UserPlayerDto
                 {
                     Id = coachPlayer.Id,
                     PlayerId = coachPlayer.PlayerId,
@@ -67,16 +67,16 @@ public static class DtoConversions
                     PlayerRaiting = player.Raiting,
                     PlayerImageURL = player.ImageURL,
                     MarketValue = player.MarketValue,
-                    CoachId = coachPlayer.CoachId,
+                    UserId = coachPlayer.UserId,
                     Qty = coachPlayer.Qty,
                     TotalValue = player.MarketValue * coachPlayer.Qty,
                 }).ToList();
     }
 
-    public static CoachPlayerDto ConvertToDto(this CoachPlayer coachPlayer,
+    public static UserPlayerDto ConvertToDto(this UserPlayer coachPlayer,
                                              Player player)
     {
-        return new CoachPlayerDto
+        return new UserPlayerDto
         {
             Id = coachPlayer.Id,
             PlayerId = coachPlayer.PlayerId,
@@ -85,7 +85,7 @@ public static class DtoConversions
             PlayerRaiting = player.Raiting,
             PlayerImageURL = player.ImageURL,
             MarketValue = player.MarketValue,
-            CoachId = coachPlayer.CoachId,
+            UserId = coachPlayer.UserId,
             Qty = coachPlayer.Qty,
             TotalValue = player.MarketValue * coachPlayer.Qty,
         };

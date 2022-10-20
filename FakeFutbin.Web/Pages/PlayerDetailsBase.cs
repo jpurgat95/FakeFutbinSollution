@@ -12,16 +12,16 @@ public class PlayerDetailsBase : ComponentBase
     [Inject]
     public IPlayerService PlayerService { get; set; }
     [Inject]
-    public ICoachService CoachService { get; set; }
+    public IUserService CoachService { get; set; }
     [Inject]
     public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
     [Inject]
-    public IManageCoachPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
+    public IManageUserPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
     public PlayerDto Player { get; set; }
     public string ErrorMessage { get; set; }
-    private List<CoachPlayerDto> CoachPlayers { get; set; }
+    private List<UserPlayerDto> CoachPlayers { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
@@ -36,7 +36,7 @@ public class PlayerDetailsBase : ComponentBase
         }
     }
 
-    protected async Task AddToCoach_Click(CoachPlayerToAddDto coachPlayerToAddDto)
+    protected async Task AddToCoach_Click(UserPlayerToAddDto coachPlayerToAddDto)
     {
         try
         {

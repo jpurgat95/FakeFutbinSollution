@@ -11,11 +11,11 @@ public class PlayersBase : ComponentBase
     [Inject]
     public IPlayerService PlayerService { get; set; }
     [Inject]
-    public ICoachService CoachService { get; set; }
+    public IUserService CoachService { get; set; }
     [Inject]
     public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
     [Inject]
-    public IManageCoachPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
+    public IManageUserPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }

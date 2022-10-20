@@ -9,12 +9,12 @@ namespace FakeFutbin.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoachController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly ICoachRepository _coachRepository;
+        private readonly IUserRepository _coachRepository;
         private readonly IPlayerRepository _playerRepository;
 
-        public CoachController(ICoachRepository coachRepository,
+        public UserController(IUserRepository coachRepository,
                               IPlayerRepository playerRepository)
         {
             _coachRepository = coachRepository;
@@ -22,7 +22,7 @@ namespace FakeFutbin.Api.Controllers
         }
         [HttpGet]
         [Route("{coachId}/GetPlayers")]
-        public async Task<ActionResult<IEnumerable<CoachPlayerDto>>> GetPlayers(int coachId)
+        public async Task<ActionResult<IEnumerable<UserPlayerDto>>> GetPlayers(int coachId)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace FakeFutbin.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CoachPlayerDto>> GetPlayer(int id)
+        public async Task<ActionResult<UserPlayerDto>> GetPlayer(int id)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace FakeFutbin.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CoachPlayerDto>> PostPlayer([FromBody] CoachPlayerToAddDto coachPlayerToAddDto)
+        public async Task<ActionResult<UserPlayerDto>> PostPlayer([FromBody] UserPlayerToAddDto coachPlayerToAddDto)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace FakeFutbin.Api.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<CoachPlayerDto>> DeletePlayer(int id)
+        public async Task<ActionResult<UserPlayerDto>> DeletePlayer(int id)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace FakeFutbin.Api.Controllers
             }
         }
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<CoachPlayerDto>> UpdateQty(int id, CoachPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
+        public async Task<ActionResult<UserPlayerDto>> UpdateQty(int id, UserPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
         {
             try
             {

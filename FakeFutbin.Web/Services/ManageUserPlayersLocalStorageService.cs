@@ -4,22 +4,22 @@ using FakeFutbin.Web.Services.Contracts;
 
 namespace FakeFutbin.Web.Services;
 
-public class ManageCoachPlayersLocalStorageService : IManageCoachPlayersLocalStorageService
+public class ManageUserPlayersLocalStorageService : IManageUserPlayersLocalStorageService
 {
     private readonly ILocalStorageService _localStorageService;
-    private readonly ICoachService _coachService;
+    private readonly IUserService _coachService;
 
     const string key = "CoachPlayerCollection";
 
-    public ManageCoachPlayersLocalStorageService(ILocalStorageService localStorageService,
-                                                ICoachService coachService)
+    public ManageUserPlayersLocalStorageService(ILocalStorageService localStorageService,
+                                                IUserService coachService)
     {
         _localStorageService = localStorageService;
         _coachService = coachService;
     }
-    public async Task<List<CoachPlayerDto>> GetCollection()
+    public async Task<List<UserPlayerDto>> GetCollection()
     {
-        return await _localStorageService.GetItemAsync<List<CoachPlayerDto>>(key)
+        return await _localStorageService.GetItemAsync<List<UserPlayerDto>>(key)
                 ?? await AddCollection();
     }
 
@@ -28,14 +28,14 @@ public class ManageCoachPlayersLocalStorageService : IManageCoachPlayersLocalSto
         await _localStorageService.RemoveItemAsync(key);
     }
 
-    public async Task SaveColleciotn(List<CoachPlayerDto> coachPlayerDtos)
+    public async Task SaveColleciotn(List<UserPlayerDto> coachPlayerDtos)
     {
         await _localStorageService.SetItemAsync(key, coachPlayerDtos);
     }
 
-    private async Task<List<CoachPlayerDto>> AddCollection()
+    private async Task<List<UserPlayerDto>> AddCollection()
     {
-        var coachPlayerCollection = await _coachService.GetPlayers(HardCoded.CoachId);
+        var coachPlayerCollection = await _coachService.GetPlayers(HardCoded.UserId);
 
         if(coachPlayerCollection != null)
         {

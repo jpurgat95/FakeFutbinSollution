@@ -16,7 +16,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 //DI registrations
 builder.Services.AddScoped<IPlayerService, PlayerService>();
-builder.Services.AddScoped<ICoachService, CoachService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddAuthorizationCore();
 
@@ -28,6 +28,6 @@ builder.Services.AddBlazoredToast();
 
 //DI registrations
 builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
-builder.Services.AddScoped<IManageCoachPlayersLocalStorageService, ManageCoachPlayersLocalStorageService>();
+builder.Services.AddScoped<IManageUserPlayersLocalStorageService, ManageUserPlayersLocalStorageService>();
 
 await builder.Build().RunAsync();
