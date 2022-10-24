@@ -15,14 +15,14 @@ public class UserRepository : IUserRepository
     {
         _fakeFutbinDbContext = fakeFutbinDbContext;
     }
-    private async Task<bool> ScoutPlayerExists(int userId, int playerId)
+    private async Task<bool> UserPlayerExists(int userId, int playerId)
     {
         return await _fakeFutbinDbContext.UserPlayers.AnyAsync(c => c.UserId == userId &&
                                                                     c.PlayerId == playerId);
     }
     public async Task<UserPlayer> AddPlayer(UserPlayerToAddDto userPlayerToAddDto)
     {
-        if (await ScoutPlayerExists(userPlayerToAddDto.UserId, userPlayerToAddDto.PlayerId) == false)
+        if (await UserPlayerExists(userPlayerToAddDto.UserId, userPlayerToAddDto.PlayerId) == false)
         {
             var footballer = await (from player in _fakeFutbinDbContext.Players
                                     where player.Id == userPlayerToAddDto.PlayerId

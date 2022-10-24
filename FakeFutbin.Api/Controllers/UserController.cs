@@ -61,8 +61,8 @@ namespace FakeFutbin.Api.Controllers
                 {
                     return NotFound();
                 }
-                var scoutPlayerDto = userPlayer.ConvertToDto(player);
-                return Ok(userPlayer);
+                var userPlayerDto = userPlayer.ConvertToDto(player);
+                return Ok(userPlayerDto);
             }
             catch (Exception ex)
             {
