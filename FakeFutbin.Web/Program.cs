@@ -1,4 +1,6 @@
-using Blazored.LocalStorage;
+global using Blazored.LocalStorage;
+global using Microsoft.AspNetCore.Components.Authorization;
+global using Blazored.Toast;
 using FakeFutbin.Web;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
@@ -11,15 +13,21 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //Local Host addres pasted
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7242") });
+
 //DI registrations
 builder.Services.AddScoped<IPlayerService, PlayerService>();
-builder.Services.AddScoped<ICoachService, CoachService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddAuthorizationCore();
 
 //Local Storage
 builder.Services.AddBlazoredLocalStorage();
 
+//Toast Notification
+builder.Services.AddBlazoredToast();
+
 //DI registrations
 builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
-builder.Services.AddScoped<IManageCoachPlayersLocalStorageService, ManageCoachPlayersLocalStorageService>();
+builder.Services.AddScoped<IManageUserPlayersLocalStorageService, ManageUserPlayersLocalStorageService>();
 
 await builder.Build().RunAsync();

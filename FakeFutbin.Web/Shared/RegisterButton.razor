@@ -1,0 +1,15 @@
+﻿@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <button @onclick="Register" class="btn btn-primary">Register</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code
+{
+    void Register()
+    {
+        NavigationManager.NavigateTo("register");
+    }
+}

@@ -1,5 +1,15 @@
 ﻿@page "/PlayerDetails/{Id:int}"
 @inherits PlayerDetailsBase
+@attribute [Authorize(Roles = "User")]
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <span><b> You are authorized as @context.User.Identity.Name </b></span>
+    </Authorized>
+    <NotAuthorized>
+        <span>You're not authorized, buddy.</span>
+    </NotAuthorized>
+</AuthorizeView>
 
 @if (Player == null && ErrorMessage == null)
 {
@@ -28,12 +38,12 @@ else
             </p>
             <div>
                 <button class="btn-success"
-                @onclick ="()=>AddToCoach_Click(new CoachPlayerToAddDto{
-                    CoachId = HardCoded.CoachId,
+                @onclick ="()=>AddToUser_Click(new UserPlayerToAddDto{
+                    UserId = HardCoded.UserId,
                     PlayerId = Player.Id,
                     Qty = 1
                 })">
-                    <b>Add to Coach Squad</b>
+                    <b>Add to User Squad</b>
                 </button>
             </div>
         </div>

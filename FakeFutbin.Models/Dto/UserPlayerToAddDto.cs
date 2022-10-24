@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace FakeFutbin.Models.Dto;
 
-public class CoachPlayerQtyUpdateDto
+public class UserPlayerToAddDto
 {
-    public int CoachPlayerId { get; set; }
+    public int UserId { get; set; }
+    public int PlayerId { get; set; }
     public int Qty { get; set; }
 }

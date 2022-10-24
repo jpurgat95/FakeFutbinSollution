@@ -12,21 +12,21 @@ public class PlayerDetailsBase : ComponentBase
     [Inject]
     public IPlayerService PlayerService { get; set; }
     [Inject]
-    public ICoachService CoachService { get; set; }
+    public IUserService UserService { get; set; }
     [Inject]
     public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
     [Inject]
-    public IManageCoachPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
+    public IManageUserPlayersLocalStorageService ManageUserPlayersLocalStorageService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
     public PlayerDto Player { get; set; }
     public string ErrorMessage { get; set; }
-    private List<CoachPlayerDto> CoachPlayers { get; set; }
+    private List<UserPlayerDto> UserPlayers { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            CoachPlayers = await ManageCoachPlayersLocalStorageService.GetCollection();
+            UserPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
             Player = await GetPlayerById(Id);
         }
         catch (Exception ex)
@@ -36,18 +36,18 @@ public class PlayerDetailsBase : ComponentBase
         }
     }
 
-    protected async Task AddToCoach_Click(CoachPlayerToAddDto coachPlayerToAddDto)
+    protected async Task AddToUser_Click(UserPlayerToAddDto userPlayerToAddDto)
     {
         try
         {
-            var coachPlayerDto = await CoachService.AddPlayer(coachPlayerToAddDto);
-            if(coachPlayerDto != null)
+            var userPlayerDto = await UserService.AddPlayer(userPlayerToAddDto);
+            if(userPlayerDto != null)
             {
-                CoachPlayers.Add(coachPlayerDto);
-                await ManageCoachPlayersLocalStorageService.SaveColleciotn(CoachPlayers);
+                UserPlayers.Add(userPlayerDto);
+                await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
             }
 
-            NavigationManager.NavigateTo("/Coach");
+            NavigationManager.NavigateTo("/User");
         }
         catch (Exception)
         {

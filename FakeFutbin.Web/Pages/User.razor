@@ -1,7 +1,17 @@
-﻿@page "/Coach"
-@inherits CoachBase
+﻿@page "/User"
+@inherits UserBase
+@attribute [Authorize(Roles = "User")]
 
-@if (CoachPlayers == null && ErrorMessage == null)
+<AuthorizeView Roles="User">
+    <Authorized>
+        <span><b> You are authorized as @context.User.Identity.Name </b></span>
+    </Authorized>
+    <NotAuthorized>
+        <span>You're not authorized, buddy.</span>
+    </NotAuthorized>
+</AuthorizeView>
+
+@if (UserPlayers == null && ErrorMessage == null)
 {
     <DisplaySpinner></DisplaySpinner>
 }
@@ -11,12 +21,12 @@ else if(ErrorMessage != null)
 }
 else
 {
-    <h3 class="mb-5"><b>Coach</b></h3>
-    @if (CoachPlayers.Count() > 0)
+    <h3 class="mb-5"><b>Your Squad:</b></h3>
+    @if (UserPlayers.Count() > 0)
     {
     <div class = "row mb-5">
         <div class ="col-md-9">
-                @foreach (var player in CoachPlayers)
+                @foreach (var player in UserPlayers)
             {
                 <div class="row mb-4">
                     <div class="col-md-4">
@@ -31,11 +41,11 @@ else
                             <input @oninput ="()=>UpdateQty_Input(player.Id)"
                             type="number" @bind = "@player.Qty"/>
                             <button data-playerId="@player.Id" class="btn btn-info btn-sm update-qty"
-                            @onclick ="(()=> UpdateQtyCoachPlayer_Click(player.Id, player.Qty))"
+                            @onclick ="(()=> UpdateQtyUserPlayer_Click(player.Id, player.Qty))"
                             >Update Qty</button>
                         </span>
                         <div>
-                            <button @onclick ="(() => DeleteCoachPlayer_Click(player.Id))"
+                            <button @onclick ="(() => DeleteUserPlayer_Click(player.Id))"
                             class="btn btn-danger sm"><i class="fa fa-trash"></i></button>
                         </div>
                     </div>
@@ -43,7 +53,7 @@ else
             }
         </div>
         <div class="col-md-3">
-            <h5>Coach Summary</h5>
+            <h5>User Summary</h5>
             <div class="mt-2">
                 <div>Total - (@TotalQuantity players)&nbsp<b>@TotalValue</b>;</div>
                 <a href="#" class="btn btn-success">
