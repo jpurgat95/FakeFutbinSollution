@@ -11,11 +11,11 @@ public class PlayersBase : ComponentBase
     [Inject]
     public IPlayerService PlayerService { get; set; }
     [Inject]
-    public IUserService CoachService { get; set; }
+    public IUserService UserService { get; set; }
     [Inject]
     public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
     [Inject]
-    public IManageUserPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
+    public IManageUserPlayersLocalStorageService ManageUserPlayersLocalStorageService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
@@ -28,11 +28,11 @@ public class PlayersBase : ComponentBase
 
             Players = await ManagePlayersLocalStorageService.GetCollection();
 
-            var coachPlayers = await ManageCoachPlayersLocalStorageService.GetCollection();
+            var userPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
 
-            var totalQty = coachPlayers.Sum(i=>i.Qty);
+            var totalQty = userPlayers.Sum(i=>i.Qty);
 
-            CoachService.RaiseEventOnCoachChanged(totalQty);
+            UserService.RaiseEventOnUserChanged(totalQty);
         }
         catch (Exception ex)
         {
@@ -56,6 +56,6 @@ public class PlayersBase : ComponentBase
     private async Task ClearLocalStorage()
     {
         await ManagePlayersLocalStorageService.RemoveCollection();
-        await ManageCoachPlayersLocalStorageService.RemoveCollection();
+        await ManageUserPlayersLocalStorageService.RemoveCollection();
     }
 }

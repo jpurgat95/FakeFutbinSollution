@@ -15,22 +15,22 @@ public class UserRepository : IUserRepository
     {
         _fakeFutbinDbContext = fakeFutbinDbContext;
     }
-    private async Task<bool> ScoutPlayerExists(int coachId, int playerId)
+    private async Task<bool> ScoutPlayerExists(int userId, int playerId)
     {
-        return await _fakeFutbinDbContext.UserPlayers.AnyAsync(c => c.UserId == coachId &&
+        return await _fakeFutbinDbContext.UserPlayers.AnyAsync(c => c.UserId == userId &&
                                                                     c.PlayerId == playerId);
     }
-    public async Task<UserPlayer> AddPlayer(UserPlayerToAddDto coachPlayerToAddDto)
+    public async Task<UserPlayer> AddPlayer(UserPlayerToAddDto userPlayerToAddDto)
     {
-        if (await ScoutPlayerExists(coachPlayerToAddDto.UserId, coachPlayerToAddDto.PlayerId) == false)
+        if (await ScoutPlayerExists(userPlayerToAddDto.UserId, userPlayerToAddDto.PlayerId) == false)
         {
             var footballer = await (from player in _fakeFutbinDbContext.Players
-                                    where player.Id == coachPlayerToAddDto.PlayerId
+                                    where player.Id == userPlayerToAddDto.PlayerId
                                     select new UserPlayer
                                     {
-                                        UserId = coachPlayerToAddDto.UserId,
+                                        UserId = userPlayerToAddDto.UserId,
                                         PlayerId = player.Id,
-                                        Qty = coachPlayerToAddDto.Qty
+                                        Qty = userPlayerToAddDto.Qty
 
                                     }).SingleOrDefaultAsync();
             if (footballer != null)
@@ -57,40 +57,40 @@ public class UserRepository : IUserRepository
 
     public async Task<UserPlayer> GetPlayer(int id)
     {
-        return await (from coach in _fakeFutbinDbContext.Users
-                      join coachPlayer in _fakeFutbinDbContext.UserPlayers
-                      on coach.Id equals coachPlayer.UserId
-                      where coachPlayer.Id == id
+        return await (from user in _fakeFutbinDbContext.Users
+                      join userPlayer in _fakeFutbinDbContext.UserPlayers
+                      on user.Id equals userPlayer.UserId
+                      where userPlayer.Id == id
                       select new UserPlayer
                       {
-                          Id = coachPlayer.Id,
-                          PlayerId = coachPlayer.PlayerId,
-                          Qty = coachPlayer.Qty,
-                          UserId = coachPlayer.UserId
+                          Id = userPlayer.Id,
+                          PlayerId = userPlayer.PlayerId,
+                          Qty = userPlayer.Qty,
+                          UserId = userPlayer.UserId
                       }).SingleOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<UserPlayer>> GetPlayers(int coachId)
+    public async Task<IEnumerable<UserPlayer>> GetPlayers(int userId)
     {
-        return await (from coach in _fakeFutbinDbContext.Users
-                      join coachPlayer in _fakeFutbinDbContext.UserPlayers
-                      on coach.Id equals coachPlayer.UserId
-                      where coach.Id == coachId
+        return await (from user in _fakeFutbinDbContext.Users
+                      join userPlayer in _fakeFutbinDbContext.UserPlayers
+                      on user.Id equals userPlayer.UserId
+                      where user.Id == userId
                       select new UserPlayer
                       {
-                          Id = coachPlayer.Id,
-                          PlayerId = coachPlayer.PlayerId,
-                          Qty = coachPlayer.Qty,
-                          UserId= coachPlayer.UserId
+                          Id = userPlayer.Id,
+                          PlayerId = userPlayer.PlayerId,
+                          Qty = userPlayer.Qty,
+                          UserId= userPlayer.UserId
                       }).ToListAsync();
     }
 
-    public async Task<UserPlayer> UpddateQty(int id, UserPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
+    public async Task<UserPlayer> UpddateQty(int id, UserPlayerQtyUpdateDto userPlayerQtyUpdateDto)
     {
         var player = await _fakeFutbinDbContext.UserPlayers.FindAsync(id);
         if (player != null)
         {
-            player.Qty = coachPlayerQtyUpdateDto.Qty;
+            player.Qty = userPlayerQtyUpdateDto.Qty;
             await _fakeFutbinDbContext.SaveChangesAsync();
             return player;
         }

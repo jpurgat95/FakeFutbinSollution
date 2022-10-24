@@ -11,23 +11,23 @@ namespace FakeFutbin.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _coachRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IPlayerRepository _playerRepository;
 
-        public UserController(IUserRepository coachRepository,
+        public UserController(IUserRepository userRepository,
                               IPlayerRepository playerRepository)
         {
-            _coachRepository = coachRepository;
+            _userRepository = userRepository;
             _playerRepository = playerRepository;
         }
         [HttpGet]
-        [Route("{coachId}/GetPlayers")]
-        public async Task<ActionResult<IEnumerable<UserPlayerDto>>> GetPlayers(int coachId)
+        [Route("{userId}/GetPlayers")]
+        public async Task<ActionResult<IEnumerable<UserPlayerDto>>> GetPlayers(int userId)
         {
             try
             {
-                var coachPlayers = await _coachRepository.GetPlayers(coachId);
-                if (coachPlayers == null)
+                var userPlayers = await _userRepository.GetPlayers(userId);
+                if (userPlayers == null)
                 {
                     return NoContent();
                 }
@@ -36,8 +36,8 @@ namespace FakeFutbin.Api.Controllers
                 {
                     throw new Exception("No players exist in the system");
                 }
-                var coachPlayersDto = coachPlayers.ConvertToDto(players);
-                return Ok(coachPlayersDto);
+                var userPlayersDto = userPlayers.ConvertToDto(players);
+                return Ok(userPlayersDto);
             }
             catch (Exception ex)
             {
@@ -51,18 +51,18 @@ namespace FakeFutbin.Api.Controllers
         {
             try
             {
-                var coachPlayer = await _coachRepository.GetPlayer(id);
-                if (coachPlayer == null)
+                var userPlayer = await _userRepository.GetPlayer(id);
+                if (userPlayer == null)
                 {
                     return NoContent();
                 }
-                var player = await _playerRepository.GetPlayer(coachPlayer.PlayerId);
+                var player = await _playerRepository.GetPlayer(userPlayer.PlayerId);
                 if (player == null)
                 {
                     return NotFound();
                 }
-                var scoutPlayerDto = coachPlayer.ConvertToDto(player);
-                return Ok(coachPlayer);
+                var scoutPlayerDto = userPlayer.ConvertToDto(player);
+                return Ok(userPlayer);
             }
             catch (Exception ex)
             {
@@ -71,22 +71,22 @@ namespace FakeFutbin.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserPlayerDto>> PostPlayer([FromBody] UserPlayerToAddDto coachPlayerToAddDto)
+        public async Task<ActionResult<UserPlayerDto>> PostPlayer([FromBody] UserPlayerToAddDto userPlayerToAddDto)
         {
             try
             {
-                var newCoachPlayer = await _coachRepository.AddPlayer(coachPlayerToAddDto);
-                if (newCoachPlayer == null)
+                var newUserPlayer = await _userRepository.AddPlayer(userPlayerToAddDto);
+                if (newUserPlayer == null)
                 {
                     return NoContent();
                 }
-                var player = await _playerRepository.GetPlayer(newCoachPlayer.PlayerId);
+                var player = await _playerRepository.GetPlayer(newUserPlayer.PlayerId);
                 if (player == null)
                 {
-                    throw new Exception($"Something went wrong when attempting to retrieve product (productId:({coachPlayerToAddDto.PlayerId})");
+                    throw new Exception($"Something went wrong when attempting to retrieve product (productId:({userPlayerToAddDto.PlayerId})");
                 }
-                var newCoachPlayerDto = newCoachPlayer.ConvertToDto(player);
-                return CreatedAtAction(nameof(GetPlayer), new { id = newCoachPlayerDto.Id }, newCoachPlayerDto);
+                var newUserPlayerDto = newUserPlayer.ConvertToDto(player);
+                return CreatedAtAction(nameof(GetPlayer), new { id = newUserPlayerDto.Id }, newUserPlayerDto);
             }
             catch (Exception ex)
             {
@@ -99,19 +99,19 @@ namespace FakeFutbin.Api.Controllers
         {
             try
             {
-                var coachPlayer = await _coachRepository.DeletePlayer(id);
-                if (coachPlayer == null)
+                var userPlayer = await _userRepository.DeletePlayer(id);
+                if (userPlayer == null)
                 {
                     return NotFound();
                 }
-                var player = await _playerRepository.GetPlayer(coachPlayer.PlayerId);
+                var player = await _playerRepository.GetPlayer(userPlayer.PlayerId);
                 if (player == null)
                 {
                     return NotFound();
                 }
-                var coachPlayerDto = coachPlayer.ConvertToDto(player);
+                var userPlayerDto = userPlayer.ConvertToDto(player);
 
-                return Ok(coachPlayerDto);
+                return Ok(userPlayerDto);
             }
             catch (Exception ex)
             {
@@ -119,19 +119,19 @@ namespace FakeFutbin.Api.Controllers
             }
         }
         [HttpPatch("{id:int}")]
-        public async Task<ActionResult<UserPlayerDto>> UpdateQty(int id, UserPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
+        public async Task<ActionResult<UserPlayerDto>> UpdateQty(int id, UserPlayerQtyUpdateDto userPlayerQtyUpdateDto)
         {
             try
             {
-                var coachPlayer = await _coachRepository.UpddateQty(id, coachPlayerQtyUpdateDto);
-                if (coachPlayer == null)
+                var userPlayer = await _userRepository.UpddateQty(id, userPlayerQtyUpdateDto);
+                if (userPlayer == null)
                 {
                     return NotFound();
                 }
-                var player = await _playerRepository.GetPlayer(coachPlayer.PlayerId);
-                var scoutPlayerDto = coachPlayer.ConvertToDto(player);
+                var player = await _playerRepository.GetPlayer(userPlayer.PlayerId);
+                var userPlayerDto = userPlayer.ConvertToDto(player);
 
-                return Ok(scoutPlayerDto);
+                return Ok(userPlayerDto);
             }
             catch (Exception ex)
             {

@@ -7,15 +7,15 @@ using Microsoft.VisualBasic;
 
 namespace FakeFutbin.Web.Pages;
 
-public class CoachBase : ComponentBase
+public class UserBase : ComponentBase
 {
     [Inject]
     public IJSRuntime Js { get; set; }
     [Inject]
-    public IUserService CoachService { get; set; }
+    public IUserService UserService { get; set; }
     [Inject]
-    public IManageUserPlayersLocalStorageService ManageCoachPlayersLocalStorageService { get; set; }
-    public List<UserPlayerDto> CoachPlayers { get; set; }
+    public IManageUserPlayersLocalStorageService ManageUserPlayersLocalStorageService { get; set; }
+    public List<UserPlayerDto> UserPlayers { get; set; }
     protected string TotalValue { get; set; }
     protected int TotalQuantity { get; set; }
     public string ErrorMessage { get; set; }    
@@ -23,8 +23,8 @@ public class CoachBase : ComponentBase
     {
         try
         {
-            CoachPlayers = await ManageCoachPlayersLocalStorageService.GetCollection();
-            CoachChanged();
+            UserPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
+            UserChanged();
         }
         catch (Exception ex)
         {
@@ -32,14 +32,14 @@ public class CoachBase : ComponentBase
         }
     }
 
-    protected async Task DeleteCoachPlayer_Click(int id)
+    protected async Task DeleteUserPlayer_Click(int id)
     {
-        var scoutPlayerDto = await CoachService.DeletePlayer(id);
+        var userPlayerDto = await UserService.DeletePlayer(id);
 
-        await RemoveCoachPlayer(id);
-        CoachChanged();
+        await RemoveUserPlayer(id);
+        UserChanged();
     }
-    protected async Task UpdateQtyCoachPlayer_Click(int id, int qty)
+    protected async Task UpdateQtyUserPlayer_Click(int id, int qty)
     {
         try
         {
@@ -50,14 +50,14 @@ public class CoachBase : ComponentBase
                     UserPlayerId = id,
                     Qty = qty
                 };
-                var returnedUpdatePlayerDto = await this.CoachService.UpdateQty(updatePlayerDto);
+                var returnedUpdatePlayerDto = await this.UserService.UpdateQty(updatePlayerDto);
                 await UpdatePlayerTotalValue(returnedUpdatePlayerDto);
-                CoachChanged();
+                UserChanged();
                 await MakeUpdateQtyButtonVisible(id, false);
             }
             else
             {
-                var player = this.CoachPlayers.FirstOrDefault(x => x.Id == id);
+                var player = this.UserPlayers.FirstOrDefault(x => x.Id == id);
                 if (player != null)
                 {
                     player.Qty = 1;
@@ -81,15 +81,15 @@ public class CoachBase : ComponentBase
     {
         await Js.InvokeVoidAsync("MakeUpdateQtyButtonVisible", id, visible);
     }
-    private async Task UpdatePlayerTotalValue(UserPlayerDto coachPlayerDto)
+    private async Task UpdatePlayerTotalValue(UserPlayerDto userPlayerDto)
     {
-        var player = GetCoachPlayer(coachPlayerDto.Id);
+        var player = GetUserPlayer(userPlayerDto.Id);
         if (player != null)
         {
-            player.TotalValue = coachPlayerDto.MarketValue * coachPlayerDto.Qty;
+            player.TotalValue = userPlayerDto.MarketValue * userPlayerDto.Qty;
         }
 
-        await ManageCoachPlayersLocalStorageService.SaveColleciotn(CoachPlayers);
+        await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
     }
     private void CalculateScoutSummaryTotals()
     {
@@ -98,27 +98,27 @@ public class CoachBase : ComponentBase
     }
     private void SetTotalValue()
     {
-        TotalValue = this.CoachPlayers.Sum(x=>x.TotalValue).ToString("C");
+        TotalValue = this.UserPlayers.Sum(x=>x.TotalValue).ToString("C");
     }
     private void SetTotalQuantity()
     {
-        TotalQuantity = this.CoachPlayers.Sum(x => x.Qty);
+        TotalQuantity = this.UserPlayers.Sum(x => x.Qty);
     }
-    private UserPlayerDto GetCoachPlayer(int id)
+    private UserPlayerDto GetUserPlayer(int id)
     {
-        return CoachPlayers.FirstOrDefault(x => x.Id == id);
+        return UserPlayers.FirstOrDefault(x => x.Id == id);
     }
-    private async Task RemoveCoachPlayer(int id)
+    private async Task RemoveUserPlayer(int id)
     {
-        var coachPlayerDto = GetCoachPlayer(id);
-        CoachPlayers.Remove(coachPlayerDto);
+        var userPlayerDto = GetUserPlayer(id);
+        UserPlayers.Remove(userPlayerDto);
 
-        await ManageCoachPlayersLocalStorageService.SaveColleciotn(CoachPlayers);
+        await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
     }
 
-    private void CoachChanged()
+    private void UserChanged()
     {
         CalculateScoutSummaryTotals();
-        CoachService.RaiseEventOnCoachChanged(TotalQuantity);
+        UserService.RaiseEventOnUserChanged(TotalQuantity);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using FakeFutbin.Models.Dto;
+using FakeFutbin.Web.Pages;
 using FakeFutbin.Web.Services.Contracts;
 
 namespace FakeFutbin.Web.Services;
@@ -7,15 +8,13 @@ namespace FakeFutbin.Web.Services;
 public class ManageUserPlayersLocalStorageService : IManageUserPlayersLocalStorageService
 {
     private readonly ILocalStorageService _localStorageService;
-    private readonly IUserService _coachService;
-
-    const string key = "CoachPlayerCollection";
-
+    private readonly IUserService _userService;
+    const string key = "UserPlayerCollection";
     public ManageUserPlayersLocalStorageService(ILocalStorageService localStorageService,
-                                                IUserService coachService)
+                                                IUserService userService)
     {
         _localStorageService = localStorageService;
-        _coachService = coachService;
+        _userService = userService;
     }
     public async Task<List<UserPlayerDto>> GetCollection()
     {
@@ -28,19 +27,19 @@ public class ManageUserPlayersLocalStorageService : IManageUserPlayersLocalStora
         await _localStorageService.RemoveItemAsync(key);
     }
 
-    public async Task SaveColleciotn(List<UserPlayerDto> coachPlayerDtos)
+    public async Task SaveColleciotn(List<UserPlayerDto> userPlayerDtos)
     {
-        await _localStorageService.SetItemAsync(key, coachPlayerDtos);
+        await _localStorageService.SetItemAsync(key, userPlayerDtos);
     }
 
     private async Task<List<UserPlayerDto>> AddCollection()
     {
-        var coachPlayerCollection = await _coachService.GetPlayers(HardCoded.UserId);
+        var userPlayerCollection = await _userService.GetPlayers(HardCoded.UserId);
 
-        if(coachPlayerCollection != null)
+        if(userPlayerCollection != null)
         {
-            await _localStorageService.SetItemAsync(key, coachPlayerCollection);
+            await _localStorageService.SetItemAsync(key, userPlayerCollection);
         }
-        return coachPlayerCollection;
+        return userPlayerCollection;
     }
 }

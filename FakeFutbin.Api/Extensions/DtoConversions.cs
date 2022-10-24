@@ -52,42 +52,42 @@ public static class DtoConversions
         };
     }
 
-    public static IEnumerable<UserPlayerDto> ConvertToDto(this IEnumerable<UserPlayer> coachPlayers,
+    public static IEnumerable<UserPlayerDto> ConvertToDto(this IEnumerable<UserPlayer> userPlayers,
                                                            IEnumerable<Player> players)
     {
-        return (from coachPlayer in coachPlayers
+        return (from userPlayer in userPlayers
                 join player in players
-                on coachPlayer.PlayerId equals player.Id
+                on userPlayer.PlayerId equals player.Id
                 select new UserPlayerDto
                 {
-                    Id = coachPlayer.Id,
-                    PlayerId = coachPlayer.PlayerId,
+                    Id = userPlayer.Id,
+                    PlayerId = userPlayer.PlayerId,
                     PlayerName = player.Name,
                     PlayerAge = player.Age,
                     PlayerRaiting = player.Raiting,
                     PlayerImageURL = player.ImageURL,
                     MarketValue = player.MarketValue,
-                    UserId = coachPlayer.UserId,
-                    Qty = coachPlayer.Qty,
-                    TotalValue = player.MarketValue * coachPlayer.Qty,
+                    UserId = userPlayer.UserId,
+                    Qty = userPlayer.Qty,
+                    TotalValue = player.MarketValue * userPlayer.Qty,
                 }).ToList();
     }
 
-    public static UserPlayerDto ConvertToDto(this UserPlayer coachPlayer,
+    public static UserPlayerDto ConvertToDto(this UserPlayer userPlayer,
                                              Player player)
     {
         return new UserPlayerDto
         {
-            Id = coachPlayer.Id,
-            PlayerId = coachPlayer.PlayerId,
+            Id = userPlayer.Id,
+            PlayerId = userPlayer.PlayerId,
             PlayerName = player.Name,
             PlayerAge = player.Age,
             PlayerRaiting = player.Raiting,
             PlayerImageURL = player.ImageURL,
             MarketValue = player.MarketValue,
-            UserId = coachPlayer.UserId,
-            Qty = coachPlayer.Qty,
-            TotalValue = player.MarketValue * coachPlayer.Qty,
+            UserId = userPlayer.UserId,
+            Qty = userPlayer.Qty,
+            TotalValue = player.MarketValue * userPlayer.Qty,
         };
     }
 }

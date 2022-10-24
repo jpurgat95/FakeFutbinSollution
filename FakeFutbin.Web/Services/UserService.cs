@@ -15,13 +15,13 @@ public class UserService : IUserService
         _httpClient = httpClient;
     }
 
-    public event Action<int> OnCoachChanged;
+    public event Action<int> OnUserChanged;
 
-    public async Task<UserPlayerDto> AddPlayer(UserPlayerToAddDto coachPlayerToAddDto)
+    public async Task<UserPlayerDto> AddPlayer(UserPlayerToAddDto userPlayerToAddDto)
     {
         try
         {
-            var response = await _httpClient.PostAsJsonAsync<UserPlayerToAddDto>("api/User", coachPlayerToAddDto);
+            var response = await _httpClient.PostAsJsonAsync<UserPlayerToAddDto>("api/User", userPlayerToAddDto);
             if (response.IsSuccessStatusCode)
             {
                 if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
@@ -61,11 +61,11 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<List<UserPlayerDto>> GetPlayers(int coachId)
+    public async Task<List<UserPlayerDto>> GetPlayers(int userId)
     {
         try
         {
-            var response = await _httpClient.GetAsync($"api/User/{coachId}/GetPlayers");
+            var response = await _httpClient.GetAsync($"api/User/{userId}/GetPlayers");
             if (response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
@@ -87,22 +87,22 @@ public class UserService : IUserService
         }
     }
 
-    public void RaiseEventOnCoachChanged(int totalQty)
+    public void RaiseEventOnUserChanged(int totalQty)
     {
-        if (OnCoachChanged != null)
+        if (OnUserChanged != null)
         {
-            OnCoachChanged.Invoke(totalQty);
+            OnUserChanged.Invoke(totalQty);
         }
     }
 
-    public async Task<UserPlayerDto> UpdateQty(UserPlayerQtyUpdateDto coachPlayerQtyUpdateDto)
+    public async Task<UserPlayerDto> UpdateQty(UserPlayerQtyUpdateDto userPlayerQtyUpdateDto)
     {
         try
         {
-            var jsonRequest = JsonConvert.SerializeObject(coachPlayerQtyUpdateDto);
+            var jsonRequest = JsonConvert.SerializeObject(userPlayerQtyUpdateDto);
             var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
 
-            var response = await _httpClient.PatchAsync($"api/User/{coachPlayerQtyUpdateDto.UserPlayerId}",content);
+            var response = await _httpClient.PatchAsync($"api/User/{userPlayerQtyUpdateDto.UserPlayerId}",content);
 
             if (response.IsSuccessStatusCode)
             {

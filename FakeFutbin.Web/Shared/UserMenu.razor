@@ -1,0 +1,28 @@
+﻿@implements IDisposable
+@inject IUserService userService
+
+<a href="User" class="btn btn-info">
+    <i class="fa-solid fa-user"></i>&nbsp;User
+    <span class="badge bg-dark">@userPlayersCount</span>
+</a>
+
+@code {
+    private int userPlayersCount = 0;
+
+    protected override void OnInitialized()
+    {
+        userService.OnUserChanged += UserChanged;
+    }
+
+    protected void UserChanged(int totalQty)
+    {
+        userPlayersCount = totalQty;
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        userService.OnUserChanged -= UserChanged;
+    }
+
+}
