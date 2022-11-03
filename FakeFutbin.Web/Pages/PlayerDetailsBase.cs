@@ -19,6 +19,8 @@ public class PlayerDetailsBase : ComponentBase
     public IManageUserPlayersLocalStorageService ManageUserPlayersLocalStorageService { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
+    [Inject]
+    public  IUserIdService UserIdService{ get; set; }
     public PlayerDto Player { get; set; }
     public string ErrorMessage { get; set; }
     private List<UserPlayerDto> UserPlayers { get; set; }

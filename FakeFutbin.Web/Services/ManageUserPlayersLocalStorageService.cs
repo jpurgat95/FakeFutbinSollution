@@ -2,6 +2,7 @@
 using FakeFutbin.Models.Dto;
 using FakeFutbin.Web.Pages;
 using FakeFutbin.Web.Services.Contracts;
+using FakeFutbin.Web.Services;
 
 namespace FakeFutbin.Web.Services;
 
@@ -9,12 +10,14 @@ public class ManageUserPlayersLocalStorageService : IManageUserPlayersLocalStora
 {
     private readonly ILocalStorageService _localStorageService;
     private readonly IUserService _userService;
+    private readonly IUserIdService _userIdService;
     const string key = "UserPlayerCollection";
     public ManageUserPlayersLocalStorageService(ILocalStorageService localStorageService,
-                                                IUserService userService)
+                                                IUserService userService, IUserIdService userIdService)
     {
         _localStorageService = localStorageService;
         _userService = userService;
+        _userIdService = userIdService;
     }
     public async Task<List<UserPlayerDto>> GetCollection()
     {
@@ -34,7 +37,8 @@ public class ManageUserPlayersLocalStorageService : IManageUserPlayersLocalStora
 
     private async Task<List<UserPlayerDto>> AddCollection()
     {
-        var userPlayerCollection = await _userService.GetPlayers(HardCoded.UserId);
+        var userId =  await _userIdService.GetUserId();
+        var userPlayerCollection = await _userService.GetPlayers(userId);
 
         if(userPlayerCollection != null)
         {

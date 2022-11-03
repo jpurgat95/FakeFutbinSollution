@@ -4,6 +4,7 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 @inject IToastService toastService
+@inject IUserIdService userIdService
 
 <h3>Login</h3>
 
@@ -27,7 +28,7 @@
             var token = await result.Content.ReadAsStringAsync();
             //Console.WriteLine(token);
             await LocalStorage.SetItemAsync("token", token);
-            await AuthStateProvider.GetAuthenticationStateAsync();
+            await AuthStateProvider.GetAuthenticationStateAsync();         
             toastService.ShowSuccess("", "You successfully loged in!");
             NavigationManager.NavigateTo("");
         }
