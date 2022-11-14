@@ -1,5 +1,6 @@
 ﻿@implements IDisposable
 @inject IUserService userService
+@attribute [Authorize(Roles = "User")]
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -19,12 +20,23 @@
         </div>
 
             <PlayerNationalitiesNavMenu/>
-
+        
+       
         <div class="nav-item px-3 d-sm-none">
+            <AuthorizeView Roles="User">
+                    <Authorized>
+                    <NavLink class="nav-link" href="User">
+                        <span class="fa-solid fa-user" aria-hidden="true"></span>&nbsp;@context.User.Identity.Name (Players:<b>@userPlayersCount</b>)
+                    </NavLink>
+                    </Authorized>
+            </AuthorizeView>
+        </div>
+
+@*        <div class="nav-item px-3 d-sm-none">
             <NavLink class="nav-link" href="User">
                 <span class="fas fa-shopping-cart" aria-hidden="true"></span>&nbsp;User (<b>@userPlayersCount</b>)
             </NavLink>
-        </div>
+        </div>*@
 
     </nav>
 </div>
