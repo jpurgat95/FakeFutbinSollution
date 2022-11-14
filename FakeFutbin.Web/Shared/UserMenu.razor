@@ -1,10 +1,20 @@
 ﻿@implements IDisposable
 @inject IUserService userService
+@attribute [Authorize(Roles = "User")]
 
-<a href="User" class="btn btn-info">
-    <i class="fa-solid fa-user"></i>&nbsp;User
-    <span class="badge bg-dark">@userPlayersCount</span>
-</a>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <a href="User" class="btn btn-info">
+            <i class="fa-solid fa-user"></i>&nbsp;@context.User.Identity.Name
+            <span class="badge bg-dark">@userPlayersCount</span>
+        </a>
+    </Authorized>
+    <NotAuthorized>
+        <span>Register or login to see how many players you have in your squad!</span>
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 @code {
     private int userPlayersCount = 0;
