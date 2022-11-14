@@ -52,6 +52,7 @@ public class AuthRepository : IAuthRepository
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
             Role = "User",
+            Wallet = 1000000
         };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();

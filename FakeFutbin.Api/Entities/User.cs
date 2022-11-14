@@ -10,4 +10,5 @@ public class User
     public DateTime TokenCreated { get; set; }
     public DateTime TokenExpires { get; set; }
     public string Role { get; set; } = string.Empty;
+    public int Wallet { get; set; }
 }
