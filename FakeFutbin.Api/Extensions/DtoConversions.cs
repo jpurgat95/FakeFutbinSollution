@@ -90,4 +90,21 @@ public static class DtoConversions
             TotalValue = player.MarketValue * userPlayer.Qty,
         };
     }
+    public static UserDto2 ConvertToDto(this User user)
+    {
+        return new UserDto2
+        {
+            Id = user.Id,
+            Wallet = user.Wallet,
+        };
+    }
+    public static IEnumerable<UserDto2> ConvertToDto(this IEnumerable<User> users)
+    {
+        return(from user in users
+               select new UserDto2
+               {
+                   Id = user.Id,
+                   Wallet = user.Wallet,
+               }).ToList();
+    }
 }

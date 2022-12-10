@@ -41,7 +41,7 @@ else
                 @onclick ="async()=>AddToUser_Click(new UserPlayerToAddDto{
                     UserId =  await UserIdService.GetUserId(),
                     PlayerId = Player.Id,
-                    Qty = 1
+                    Qty = 1,
                 })">
                     <b>Add to User Squad</b>
                 </button>

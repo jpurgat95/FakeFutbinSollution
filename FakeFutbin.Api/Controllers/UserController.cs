@@ -4,6 +4,7 @@ using FakeFutbin.Api.Repositories.Contracts;
 using FakeFutbin.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace FakeFutbin.Api.Controllers
 {
@@ -45,6 +46,26 @@ namespace FakeFutbin.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("GetUsers")]
+        public async Task<ActionResult<IEnumerable<UserDto2>>> GetUsers()
+        {
+            try
+            {
+                var users = await _userRepository.GetUsers();
+                if (users == null)
+                {
+                    return NoContent();
+                }
+                var usersDto = users.ConvertToDto();
+                return Ok(usersDto);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<UserPlayerDto>> GetPlayer(int id)
@@ -63,6 +84,25 @@ namespace FakeFutbin.Api.Controllers
                 }
                 var userPlayerDto = userPlayer.ConvertToDto(player);
                 return Ok(userPlayerDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("GetUser/{id}")]
+        public async Task<ActionResult<UserDto2>> GetUser(int id)
+        {
+            try
+            {
+                var user = await _userRepository.GetUser(id);
+                if (user == null)
+                {
+                    return NoContent();
+                }
+                var convertedUser = user.ConvertToDto();
+                return Ok(convertedUser);
             }
             catch (Exception ex)
             {
@@ -132,6 +172,26 @@ namespace FakeFutbin.Api.Controllers
                 var userPlayerDto = userPlayer.ConvertToDto(player);
 
                 return Ok(userPlayerDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPatch]
+        [Route("UpdateWallet/{id}")] 
+        public async Task<ActionResult<UserDto2>> UpdateWallet(int id, UserWalletUpdateDto userWalletUpdateDto)
+        {
+            try
+            {
+                var updatedUser = await _userRepository.UpdateWallet(id, userWalletUpdateDto);
+                if (updatedUser == null)
+                {
+                    return NotFound();
+                }
+                //var user = await _userRepository.GetUser(updatedUser.Id);
+                var userDto = updatedUser.ConvertToDto();
+                return Ok(userDto);
             }
             catch (Exception ex)
             {

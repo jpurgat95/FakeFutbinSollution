@@ -13,9 +13,13 @@ public class PlayersBase : ComponentBase
     [Inject]
     public IUserService UserService { get; set; }
     [Inject]
+    public IUserIdService UserIdService { get; set; }
+    [Inject]
     public IManagePlayersLocalStorageService ManagePlayersLocalStorageService { get; set; }
     [Inject]
     public IManageUserPlayersLocalStorageService ManageUserPlayersLocalStorageService { get; set; }
+    [Inject]
+    public IManageUserLocalStorageService ManageUserLocalStorageService { get; set; }
     public IEnumerable<PlayerDto> Players { get; set; }
     [Inject]
     public NavigationManager NavigationManager { get; set; }
@@ -29,10 +33,13 @@ public class PlayersBase : ComponentBase
             Players = await ManagePlayersLocalStorageService.GetCollection();
 
             var userPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
-
-            var totalQty = userPlayers.Sum(i=>i.Qty);
+            var users = await ManageUserLocalStorageService.GetCollection();
+            var totalQty = userPlayers.Sum(i => i.Qty);
+            var userId = await UserIdService.GetUserId();
+            var wallet = users.FirstOrDefault(x => x.Id == userId).Wallet;
 
             UserService.RaiseEventOnUserChanged(totalQty);
+            UserService.RaiseEventOnWalletChanged(wallet);
         }
         catch (Exception ex)
         {
@@ -57,5 +64,6 @@ public class PlayersBase : ComponentBase
     {
         await ManagePlayersLocalStorageService.RemoveCollection();
         await ManageUserPlayersLocalStorageService.RemoveCollection();
+        await ManageUserLocalStorageService.RemoveCollection();
     }
 }

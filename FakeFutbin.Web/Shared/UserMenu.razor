@@ -7,6 +7,7 @@
         <a href="User" class="btn btn-info">
             <i class="fa-solid fa-user"></i>&nbsp;@context.User.Identity.Name
             <span class="badge bg-dark">Players: @userPlayersCount</span>
+            <span class="badge bg-dark">Wallet: @userWallet.ToString("C")</span>
         </a>
     </Authorized>
     <NotAuthorized>
@@ -18,10 +19,12 @@
 
 @code {
     private int userPlayersCount = 0;
+    private int userWallet = 0;
 
     protected override void OnInitialized()
     {
         userService.OnUserChanged += UserChanged;
+        userService.OnWalletChanged += WalletChanged;
     }
 
     protected void UserChanged(int totalQty)
@@ -29,10 +32,15 @@
         userPlayersCount = totalQty;
         StateHasChanged();
     }
-
+    protected void WalletChanged(int wallet)
+    {
+        userWallet = wallet;
+        StateHasChanged();
+    }
     void IDisposable.Dispose()
     {
         userService.OnUserChanged -= UserChanged;
+        userService.OnWalletChanged -= WalletChanged;
     }
 
 }

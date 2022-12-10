@@ -55,7 +55,11 @@ else
         <div class="col-md-3">
             <h5>User Summary</h5>
             <div class="mt-2">
-                <div>Total - (@TotalQuantity players)&nbsp<b>@TotalValue</b>;</div>
+                <div>
+                    Total - (@TotalQuantity players)&nbsp<b>@TotalValue</b>
+                    <br/>
+                        Wallet: @WalletValue.ToString("C")
+                </div>
                 <a href="#" class="btn btn-success">
                     <span class="fa fa-check"></span>&nbsp; Proceed to Checkout 
                 </a>
@@ -65,7 +69,10 @@ else
     }
     else
     {
-        <h4>There are currently no players in your squad!</h4>
+        <h4>There are currently no players in your squad!
+            <br/>
+            Wallet: @WalletValue.ToString("C")
+        </h4>
     }
 
 }

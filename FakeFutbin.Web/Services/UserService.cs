@@ -1,4 +1,5 @@
 ﻿using FakeFutbin.Models.Dto;
+using FakeFutbin.Web.Pages;
 using FakeFutbin.Web.Services.Contracts;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
@@ -16,6 +17,7 @@ public class UserService : IUserService
     }
 
     public event Action<int> OnUserChanged;
+    public event Action<int> OnWalletChanged;
 
     public async Task<UserPlayerDto> AddPlayer(UserPlayerToAddDto userPlayerToAddDto)
     {
@@ -86,12 +88,71 @@ public class UserService : IUserService
             throw;
         }
     }
+    public async Task<UserDto2> GetUser(int userId)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"api/User/GetUser/{userId}");
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                {
+                    return null;
+                }
+                return await response.Content.ReadFromJsonAsync<UserDto2>();
+            }
+            else
+            {
+                var message = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Http status code: {response.StatusCode} Message: {message}");
+            }
+        }
+        catch (Exception)
+        {
+            //log exception
+            throw;
+        }
+    }
+
+    public async Task<List<UserDto2>> GetUsers()
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync("api/User/GetUsers");
+            if (response.IsSuccessStatusCode)
+            {
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                {
+                    return Enumerable.Empty<UserDto2>().ToList();
+                }
+                return await response.Content.ReadFromJsonAsync<List<UserDto2>>();
+            }
+            else
+            {
+                var message = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Http status code: {response.StatusCode} Message: {message}");
+            }
+        }
+        catch (Exception)
+        {
+            //log exception
+            throw;
+        }
+    }
 
     public void RaiseEventOnUserChanged(int totalQty)
     {
         if (OnUserChanged != null)
         {
             OnUserChanged.Invoke(totalQty);
+        }
+    }
+
+    public void RaiseEventOnWalletChanged(int wallet)
+    {
+        if (OnWalletChanged != null)
+        {
+            OnWalletChanged.Invoke(wallet);
         }
     }
 
@@ -107,6 +168,28 @@ public class UserService : IUserService
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<UserPlayerDto>();
+            }
+            return null;
+        }
+        catch (Exception)
+        {
+            //log exception
+            throw;
+        }
+    }
+
+    public async Task<UserDto2> UpdateWallet(int userId,UserWalletUpdateDto userWalletUpdateDto)
+    {
+        try
+        {
+            var jsonRequest = JsonConvert.SerializeObject(userWalletUpdateDto);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
+
+            var response = await _httpClient.PatchAsync($"api/User/UpdateWallet/{userId}", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<UserDto2>();
             }
             return null;
         }

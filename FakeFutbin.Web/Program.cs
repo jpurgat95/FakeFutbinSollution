@@ -30,5 +30,6 @@ builder.Services.AddBlazoredToast();
 //DI registrations
 builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
 builder.Services.AddScoped<IManageUserPlayersLocalStorageService, ManageUserPlayersLocalStorageService>();
+builder.Services.AddScoped<IManageUserLocalStorageService, ManageUserLocalStorageService>();    
 
 await builder.Build().RunAsync();

@@ -1,9 +1,12 @@
-﻿using FakeFutbin.Models.Dto;
+﻿using Blazored.Toast.Services;
+using FakeFutbin.Models.Dto;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Microsoft.VisualBasic;
+using System.Runtime.InteropServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FakeFutbin.Web.Pages;
 
@@ -15,16 +18,28 @@ public class UserBase : ComponentBase
     public IUserService UserService { get; set; }
     [Inject]
     public IManageUserPlayersLocalStorageService ManageUserPlayersLocalStorageService { get; set; }
+    [Inject]
+    public IUserIdService UserIdService { get; set; }
+    [Inject]
+    public IManageUserLocalStorageService ManageUserLocalStorageService { get; set; }
+    [Inject]
+    public IToastService ToastService { get; set; }
+    public List<UserDto2> UserDtos { get; set; }
     public List<UserPlayerDto> UserPlayers { get; set; }
     protected string TotalValue { get; set; }
     protected int TotalQuantity { get; set; }
+    protected int WalletValue { get; set; }
     public string ErrorMessage { get; set; }    
     protected override async Task OnInitializedAsync()
     {
         try
         {
             UserPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
+            UserDtos = await ManageUserLocalStorageService.GetCollection();
             UserChanged();
+            var userId = await UserIdService.GetUserId();
+            var wallet = UserDtos.FirstOrDefault(x => x.Id == userId).Wallet;
+            UserService.RaiseEventOnWalletChanged(wallet);
         }
         catch (Exception ex)
         {
@@ -35,7 +50,23 @@ public class UserBase : ComponentBase
     protected async Task DeleteUserPlayer_Click(int id)
     {
         var userPlayerDto = await UserService.DeletePlayer(id);
+        var userId = await UserIdService.GetUserId();
+        var user = UserDtos.FirstOrDefault(x => x.Id == userId);
+        var userPlayer = UserPlayers.FirstOrDefault(x => x.UserId == userId);
 
+        var walletChanged = new UserWalletUpdateDto
+        {
+            Wallet = user.Wallet + userPlayer.TotalValue
+        };
+       await UserService.UpdateWallet(userId, walletChanged);
+
+        var userChanged = new UserDto2
+        {
+            Id = userId,
+            Wallet = user.Wallet + userPlayer.TotalValue
+        };
+        UpdateUserWalletValue(userChanged);
+        UserChanged();
         await RemoveUserPlayer(id);
         UserChanged();
     }
@@ -45,15 +76,70 @@ public class UserBase : ComponentBase
         {
             if (qty > 0)
             {
-                var updatePlayerDto = new UserPlayerQtyUpdateDto
+                var userId = await UserIdService.GetUserId();
+                var user = UserDtos.FirstOrDefault(x => x.Id == userId);
+                var userPlayersCollection = await ManageUserPlayersLocalStorageService.GetCollection();
+                var userPlayer = userPlayersCollection.FirstOrDefault(x => x.Id == id);
+                var userPlayerQty = userPlayer.Qty;
+                var usersCollection = await ManageUserLocalStorageService.GetCollection();
+                var userWallet = usersCollection.FirstOrDefault(x => x.Id == userId).Wallet;
+
+                if (userPlayerQty > qty)
                 {
-                    UserPlayerId = id,
-                    Qty = qty
-                };
-                var returnedUpdatePlayerDto = await this.UserService.UpdateQty(updatePlayerDto);
-                await UpdatePlayerTotalValue(returnedUpdatePlayerDto);
-                UserChanged();
-                await MakeUpdateQtyButtonVisible(id, false);
+                    var userChanged = new UserDto2
+                    {
+                        Id = userId,
+                        Wallet = user.Wallet + userPlayer.MarketValue * (userPlayerQty - qty),
+                    };
+                    var walletChanged = new UserWalletUpdateDto
+                    {
+                        Wallet = user.Wallet + userPlayer.MarketValue * (userPlayerQty - qty),
+                    };
+                    UpdateUserWalletValue(userChanged);
+                    await UserService.UpdateWallet(userId, walletChanged);
+
+                    var updatePlayerDto = new UserPlayerQtyUpdateDto
+                    {
+                        UserPlayerId = id,
+                        Qty = qty
+                    };
+                    var returnedUpdatePlayerDto = await this.UserService.UpdateQty(updatePlayerDto);
+                    await UpdatePlayerTotalValue(returnedUpdatePlayerDto);
+
+                    UserChanged();
+                    await MakeUpdateQtyButtonVisible(id, false);
+                }
+                else if (userWallet >= userPlayer.MarketValue * (qty - userPlayerQty))
+                {
+                    var userChanged = new UserDto2
+                    {
+                        Id = userId,
+                        Wallet = user.Wallet - userPlayer.MarketValue * (qty - userPlayerQty),
+                    };
+                    var walletChanged = new UserWalletUpdateDto
+                    {
+                        Wallet = user.Wallet - userPlayer.MarketValue * (qty - userPlayerQty),
+                    };
+                    UpdateUserWalletValue(userChanged);
+
+                    await UserService.UpdateWallet(userId, walletChanged);
+                    var updatePlayerDto = new UserPlayerQtyUpdateDto
+                    {
+                        UserPlayerId = id,
+                        Qty = qty
+                    };
+                    var returnedUpdatePlayerDto = await this.UserService.UpdateQty(updatePlayerDto);
+                    await UpdatePlayerTotalValue(returnedUpdatePlayerDto);
+
+                    UserChanged();
+                    await MakeUpdateQtyButtonVisible(id, false);
+                }
+                else
+                {
+                    ToastService.ShowWarning("", "You don't have enough money!");
+                }
+
+
             }
             else
             {
@@ -91,10 +177,23 @@ public class UserBase : ComponentBase
 
         await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
     }
-    private void CalculateScoutSummaryTotals()
+    private async void UpdateUserWalletValue(UserDto2 userDto2)
+    {
+        var user = GetUser(userDto2.Id);
+        if (user != null)
+        {
+            user.Wallet = userDto2.Wallet;
+        }
+
+        await ManageUserLocalStorageService.SaveColleciotn(UserDtos);
+    }
+
+    private async Task<int> CalculateScoutSummaryTotals()
     {
         SetTotalValue();
         SetTotalQuantity();
+        await SetWalletValue();
+        return 0;
     }
     private void SetTotalValue()
     {
@@ -104,10 +203,24 @@ public class UserBase : ComponentBase
     {
         TotalQuantity = this.UserPlayers.Sum(x => x.Qty);
     }
+    private async Task<int> SetWalletValue()
+    {
+        var userId = await UserIdService.GetUserId();
+        var user = this.UserDtos.FirstOrDefault(x => x.Id == userId);
+        WalletValue = user.Wallet;
+        await ManageUserLocalStorageService.SaveColleciotn(UserDtos);
+        return 0;
+    }
     private UserPlayerDto GetUserPlayer(int id)
     {
         return UserPlayers.FirstOrDefault(x => x.Id == id);
     }
+    private UserDto2 GetUser(int id)
+    {
+
+        return UserDtos.FirstOrDefault(x => x.Id == id);
+    }
+
     private async Task RemoveUserPlayer(int id)
     {
         var userPlayerDto = GetUserPlayer(id);
@@ -116,9 +229,10 @@ public class UserBase : ComponentBase
         await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
     }
 
-    private void UserChanged()
+    private async void UserChanged()
     {
-        CalculateScoutSummaryTotals();
+        await CalculateScoutSummaryTotals();
         UserService.RaiseEventOnUserChanged(TotalQuantity);
+        UserService.RaiseEventOnWalletChanged(WalletValue);
     }
 }

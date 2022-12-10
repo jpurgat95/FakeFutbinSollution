@@ -26,18 +26,12 @@
             <AuthorizeView Roles="User">
                     <Authorized>
                     <NavLink class="nav-link" href="User">
-                        <span class="fa-solid fa-user" aria-hidden="true"></span>&nbsp;@context.User.Identity.Name (Players:<b>@userPlayersCount</b>)
+                        <span class="fa-solid fa-user" aria-hidden="true"></span>&nbsp;@context.User.Identity.Name (Players: <b>@userPlayersCount</b>&nbsp;
+                                                                                                                    Wallet: <b>@userWallet.ToString("C")</b> )
                     </NavLink>
                     </Authorized>
             </AuthorizeView>
         </div>
-
-@*        <div class="nav-item px-3 d-sm-none">
-            <NavLink class="nav-link" href="User">
-                <span class="fas fa-shopping-cart" aria-hidden="true"></span>&nbsp;User (<b>@userPlayersCount</b>)
-            </NavLink>
-        </div>*@
-
     </nav>
 </div>
 
@@ -47,6 +41,7 @@
     private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private int userPlayersCount = 0;
+    private int userWallet = 0;
 
     private void ToggleNavMenu()
     {
@@ -56,15 +51,22 @@
     protected override void OnInitialized()
     {
         userService.OnUserChanged += UserChanged;
+        userService.OnWalletChanged += WalletChanged;
     }
     private void UserChanged(int totalQty)
     {
         userPlayersCount = totalQty;
         StateHasChanged();
     }
+    protected void WalletChanged(int wallet)
+    {
+        userWallet = wallet;
+        StateHasChanged();
+    }
     void IDisposable.Dispose()
     {
         userService.OnUserChanged -= UserChanged;
+        userService.OnWalletChanged -= WalletChanged;
     }
 
 }

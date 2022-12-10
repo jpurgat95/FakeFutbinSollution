@@ -96,4 +96,27 @@ public class UserRepository : IUserRepository
         }
         return null;
     }
+    public async Task<User> UpdateWallet(int id, UserWalletUpdateDto userWalletUpdateDto)
+    {
+        var user = await _fakeFutbinDbContext.Users.FindAsync(id);
+        if(user != null)
+        {
+            user.Wallet = userWalletUpdateDto.Wallet;
+            await _fakeFutbinDbContext.SaveChangesAsync();
+            return user;
+        }
+        return null;
+    }
+    public async Task<User> GetUser(int id)
+    {
+        var user = await _fakeFutbinDbContext.Users
+                   .SingleOrDefaultAsync(p => p.Id == id);
+        return user;
+    }
+    public async Task<IEnumerable<User>> GetUsers()
+    {
+        var users = await _fakeFutbinDbContext.Users
+                   .ToListAsync();
+        return users;
+    }
 }
