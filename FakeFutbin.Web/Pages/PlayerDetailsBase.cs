@@ -30,17 +30,16 @@ public class PlayerDetailsBase : ComponentBase
     public List<UserDto2> UserDtos { get; set; }
     public string ErrorMessage { get; set; }
     public List<UserPlayerDto> UserPlayers { get; set; }
-    //public int UserId { get; set; }
-    //public int UserPlayerQty { get; set; }
+    public int UserPlayerQty { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
         {
             UserPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
             UserDtos = await ManageUserLocalStorageService.GetCollection();
-            //UserId = await UserIdService.GetUserId();
-            //UserPlayerQty = UserPlayers.FirstOrDefault(x => x.UserId == UserId).Qty;
+            
             Player = await GetPlayerById(Id);
+            UserPlayerQty = await GetPlayerQty();
         }
         catch (Exception ex)
         {
@@ -100,4 +99,19 @@ public class PlayerDetailsBase : ComponentBase
         }
         return null;
     }
+    public async Task<int> GetPlayerQty()
+    {
+        var userId = await UserIdService.GetUserId();
+        var playerId = Player.Id;
+        var userPlayers = UserPlayers.Where(p => p.UserId == userId).ToList();
+        var userPlayer = userPlayers.FirstOrDefault(p => p.PlayerId == playerId);
+        if (userPlayer != null)
+        {
+            var userPlayerQty = userPlayer.Qty;
+            var increasedQty = userPlayerQty + 1;
+            return increasedQty;
+        }
+        return 1;
+    }
 }
+
