@@ -30,17 +30,17 @@ public class PlayerDetailsBase : ComponentBase
     public List<UserDto2> UserDtos { get; set; }
     public string ErrorMessage { get; set; }
     public List<UserPlayerDto> UserPlayers { get; set; }
-    //public int UserId { get; set; }
-    //public int UserPlayerQty { get; set; }
+    public int UserId { get; set; }
+    public int UserPlayerQty { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
         {
             UserPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
             UserDtos = await ManageUserLocalStorageService.GetCollection();
-            //UserId = await UserIdService.GetUserId();
-            //UserPlayerQty = UserPlayers.FirstOrDefault(x => x.UserId == UserId).Qty;
+            UserId = await UserIdService.GetUserId();
             Player = await GetPlayerById(Id);
+            
         }
         catch (Exception ex)
         {
@@ -54,39 +54,47 @@ public class PlayerDetailsBase : ComponentBase
         try
         {
             await ManageUserLocalStorageService.RemoveCollection();
-            var userId = await UserIdService.GetUserId();
+            var userId = UserId;
             var user = UserDtos.FirstOrDefault(x => x.Id == userId);
             var userWallet = UserDtos.FirstOrDefault(x => x.Id == userId).Wallet;
-            var userPlayer = Player;
+            var addedPlayer = Player;
+            var userPlayers = UserPlayers;
+            var userPlayer = userPlayers.FirstOrDefault(x => x.PlayerId == Player.Id);
+            
 
-            if (userWallet >= userPlayer.MarketValue)
+            if (userPlayer == null)
             {
-                var walletChanged = new UserWalletUpdateDto
+                if (userWallet >= addedPlayer.MarketValue)
                 {
-                    Wallet = user.Wallet - userPlayer.MarketValue,
-                };
-                await UserService.UpdateWallet(userId, walletChanged);
-
-                var userPlayerDto = await UserService.AddPlayer(userPlayerToAddDto);
-                if (userPlayerDto != null)
+                    var walletChanged = new UserWalletUpdateDto
                     {
-                    UserPlayers.Add(userPlayerDto);
-                    await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
-                    NavigationManager.NavigateTo("/User");
+                        Wallet = user.Wallet - addedPlayer.MarketValue,
+                    };
+                    await UserService.UpdateWallet(userId, walletChanged);
+
+                    var userPlayerDto = await UserService.AddPlayer(userPlayerToAddDto);
+                    if (userPlayerDto != null)
+                    {
+                        UserPlayers.Add(userPlayerDto);
+                        await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
+                        NavigationManager.NavigateTo("/User");
+                    }
+                }
+                else
+                {
+                    await ManageUserLocalStorageService.SaveColleciotn(UserDtos);
+                    ToastService.ShowWarning("", "You don't have enough money!");
                 }
             }
             else
-            {               
-                await ManageUserLocalStorageService.SaveColleciotn(UserDtos);
-                ToastService.ShowWarning("", "You don't have enough money!");
-            }
-
-            
+            {
+                ToastService.ShowInfo("", "You cannot add this player once more, but yo can change the amount!");
+                NavigationManager.NavigateTo("/User");
+            }          
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
-            //Log Exception
+            ErrorMessage = ex.Message;
         }
     }
 
