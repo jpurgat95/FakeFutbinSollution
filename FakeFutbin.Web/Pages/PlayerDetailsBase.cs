@@ -1,4 +1,4 @@
-﻿using Blazored.Toast.Services;
+using Blazored.Toast.Services;
 using FakeFutbin.Models.Dto;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
@@ -155,4 +155,3 @@ public class PlayerDetailsBase : ComponentBase
         return 1;
     }
 }
-
