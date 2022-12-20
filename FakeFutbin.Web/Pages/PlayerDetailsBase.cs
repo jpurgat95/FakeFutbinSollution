@@ -31,6 +31,8 @@ public class PlayerDetailsBase : ComponentBase
     public string ErrorMessage { get; set; }
     public List<UserPlayerDto> UserPlayers { get; set; }
     public int UserPlayerQty { get; set; }
+    public int UserPlayerId { get; set; }
+    public UserPlayerToAddDto UserPlayerToAddDto { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
@@ -40,6 +42,29 @@ public class PlayerDetailsBase : ComponentBase
             
             Player = await GetPlayerById(Id);
             UserPlayerQty = await GetPlayerQty();
+
+            var userPlayerQty = UserPlayerQty;
+            var userId = await UserIdService.GetUserId();
+            var playerId = Player.Id;
+
+            var userPlayers = UserPlayers.Where(p => p.UserId == userId).ToList();
+            var userPlayer = userPlayers.FirstOrDefault(p => p.PlayerId == playerId);
+            if (userPlayer != null)
+            {               
+                UserPlayerId = userPlayer.Id;
+            }
+            else
+            {
+                UserPlayerId = 0;
+            }
+
+
+            UserPlayerToAddDto = new UserPlayerToAddDto
+            {
+                UserId = userId,
+                PlayerId = playerId,
+                Qty = userPlayerQty,
+            };
         }
         catch (Exception ex)
         {
@@ -66,13 +91,29 @@ public class PlayerDetailsBase : ComponentBase
                 };
                 await UserService.UpdateWallet(userId, walletChanged);
 
-                var userPlayerDto = await UserService.AddPlayer(userPlayerToAddDto);
-                if (userPlayerDto != null)
+                var userPlayerQty = UserPlayerQty;
+                if(userPlayerQty == 1)
+                {
+                    var userPlayerDto = await UserService.AddPlayer(userPlayerToAddDto);
+                    if (userPlayerDto != null)
                     {
-                    UserPlayers.Add(userPlayerDto);
+                        UserPlayers.Add(userPlayerDto);
+                        await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
+                        NavigationManager.NavigateTo("/User");
+                    }
+                }
+                else
+                {                                    
+                    var userPlayerId = UserPlayerId;
+                    await UserService.DeletePlayer(userPlayerId);
+
+                    var userPlayerToAdd = UserPlayerToAddDto;
+                    var addedPlayer = await UserService.AddPlayer(userPlayerToAdd);
+                    UserPlayers.Add(addedPlayer);
                     await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
                     NavigationManager.NavigateTo("/User");
                 }
+
             }
             else
             {               
