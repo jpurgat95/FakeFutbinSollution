@@ -34,6 +34,7 @@ public class UserBase : ComponentBase
     {
         try
         {
+            await ManageUserPlayersLocalStorageService.RemoveCollection();
             UserPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
             UserDtos = await ManageUserLocalStorageService.GetCollection();
             UserChanged();
@@ -52,7 +53,8 @@ public class UserBase : ComponentBase
         var userPlayerDto = await UserService.DeletePlayer(id);
         var userId = await UserIdService.GetUserId();
         var user = UserDtos.FirstOrDefault(x => x.Id == userId);
-        var userPlayer = UserPlayers.FirstOrDefault(x => x.UserId == userId);
+        var userPlayers = UserPlayers.Where(x => x.UserId == userId).ToList();
+        var userPlayer = userPlayers.FirstOrDefault(x => x.Id == id);
 
         var walletChanged = new UserWalletUpdateDto
         {

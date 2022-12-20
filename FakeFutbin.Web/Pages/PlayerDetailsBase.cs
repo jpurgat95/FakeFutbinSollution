@@ -1,4 +1,4 @@
-﻿using Blazored.Toast.Services;
+using Blazored.Toast.Services;
 using FakeFutbin.Models.Dto;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
@@ -30,17 +30,41 @@ public class PlayerDetailsBase : ComponentBase
     public List<UserDto2> UserDtos { get; set; }
     public string ErrorMessage { get; set; }
     public List<UserPlayerDto> UserPlayers { get; set; }
-    public int UserId { get; set; }
     public int UserPlayerQty { get; set; }
+    public int UserPlayerId { get; set; }
+    public UserPlayerToAddDto UserPlayerToAddDto { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
         {
             UserPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
             UserDtos = await ManageUserLocalStorageService.GetCollection();
-            UserId = await UserIdService.GetUserId();
-            Player = await GetPlayerById(Id);
             
+            Player = await GetPlayerById(Id);
+            UserPlayerQty = await GetPlayerQty();
+
+            var userPlayerQty = UserPlayerQty;
+            var userId = await UserIdService.GetUserId();
+            var playerId = Player.Id;
+
+            var userPlayers = UserPlayers.Where(p => p.UserId == userId).ToList();
+            var userPlayer = userPlayers.FirstOrDefault(p => p.PlayerId == playerId);
+            if (userPlayer != null)
+            {               
+                UserPlayerId = userPlayer.Id;
+            }
+            else
+            {
+                UserPlayerId = 0;
+            }
+
+
+            UserPlayerToAddDto = new UserPlayerToAddDto
+            {
+                UserId = userId,
+                PlayerId = playerId,
+                Qty = userPlayerQty,
+            };
         }
         catch (Exception ex)
         {
@@ -54,24 +78,22 @@ public class PlayerDetailsBase : ComponentBase
         try
         {
             await ManageUserLocalStorageService.RemoveCollection();
-            var userId = UserId;
+            var userId = await UserIdService.GetUserId();
             var user = UserDtos.FirstOrDefault(x => x.Id == userId);
             var userWallet = UserDtos.FirstOrDefault(x => x.Id == userId).Wallet;
-            var addedPlayer = Player;
-            var userPlayers = UserPlayers;
-            var userPlayer = userPlayers.FirstOrDefault(x => x.PlayerId == Player.Id);
-            
+            var userPlayer = Player;
 
-            if (userPlayer == null)
+            if (userWallet >= userPlayer.MarketValue)
             {
-                if (userWallet >= addedPlayer.MarketValue)
+                var walletChanged = new UserWalletUpdateDto
                 {
-                    var walletChanged = new UserWalletUpdateDto
-                    {
-                        Wallet = user.Wallet - addedPlayer.MarketValue,
-                    };
-                    await UserService.UpdateWallet(userId, walletChanged);
+                    Wallet = user.Wallet - userPlayer.MarketValue,
+                };
+                await UserService.UpdateWallet(userId, walletChanged);
 
+                var userPlayerQty = UserPlayerQty;
+                if(userPlayerQty == 1)
+                {
                     var userPlayerDto = await UserService.AddPlayer(userPlayerToAddDto);
                     if (userPlayerDto != null)
                     {
@@ -81,20 +103,30 @@ public class PlayerDetailsBase : ComponentBase
                     }
                 }
                 else
-                {
-                    await ManageUserLocalStorageService.SaveColleciotn(UserDtos);
-                    ToastService.ShowWarning("", "You don't have enough money!");
+                {                                    
+                    var userPlayerId = UserPlayerId;
+                    await UserService.DeletePlayer(userPlayerId);
+
+                    var userPlayerToAdd = UserPlayerToAddDto;
+                    var addedPlayer = await UserService.AddPlayer(userPlayerToAdd);
+                    UserPlayers.Add(addedPlayer);
+                    await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
+                    NavigationManager.NavigateTo("/User");
                 }
+
             }
             else
-            {
-                ToastService.ShowInfo("", "You cannot add this player once more, but yo can change the amount!");
-                NavigationManager.NavigateTo("/User");
-            }          
+            {               
+                await ManageUserLocalStorageService.SaveColleciotn(UserDtos);
+                ToastService.ShowWarning("", "You don't have enough money!");
+            }
+
+            
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            ErrorMessage = ex.Message;
+
+            //Log Exception
         }
     }
 
@@ -107,5 +139,19 @@ public class PlayerDetailsBase : ComponentBase
             return playerDtos.SingleOrDefault(p => p.Id == id);
         }
         return null;
+    }
+    public async Task<int> GetPlayerQty()
+    {
+        var userId = await UserIdService.GetUserId();
+        var playerId = Player.Id;
+        var userPlayers = UserPlayers.Where(p => p.UserId == userId).ToList();
+        var userPlayer = userPlayers.FirstOrDefault(p => p.PlayerId == playerId);
+        if (userPlayer != null)
+        {
+            var userPlayerQty = userPlayer.Qty;
+            var increasedQty = userPlayerQty + 1;
+            return increasedQty;
+        }
+        return 1;
     }
 }
