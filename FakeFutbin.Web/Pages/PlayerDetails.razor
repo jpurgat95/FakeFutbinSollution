@@ -30,7 +30,10 @@ else
             <h3><b>@Player.Name</b></h3>
             <p class="mb-4">Age: @Player.Age</p>
             <p class="mb-4">Raiting: @Player.Raiting</p>
-            <p class="mb-4">Position: @Player.Position</p>
+            <p class="mb-4">Position:
+                <RadzenDropDown Placeholder="Select..." TValue="string"
+                Data=@PlayerPositions Change="@OnChange" />
+            </p>
             <p class="mb-4">
                 <b> 
                     @Player.MarketValue.ToString("C")&nbsp;(@Player.Qty players on market)

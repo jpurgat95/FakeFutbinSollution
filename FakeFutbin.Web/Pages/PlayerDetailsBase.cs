@@ -33,6 +33,7 @@ public class PlayerDetailsBase : ComponentBase
     public int UserPlayerQty { get; set; }
     public int UserPlayerId { get; set; }
     public UserPlayerToAddDto UserPlayerToAddDto { get; set; }
+    public IEnumerable<string> PlayerPositions { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
@@ -42,6 +43,10 @@ public class PlayerDetailsBase : ComponentBase
             
             Player = await GetPlayerById(Id);
             UserPlayerQty = await GetPlayerQty();
+
+            var playerPositions = Player.Position.ToString();
+            PlayerPositions = !string.IsNullOrEmpty(playerPositions)
+            ? playerPositions.Split(',') : Enumerable.Empty<string>();
 
             var userPlayerQty = UserPlayerQty;
             var userId = await UserIdService.GetUserId();
@@ -153,5 +158,11 @@ public class PlayerDetailsBase : ComponentBase
             return increasedQty;
         }
         return 1;
+    }
+    public void OnChange(object value)
+    {
+        var str = value is IEnumerable<object> ? string.Join(", ", (IEnumerable<object>)value) : value;
+
+        Console.WriteLine($"Value changed to {str}");
     }
 }

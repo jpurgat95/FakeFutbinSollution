@@ -1,0 +1,22 @@
+﻿@page "/test"
+@inherits TestBase
+@attribute [Authorize(Roles = "User")]
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <span><b> You are authorized as @context.User.Identity.Name </b></span>
+    </Authorized>
+    <NotAuthorized>
+        <span>You're not authorized, buddy.</span>
+    </NotAuthorized>
+</AuthorizeView>
+
+<br/>
+@foreach(var player in UserPlayersRadzen)
+{
+    <RadzenDropDown Placeholder="Select position..." TValue="string" Data=@UserPlayersRadzen
+    TextProperty="PlayerName" ValueProperty="Id" Change="@OnChange" />
+}
+
+<RadzenDropDown Placeholder="Select position..." TValue="string" Data=@UserPlayersRadzen 
+TextProperty="PlayerName" ValueProperty="Id" Change="@OnChange" />

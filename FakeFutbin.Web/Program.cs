@@ -1,6 +1,7 @@
 global using Blazored.LocalStorage;
 global using Microsoft.AspNetCore.Components.Authorization;
 global using Blazored.Toast;
+global using Radzen;
 using FakeFutbin.Web;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
@@ -30,6 +31,12 @@ builder.Services.AddBlazoredToast();
 //DI registrations
 builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
 builder.Services.AddScoped<IManageUserPlayersLocalStorageService, ManageUserPlayersLocalStorageService>();
-builder.Services.AddScoped<IManageUserLocalStorageService, ManageUserLocalStorageService>();    
+builder.Services.AddScoped<IManageUserLocalStorageService, ManageUserLocalStorageService>();
+
+//Radzen DI registrations
+builder.Services.AddScoped<DialogService>();
+builder.Services.AddScoped<NotificationService>();
+builder.Services.AddScoped<TooltipService>();
+builder.Services.AddScoped<ContextMenuService>();
 
 await builder.Build().RunAsync();
