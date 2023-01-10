@@ -35,7 +35,15 @@ else
                     <div class = "col-md-8">
                         <h5><b>@player.PlayerName</b></h5>
                         <div class="mb-4">Age: @player.PlayerAge</div>
-                        <div class="mb-4"> Raiting: @player.PlayerRaiting</div>
+                        <div class="mb-4"> Raiting: @player.PlayerRaiting</div>                       
+                        <div class="mb-4" > Position:
+                            <RadzenDropDown Placeholder="Select..." TValue="string"
+                                Data="@player.Position.ToString().Split(",")"
+                                Change="@OnChange" />
+                            <button class="btn btn-outline-success" @onclick="()=>OnClickPositionChange(player.PlayerId)">
+                                <b>Change Position</b>
+                            </button>                                
+                        </div>
                         <span>
                             Market Value: <b>@player.MarketValue.ToString("C")</b>
                             <input @oninput ="()=>UpdateQty_Input(player.Id)"

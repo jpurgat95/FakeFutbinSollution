@@ -30,7 +30,8 @@ public class UserRepository : IUserRepository
                                     {
                                         UserId = userPlayerToAddDto.UserId,
                                         PlayerId = player.Id,
-                                        Qty = userPlayerToAddDto.Qty
+                                        Qty = userPlayerToAddDto.Qty,
+                                        Position = userPlayerToAddDto.Position,
 
                                     }).SingleOrDefaultAsync();
             if (footballer != null)
@@ -66,6 +67,7 @@ public class UserRepository : IUserRepository
                           Id = userPlayer.Id,
                           PlayerId = userPlayer.PlayerId,
                           Qty = userPlayer.Qty,
+                          Position = userPlayer.Position,
                           UserId = userPlayer.UserId
                       }).SingleOrDefaultAsync();
     }
@@ -81,6 +83,7 @@ public class UserRepository : IUserRepository
                           Id = userPlayer.Id,
                           PlayerId = userPlayer.PlayerId,
                           Qty = userPlayer.Qty,
+                          Position = userPlayer.Position,
                           UserId= userPlayer.UserId
                       }).ToListAsync();
     }
@@ -118,5 +121,17 @@ public class UserRepository : IUserRepository
         var users = await _fakeFutbinDbContext.Users
                    .ToListAsync();
         return users;
+    }
+
+    public async Task<UserPlayer> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto)
+    {
+        var userPlayer = await _fakeFutbinDbContext.UserPlayers.SingleOrDefaultAsync(p => p.PlayerId == id);
+        if(userPlayer != null)
+        {
+            userPlayer.Position = userPlayerPositionUpdateDto.Position;
+            await _fakeFutbinDbContext.SaveChangesAsync();
+            return userPlayer;
+        }
+        return null;
     }
 }

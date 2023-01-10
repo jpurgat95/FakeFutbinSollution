@@ -1,12 +1,8 @@
 ﻿using Blazored.Toast.Services;
 using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Microsoft.VisualBasic;
-using System.Runtime.InteropServices;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FakeFutbin.Web.Pages;
 
@@ -29,7 +25,8 @@ public class UserBase : ComponentBase
     protected string TotalValue { get; set; }
     protected int TotalQuantity { get; set; }
     protected int WalletValue { get; set; }
-    public string ErrorMessage { get; set; }    
+    public string ErrorMessage { get; set; }
+    public string Position { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
@@ -236,5 +233,21 @@ public class UserBase : ComponentBase
         await CalculateScoutSummaryTotals();
         UserService.RaiseEventOnUserChanged(TotalQuantity);
         UserService.RaiseEventOnWalletChanged(WalletValue);
+    }
+    public void OnChange(object value)
+    {
+        var str = value is IEnumerable<object> ? string.Join(",", (IEnumerable<object>)value) : value;
+        
+        Console.WriteLine($"Value changed to {str}");
+
+        Position = str.ToString();
+    }
+    public void OnClickPositionChange(int id)
+    {
+        var pos = Position;
+        UserService.UpdatePosition(id, new UserPlayerPositionUpdateDto
+        {
+            Position = pos,
+        });
     }
 }

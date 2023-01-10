@@ -155,7 +155,6 @@ public class UserService : IUserService
             OnWalletChanged.Invoke(wallet);
         }
     }
-
     public async Task<UserPlayerDto> UpdateQty(UserPlayerQtyUpdateDto userPlayerQtyUpdateDto)
     {
         try
@@ -190,6 +189,27 @@ public class UserService : IUserService
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<UserDto2>();
+            }
+            return null;
+        }
+        catch (Exception)
+        {
+            //log exception
+            throw;
+        }
+    }
+    public async Task<UserPlayerDto2> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto)
+    {
+        try
+        {
+            var jsonRequest = JsonConvert.SerializeObject(userPlayerPositionUpdateDto);
+            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
+
+            var response = await _httpClient.PatchAsync($"api/User/UpdatePosition/{id}", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<UserPlayerDto2>();
             }
             return null;
         }

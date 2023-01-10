@@ -189,9 +189,27 @@ namespace FakeFutbin.Api.Controllers
                 {
                     return NotFound();
                 }
-                //var user = await _userRepository.GetUser(updatedUser.Id);
                 var userDto = updatedUser.ConvertToDto();
                 return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPatch]
+        [Route("UpdatePosition/{id}")]
+        public async Task<ActionResult<UserPlayerDto2>> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdate)
+        {
+            try
+            {
+                var updatedUserPlayer = await _userRepository.UpdatePosition(id, userPlayerPositionUpdate);
+                if (updatedUserPlayer == null)
+                {
+                    return NotFound();
+                }
+                var userPlayerDto = updatedUserPlayer.ConvertToDto();
+                return Ok(userPlayerDto);
             }
             catch (Exception ex)
             {
