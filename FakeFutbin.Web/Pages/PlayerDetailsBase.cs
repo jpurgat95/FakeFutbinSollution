@@ -64,6 +64,7 @@ public class PlayerDetailsBase : ComponentBase
                 UserId = userId,
                 PlayerId = playerId,
                 Qty = userPlayerQty,
+                Position = Player.Position,
             };
         }
         catch (Exception ex)
