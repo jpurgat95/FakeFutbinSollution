@@ -1,8 +1,10 @@
 ﻿using Blazored.Toast.Services;
+using CsvHelper.Configuration;
 using FakeFutbin.Models.Dto;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Globalization;
 
 namespace FakeFutbin.Web.Pages;
 
@@ -27,6 +29,7 @@ public class UserBase : ComponentBase
     protected int WalletValue { get; set; }
     public string ErrorMessage { get; set; }
     public string Position { get; set; }
+    public string Username { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
@@ -36,8 +39,10 @@ public class UserBase : ComponentBase
             UserDtos = await ManageUserLocalStorageService.GetCollection();
             UserChanged();
             var userId = await UserIdService.GetUserId();
-            var wallet = UserDtos.FirstOrDefault(x => x.Id == userId).Wallet;
+            WalletValue = UserDtos.FirstOrDefault(x => x.Id == userId).Wallet;
+            var wallet = WalletValue;
             UserService.RaiseEventOnWalletChanged(wallet);
+            Username = UserDtos.FirstOrDefault(x => x.Id == userId).Username;
         }
         catch (Exception ex)
         {
@@ -135,19 +140,24 @@ public class UserBase : ComponentBase
                 }
                 else
                 {
+                    var player = this.UserPlayers.FirstOrDefault(x => x.Id == id);
+                    var currentUserPlayerQty =  userPlayersCollection.FirstOrDefault(x => x.Id == id).Qty;
+                    player.Qty = currentUserPlayerQty;
+                    await MakeUpdateQtyButtonVisible(id, false);
                     ToastService.ShowWarning("", "You don't have enough money!");
                 }
-
-
             }
             else
             {
+                var userPlayersCollection = await ManageUserPlayersLocalStorageService.GetCollection();
                 var player = this.UserPlayers.FirstOrDefault(x => x.Id == id);
+                var currentUserPlayerQty = userPlayersCollection.FirstOrDefault(x => x.Id == id).Qty;
+
                 if (player != null)
                 {
-                    player.Qty = 1;
-                    player.TotalValue = player.MarketValue;
-
+                    player.Qty = currentUserPlayerQty;
+                    player.TotalValue = player.TotalValue;
+                    await MakeUpdateQtyButtonVisible(id, false);
                 }
             }
         }
@@ -242,12 +252,81 @@ public class UserBase : ComponentBase
 
         Position = str.ToString();
     }
-    public void OnClickPositionChange(int id)
+    public async void OnClickPositionChange(int id)
     {
         var pos = Position;
         UserService.UpdatePosition(id, new UserPlayerPositionUpdateDto
         {
             Position = pos,
         });
+
+        var userPlayersCollection = await ManageUserPlayersLocalStorageService.GetCollection();
+        var player = this.UserPlayers.FirstOrDefault(x => x.PlayerId == id);
+
+        if (player != null)
+        {
+            player.Position = pos;
+        }
+    }
+    public sealed class CsvRaportMap : ClassMap<CsvRaport>
+    {
+        public CsvRaportMap()
+        {
+            Map(m => m.DateTime).Name("Date & Time");
+            Map(m => m.Name).Name("Username");
+            Map(m => m.Cash).Name("Users Coins");
+            Map(m => m.PlayerName).Name("Player Name");
+            Map(m => m.PlayerAge).Name("Player Age");
+            Map(m => m.PlayerRaiting).Name("Player Raiting");
+            Map(m => m.MarketValue).Name("Player Value");
+            Map(m => m.TotalValue).Name("Player Total Value");
+            Map(m => m.Qty).Name("Player Quantity");
+            Map(m => m.Position).Name("Player Current Position");
+            Map(m => m.AvailablePositions).Name("Player Available Posotions");
+        }
+    }
+    public byte[] WriteCsv(List<CsvRaport> records)
+    {
+        using (var memoryStream = new MemoryStream())
+        using (var streamWriter = new StreamWriter(memoryStream))
+        using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture, true))
+        {
+            csvWriter.Context.RegisterClassMap<CsvRaportMap>();
+            csvWriter.WriteRecords(records);
+            streamWriter.Flush();
+            return memoryStream.ToArray();
+        }
+    }
+    public Stream ExportPayments()
+    {
+        var records = (from player in UserPlayers
+                       select new CsvRaport
+                       {
+                           Name = Username,
+                           Cash = WalletValue,
+                           DateTime = DateTime.Now,
+                           PlayerName = player.PlayerName,
+                           PlayerAge = player.PlayerAge,
+                           PlayerRaiting = player.PlayerRaiting,
+                           MarketValue = player.MarketValue,
+                           TotalValue = player.TotalValue,
+                           Qty = player.Qty,
+                           Position = player.Position,
+                           AvailablePositions = player.AvailablePositions,
+                       }).ToList();
+
+        var result = WriteCsv(records);
+        var memoryStream = new MemoryStream(result);
+        return memoryStream;
+    }
+
+    public async Task DownloadFileFromStream()
+    {
+        var fileStream = ExportPayments();
+        var fileName = "Raport.csv";
+
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await Js.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
     }
 }

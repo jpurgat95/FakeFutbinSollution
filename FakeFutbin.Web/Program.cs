@@ -2,6 +2,7 @@ global using Blazored.LocalStorage;
 global using Microsoft.AspNetCore.Components.Authorization;
 global using Blazored.Toast;
 global using Radzen;
+global using CsvHelper;
 using FakeFutbin.Web;
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;

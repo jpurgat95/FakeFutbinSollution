@@ -70,7 +70,8 @@ public static class DtoConversions
                     UserId = userPlayer.UserId,
                     Qty = userPlayer.Qty,
                     TotalValue = player.MarketValue * userPlayer.Qty,
-                    Position = player.Position,
+                    Position = userPlayer.Position,
+                    AvailablePositions = player.Position,
                 }).ToList();
     }
 
@@ -97,6 +98,7 @@ public static class DtoConversions
         {
             Id = user.Id,
             Wallet = user.Wallet,
+            Username = user.Username,
         };
     }
     public static IEnumerable<UserDto2> ConvertToDto(this IEnumerable<User> users)
@@ -106,6 +108,7 @@ public static class DtoConversions
                {
                    Id = user.Id,
                    Wallet = user.Wallet,
+                   Username= user.Username,
                }).ToList();
     }
     public static UserPlayerDto2 ConvertToDto(this UserPlayer userPlayer)

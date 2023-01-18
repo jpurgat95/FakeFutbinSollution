@@ -10,4 +10,5 @@ public class UserDto2
 {
     public int Id { get; set; }
     public int Wallet { get; set; }
+    public string Username { get; set; }
 }
