@@ -378,10 +378,77 @@ public class FakeFutbinDbContext: DbContext
             Name = "Spain",
             ImageURL = "/Images/Nationalities/Nationality5.jpg"
         });
+        //Add positions
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 1,
+            PlayerPosition = "GK"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 2,
+            PlayerPosition = "CB"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 3,
+            PlayerPosition = "LB"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 4,
+            PlayerPosition = "RB"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 5,
+            PlayerPosition = "CM"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 6,
+            PlayerPosition = "CDM"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 7,
+            PlayerPosition = "CAM"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 8,
+            PlayerPosition = "LM"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 9,
+            PlayerPosition = "RM"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 10,
+            PlayerPosition = "ST"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 11,
+            PlayerPosition = "CF"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 12,
+            PlayerPosition = "LW"
+        });
+        modelBuilder.Entity<Position>().HasData(new Position
+        {
+            Id = 13,
+            PlayerPosition = "RW"
+        });
     }
 
     public DbSet<UserPlayer> UserPlayers { get; set; }
     public DbSet<Player> Players { get; set; }
     public DbSet<PlayerNationality> PlayerNationalities { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Position> Positions { get; set; }
 }

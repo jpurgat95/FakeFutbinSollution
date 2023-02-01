@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FakeFutbin.Api.Migrations
 {
-    public partial class PlayersPositionupdated : Migration
+    public partial class PositionsTableAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,6 +24,19 @@ namespace FakeFutbin.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Positions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlayerPosition = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Positions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserPlayers",
                 columns: table => new
                 {
@@ -31,7 +44,8 @@ namespace FakeFutbin.Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     PlayerId = table.Column<int>(type: "int", nullable: false),
-                    Qty = table.Column<int>(type: "int", nullable: false)
+                    Qty = table.Column<int>(type: "int", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,6 +111,26 @@ namespace FakeFutbin.Api.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Positions",
+                columns: new[] { "Id", "PlayerPosition" },
+                values: new object[,]
+                {
+                    { 1, "GK" },
+                    { 2, "CB" },
+                    { 3, "LB" },
+                    { 4, "RB" },
+                    { 5, "CM" },
+                    { 6, "CDM" },
+                    { 7, "CAM" },
+                    { 8, "LM" },
+                    { 9, "RM" },
+                    { 10, "ST" },
+                    { 11, "CF" },
+                    { 12, "LW" },
+                    { 13, "RW" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Players",
                 columns: new[] { "Id", "Age", "ImageURL", "MarketValue", "Name", "NationalityId", "Position", "Qty", "Raiting" },
                 values: new object[,]
@@ -138,6 +172,9 @@ namespace FakeFutbin.Api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Players");
+
+            migrationBuilder.DropTable(
+                name: "Positions");
 
             migrationBuilder.DropTable(
                 name: "UserPlayers");

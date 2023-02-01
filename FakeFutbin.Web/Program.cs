@@ -21,6 +21,7 @@ builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IUserIdService, UserIdService>();
+builder.Services.AddScoped<IPositionService, PositionService>();
 builder.Services.AddAuthorizationCore();
 
 //Local Storage

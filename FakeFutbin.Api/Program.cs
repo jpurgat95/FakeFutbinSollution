@@ -55,6 +55,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPositionRepository, PositionRepository>();
 
 
 var app = builder.Build();

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FakeFutbin.Api.Migrations
 {
     [DbContext(typeof(FakeFutbinDbContext))]
-    [Migration("20230109155632_PositionAddToUserPlayer")]
-    partial class PositionAddToUserPlayer
+    [Migration("20230131135158_PositionsTableAdded")]
+    partial class PositionsTableAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -418,6 +418,90 @@ namespace FakeFutbin.Api.Migrations
                             Id = 5,
                             ImageURL = "/Images/Nationalities/Nationality5.jpg",
                             Name = "Spain"
+                        });
+                });
+
+            modelBuilder.Entity("FakeFutbin.Api.Entities.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("PlayerPosition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Positions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            PlayerPosition = "GK"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            PlayerPosition = "CB"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            PlayerPosition = "LB"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            PlayerPosition = "RB"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            PlayerPosition = "CM"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            PlayerPosition = "CDM"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            PlayerPosition = "CAM"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            PlayerPosition = "LM"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            PlayerPosition = "RM"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            PlayerPosition = "ST"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            PlayerPosition = "CF"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            PlayerPosition = "LW"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            PlayerPosition = "RW"
                         });
                 });
 

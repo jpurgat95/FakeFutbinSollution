@@ -1,0 +1,31 @@
+﻿@inherits PlayersByPositionNavMenuBase
+
+@if (Positions == null && ErrorMessage == null)
+{
+    <DisplaySpinner />
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <nav class="table">
+    @foreach (int[] chunk in PosIds.Chunk(3))
+    {
+        <div class="nav-item row">
+        @foreach (int item in chunk)
+        {
+            var pos = PositionDtos.FirstOrDefault(x => x.Id == item).PlayerPosition.ToString();
+            var link = "/PlayersByPosition/" + pos;
+            
+            <div class="nav-item col-4">
+            <NavLink class="nav-link" href="@link">
+                <span class="fa-sharp fa-solid fa-arrow-right"></span>&nbsp;@pos
+            </NavLink>
+            </div>
+        }
+        </div>
+    }
+    </nav>
+} 

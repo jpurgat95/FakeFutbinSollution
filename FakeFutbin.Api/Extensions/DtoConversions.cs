@@ -119,4 +119,13 @@ public static class DtoConversions
             Position = userPlayer.Position,
         };
     }
+    public static IEnumerable<PositionDto> ConvertToDto(this IEnumerable<Position> positions)
+    {
+        return (from position in positions
+                select new PositionDto
+                {
+                    Id = position.Id,
+                    PlayerPosition = position.PlayerPosition,
+                }).ToList();
+    }
 }

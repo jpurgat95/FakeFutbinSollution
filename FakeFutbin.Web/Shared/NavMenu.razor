@@ -18,16 +18,19 @@
                 <span class="fas fa-home" aria-hidden="true"></span>&nbsp;Home
             </NavLink>
         </div>
-
+        <div class="nav-item px-3">
+            <PlayersByPositionNavMenu/>
+        </div>
+        <div class="nav-item px-3">
             <PlayerNationalitiesNavMenu/>
-        
-       
+        </div>
         <div class="nav-item px-3 d-sm-none">
             <AuthorizeView Roles="User">
                     <Authorized>
                     <NavLink class="nav-link" href="User">
-                        <span class="fa-solid fa-user" aria-hidden="true"></span>&nbsp;@context.User.Identity.Name (Players: <b>@userPlayersCount</b>&nbsp;
-                                                                                                                    Wallet: <b>@userWallet.ToString("C")</b> )
+                        <span class="fa-solid fa-user" aria-hidden="true"></span>
+                            &nbsp;@context.User.Identity.Name (Players: <b>@userPlayersCount</b>&nbsp;
+                            Wallet: <b>@userWallet.ToString("C")</b>)
                     </NavLink>
                     </Authorized>
             </AuthorizeView>

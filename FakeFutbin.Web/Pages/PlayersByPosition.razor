@@ -1,0 +1,31 @@
+﻿@page "/PlayersByPosition/{Pos}"
+@inherits PlayersByPositionBase
+@attribute [Authorize(Roles = "User")]
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <span><b> You are authorized as @context.User.Identity.Name </b></span>
+    </Authorized>
+    <NotAuthorized>
+        <span>You're not authorized, buddy.</span>
+    </NotAuthorized>
+</AuthorizeView>
+
+@if (Players == null && ErrorMessage == null)
+{
+    <DisplaySpinner />
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage" />
+}
+else{
+    @if (Players.Count() > 0)
+        {
+            PlayerDtos = Players.Where(x => x.Position.Contains($"{Pos}")).ToList();
+            <div class="row mt-3">
+                <h3><b>@Pos</b></h3>
+                <DisplayPlayer Players="@PlayerDtos"></DisplayPlayer>
+            </div>
+        }
+}
