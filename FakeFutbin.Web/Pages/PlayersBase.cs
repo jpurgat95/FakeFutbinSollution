@@ -9,8 +9,6 @@ namespace FakeFutbin.Web.Pages;
 public class PlayersBase : ComponentBase
 {
     [Inject]
-    public IPlayerService PlayerService { get; set; }
-    [Inject]
     public IUserService UserService { get; set; }
     [Inject]
     public IUserIdService UserIdService { get; set; }
@@ -24,12 +22,12 @@ public class PlayersBase : ComponentBase
     [Inject]
     public NavigationManager NavigationManager { get; set; }
     public string ErrorMessage { get; set; }
+    public string SearchName = "";
     protected override async Task OnInitializedAsync()
     {
         try
         {
             await ClearLocalStorage();
-
             Players = await ManagePlayersLocalStorageService.GetCollection();
 
             var userPlayers = await ManageUserPlayersLocalStorageService.GetCollection();
@@ -46,6 +44,7 @@ public class PlayersBase : ComponentBase
             ErrorMessage = ex.Message;
         }
     }
+    public List<PlayerDto> FilteredPlayers => Players.Where(x => x.Name.ToLower().Contains(SearchName.ToLower())).ToList();
     protected IOrderedEnumerable<IGrouping<int, PlayerDto>> GetGroupedPlayersByNationality()
     {
         return from player in Players
