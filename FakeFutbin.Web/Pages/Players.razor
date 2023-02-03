@@ -4,7 +4,9 @@
 
 <AuthorizeView Roles="User">
     <Authorized>
-        <span><b> You are authorized as @context.User.Identity.Name </b></span>
+        <h4>
+            <span><b> You are authorized as @context.User.Identity.Name </b></span>
+        </h4>
     </Authorized>
     <NotAuthorized>
         <span>You're not authorized, buddy.</span>
@@ -22,18 +24,30 @@ else if(ErrorMessage != null)
 }
 else
 {
-    <h2 class="mb-5"><b>Players</b></h2>
     var playerCount = Players.Count();
 
     @if(playerCount > 0)
     {
-        <div class="text-center">
+        <br />
+        <div class="btn-group-sm">
+            <button class="btn btn-primary" type="submit"
+            @onclick="async () => SortingPlayersAscending()">
+                <b>
+                    Sort Players by Market Value Ascending <i class="bi bi-sort-up"></i>
+                </b>
+            </button>
+            <button class="btn btn-primary" type="submit"
+            @onclick="async () => SortingPlayersDescending()">
+                <b>Sort Players by Market Value Descending</b>
+            </button>
             <input class="border-4" @bind-value="@SearchName"
-            @bind-value:event="oninput" placeholder="Search by name" 
+           @bind-value:event="oninput" placeholder="Search by name" 
             />
         </div>
+        <br />
+        <h2 class="mb-5"><b>Players</b></h2>
 
-        @if(SearchName == String.Empty)
+        @if(SearchName == String.Empty && SortedPlayers == null)
         {
             @foreach (var playerGroup in GetGroupedPlayersByNationality())
             {
@@ -44,12 +58,18 @@ else
                 <hr class="mb-3">
             }
         }
-        else
+        else if(SearchName != String.Empty)
         {
             <div class="row mt-3">
                 <DisplayPlayer Players="@FilteredPlayers"></DisplayPlayer>
             </div>            
-        }          
+        } 
+        else
+        {
+            <div class="row mt-3">
+                <DisplayPlayer Players="@SortedPlayers"></DisplayPlayer>
+            </div>
+        } 
     }
 }
 

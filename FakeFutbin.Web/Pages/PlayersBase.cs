@@ -23,6 +23,8 @@ public class PlayersBase : ComponentBase
     public NavigationManager NavigationManager { get; set; }
     public string ErrorMessage { get; set; }
     public string SearchName = "";
+    [Parameter]
+    public IEnumerable<PlayerDto> SortedPlayers { get; set; }
     protected override async Task OnInitializedAsync()
     {
         try
@@ -64,5 +66,27 @@ public class PlayersBase : ComponentBase
         await ManagePlayersLocalStorageService.RemoveCollection();
         await ManageUserPlayersLocalStorageService.RemoveCollection();
         await ManageUserLocalStorageService.RemoveCollection();
+   }
+    public async Task SortingPlayersAscending()
+    {
+        try
+        {
+            SortedPlayers = Players.OrderBy(x => x.MarketValue).ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
+    }
+    public async Task SortingPlayersDescending()
+    {
+        try
+        {
+            SortedPlayers = Players.OrderByDescending(x => x.MarketValue).ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
     }
 }
