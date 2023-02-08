@@ -2,6 +2,7 @@
 using FakeFutbin.Web.Services;
 using FakeFutbin.Web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Runtime.InteropServices;
 
 namespace FakeFutbin.Web.Pages;
@@ -72,6 +73,7 @@ public class PlayersBase : ComponentBase
         try
         {
             SortedPlayers = Players.OrderBy(x => x.MarketValue).ToList();
+            SearchName = String.Empty;
         }
         catch (Exception ex)
         {
@@ -83,9 +85,23 @@ public class PlayersBase : ComponentBase
         try
         {
             SortedPlayers = Players.OrderByDescending(x => x.MarketValue).ToList();
+            SearchName = String.Empty;
         }
         catch (Exception ex)
         {
+            ErrorMessage = ex.Message;
+        }
+    }
+    public void SortingPlayersByNationaity()
+    {
+        try
+        {
+            SortedPlayers = null;
+            SearchName = String.Empty;
+        }
+        catch (Exception ex)
+        {
+
             ErrorMessage = ex.Message;
         }
     }

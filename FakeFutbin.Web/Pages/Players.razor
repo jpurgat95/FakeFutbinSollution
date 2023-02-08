@@ -31,6 +31,12 @@ else
         <br />
         <div class="btn-group-sm">
             <button class="btn btn-primary" type="submit"
+            @onclick="() => SortingPlayersByNationaity()">
+                <b>
+                    Sort Players by Nationaity
+                </b>
+            </button>
+            <button class="btn btn-primary" type="submit"
             @onclick="async () => SortingPlayersAscending()">
                 <b>
                     Sort Players by Market Value Ascending <i class="bi bi-sort-up"></i>
