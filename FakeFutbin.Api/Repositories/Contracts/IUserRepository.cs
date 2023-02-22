@@ -1,7 +1,4 @@
-﻿using FakeFutbin.Api.Entities;
-using FakeFutbin.Models.Dto;
-
-namespace FakeFutbin.Api.Repositories.Contracts;
+﻿namespace FakeFutbin.Api.Repositories.Contracts;
 
 public interface IUserRepository
 {

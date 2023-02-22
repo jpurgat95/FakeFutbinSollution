@@ -1,11 +1,4 @@
-﻿using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services;
-using FakeFutbin.Web.Services.Contracts;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging.Abstractions;
-using System.Runtime.InteropServices;
-
-namespace FakeFutbin.Web.Pages;
+﻿namespace FakeFutbin.Web.Pages;
 
 public class PlayersBase : ComponentBase
 {

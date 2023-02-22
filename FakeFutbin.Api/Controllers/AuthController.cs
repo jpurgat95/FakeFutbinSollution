@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace FakeFutbin.Api.Controllers;
+﻿namespace FakeFutbin.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

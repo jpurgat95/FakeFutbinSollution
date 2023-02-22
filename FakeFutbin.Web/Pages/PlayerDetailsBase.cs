@@ -1,10 +1,3 @@
-using Blazored.Toast.Services;
-using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services;
-using FakeFutbin.Web.Services.Contracts;
-using Microsoft.AspNetCore.Components;
-using Microsoft.VisualBasic;
-
 namespace FakeFutbin.Web.Pages;
 public class PlayerDetailsBase : ComponentBase
 {
@@ -27,7 +20,7 @@ public class PlayerDetailsBase : ComponentBase
     [Inject]
     public IToastService ToastService { get; set; }
     public PlayerDto Player { get; set; }
-    public List<UserDto2> UserDtos { get; set; }
+    public List<UserWalletDto> UserDtos { get; set; }
     public string ErrorMessage { get; set; }
     public List<UserPlayerDto> UserPlayers { get; set; }
     public int UserPlayerQty { get; set; }

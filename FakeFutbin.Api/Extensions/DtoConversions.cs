@@ -1,8 +1,4 @@
-﻿using FakeFutbin.Api.Entities;
-using FakeFutbin.Models.Dto;
-using System.Net.Http.Headers;
-
-namespace FakeFutbin.Api.Extensions;
+﻿namespace FakeFutbin.Api.Extensions;
 
 public static class DtoConversions
 {
@@ -92,28 +88,28 @@ public static class DtoConversions
             TotalValue = player.MarketValue * userPlayer.Qty,
         };
     }
-    public static UserDto2 ConvertToDto(this User user)
+    public static UserWalletDto ConvertToDto(this User user)
     {
-        return new UserDto2
+        return new UserWalletDto
         {
             Id = user.Id,
             Wallet = user.Wallet,
             Username = user.Username,
         };
     }
-    public static IEnumerable<UserDto2> ConvertToDto(this IEnumerable<User> users)
+    public static IEnumerable<UserWalletDto> ConvertToDto(this IEnumerable<User> users)
     {
         return(from user in users
-               select new UserDto2
+               select new UserWalletDto
                {
                    Id = user.Id,
                    Wallet = user.Wallet,
                    Username= user.Username,
                }).ToList();
     }
-    public static UserPlayerDto2 ConvertToDto(this UserPlayer userPlayer)
+    public static UserPlayerPositionDto ConvertToDto(this UserPlayer userPlayer)
     {
-        return new UserPlayerDto2
+        return new UserPlayerPositionDto
         {
             Id = userPlayer.Id,
             Position = userPlayer.Position,

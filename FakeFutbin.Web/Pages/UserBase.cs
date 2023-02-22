@@ -1,8 +1,4 @@
-﻿using Blazored.Toast.Services;
-using CsvHelper.Configuration;
-using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services.Contracts;
-using Microsoft.AspNetCore.Components;
+﻿using CsvHelper.Configuration;
 using Microsoft.JSInterop;
 using System.Globalization;
 
@@ -22,7 +18,7 @@ public class UserBase : ComponentBase
     public IManageUserLocalStorageService ManageUserLocalStorageService { get; set; }
     [Inject]
     public IToastService ToastService { get; set; }
-    public List<UserDto2> UserDtos { get; set; }
+    public List<UserWalletDto> UserDtos { get; set; }
     public List<UserPlayerDto> UserPlayers { get; set; }
     protected string TotalValue { get; set; }
     protected int TotalQuantity { get; set; }
@@ -64,7 +60,7 @@ public class UserBase : ComponentBase
         };
        await UserService.UpdateWallet(userId, walletChanged);
 
-        var userChanged = new UserDto2
+        var userChanged = new UserWalletDto
         {
             Id = userId,
             Wallet = user.Wallet + userPlayer.TotalValue
@@ -90,7 +86,7 @@ public class UserBase : ComponentBase
 
                 if (userPlayerQty > qty)
                 {
-                    var userChanged = new UserDto2
+                    var userChanged = new UserWalletDto
                     {
                         Id = userId,
                         Wallet = user.Wallet + userPlayer.MarketValue * (userPlayerQty - qty),
@@ -115,7 +111,7 @@ public class UserBase : ComponentBase
                 }
                 else if (userWallet >= userPlayer.MarketValue * (qty - userPlayerQty))
                 {
-                    var userChanged = new UserDto2
+                    var userChanged = new UserWalletDto
                     {
                         Id = userId,
                         Wallet = user.Wallet - userPlayer.MarketValue * (qty - userPlayerQty),
@@ -186,7 +182,7 @@ public class UserBase : ComponentBase
 
         await ManageUserPlayersLocalStorageService.SaveColleciotn(UserPlayers);
     }
-    private async void UpdateUserWalletValue(UserDto2 userDto2)
+    private async void UpdateUserWalletValue(UserWalletDto userDto2)
     {
         var user = GetUser(userDto2.Id);
         if (user != null)
@@ -224,7 +220,7 @@ public class UserBase : ComponentBase
     {
         return UserPlayers.FirstOrDefault(x => x.Id == id);
     }
-    private UserDto2 GetUser(int id)
+    private UserWalletDto GetUser(int id)
     {
 
         return UserDtos.FirstOrDefault(x => x.Id == id);
@@ -260,6 +256,7 @@ public class UserBase : ComponentBase
             Position = pos,
         });
 
+        
         var userPlayersCollection = await ManageUserPlayersLocalStorageService.GetCollection();
         var player = this.UserPlayers.FirstOrDefault(x => x.PlayerId == id);
 
@@ -267,6 +264,7 @@ public class UserBase : ComponentBase
         {
             player.Position = pos;
         }
+        Position = null;
     }
     public sealed class CsvRaportMap : ClassMap<CsvRaport>
     {
@@ -274,7 +272,7 @@ public class UserBase : ComponentBase
         {
             Map(m => m.DateTime).Name("Date & Time");
             Map(m => m.Name).Name("Username");
-            Map(m => m.Cash).Name("Users Coins");
+            Map(m => m.Cash).Name("User's Coins");
             Map(m => m.PlayerName).Name("Player Name");
             Map(m => m.PlayerAge).Name("Player Age");
             Map(m => m.PlayerRaiting).Name("Player Raiting");

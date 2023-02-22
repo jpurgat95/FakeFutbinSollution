@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace FakeFutbin.Api.Repositories;
+﻿namespace FakeFutbin.Api.Repositories;
 
 public class PositionRepository : IPositionRepository
 {

@@ -1,8 +1,5 @@
-﻿using Blazored.LocalStorage;
-using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Pages;
+﻿using FakeFutbin.Models.Dto;
 using FakeFutbin.Web.Services.Contracts;
-using FakeFutbin.Web.Services;
 
 namespace FakeFutbin.Web.Services;
 

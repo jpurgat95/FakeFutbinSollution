@@ -1,7 +1,4 @@
-﻿using FakeFutbin.Models.Dto;
-using Microsoft.AspNetCore.Components;
-
-namespace FakeFutbin.Web.Pages;
+﻿namespace FakeFutbin.Web.Pages;
 
 public class DisplayPlayerBase : ComponentBase
 {

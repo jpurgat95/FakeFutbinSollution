@@ -1,8 +1,4 @@
-﻿using Blazored.LocalStorage;
-using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services.Contracts;
-
-namespace FakeFutbin.Web.Services;
+﻿namespace FakeFutbin.Web.Services;
 
 public class ManagePlayersLocalStorageService : IManagePlayersLocalStorageService
 {

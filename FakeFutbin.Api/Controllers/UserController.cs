@@ -1,12 +1,4 @@
-﻿using FakeFutbin.Api.Entities;
-using FakeFutbin.Api.Extensions;
-using FakeFutbin.Api.Repositories.Contracts;
-using FakeFutbin.Models.Dto;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
-
-namespace FakeFutbin.Api.Controllers
+﻿namespace FakeFutbin.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -48,7 +40,7 @@ namespace FakeFutbin.Api.Controllers
         }
         [HttpGet]
         [Route("GetUsers")]
-        public async Task<ActionResult<IEnumerable<UserDto2>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserWalletDto>>> GetUsers()
         {
             try
             {
@@ -92,7 +84,7 @@ namespace FakeFutbin.Api.Controllers
         }
         [HttpGet]
         [Route("GetUser/{id}")]
-        public async Task<ActionResult<UserDto2>> GetUser(int id)
+        public async Task<ActionResult<UserWalletDto>> GetUser(int id)
         {
             try
             {
@@ -180,7 +172,7 @@ namespace FakeFutbin.Api.Controllers
         }
         [HttpPatch]
         [Route("UpdateWallet/{id}")] 
-        public async Task<ActionResult<UserDto2>> UpdateWallet(int id, UserWalletUpdateDto userWalletUpdateDto)
+        public async Task<ActionResult<UserWalletDto>> UpdateWallet(int id, UserWalletUpdateDto userWalletUpdateDto)
         {
             try
             {
@@ -199,7 +191,7 @@ namespace FakeFutbin.Api.Controllers
         }
         [HttpPatch]
         [Route("UpdatePosition/{id}")]
-        public async Task<ActionResult<UserPlayerDto2>> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdate)
+        public async Task<ActionResult<UserPlayerPositionDto>> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdate)
         {
             try
             {

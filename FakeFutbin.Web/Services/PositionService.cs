@@ -1,9 +1,4 @@
-﻿using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services.Contracts;
-using System.Net.Http;
-using System.Net.Http.Json;
-
-namespace FakeFutbin.Web.Services;
+﻿namespace FakeFutbin.Web.Services;
 
 public class PositionService : IPositionService
 {

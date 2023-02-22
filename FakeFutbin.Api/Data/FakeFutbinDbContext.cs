@@ -1,7 +1,4 @@
-﻿using FakeFutbin.Api.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace FakeFutbin.Api.Data;
+﻿namespace FakeFutbin.Api.Data;
 
 public class FakeFutbinDbContext: DbContext
 {

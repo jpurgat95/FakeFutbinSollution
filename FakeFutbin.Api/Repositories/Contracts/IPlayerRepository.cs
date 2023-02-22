@@ -1,6 +1,4 @@
-﻿using FakeFutbin.Api.Entities;
-
-namespace FakeFutbin.Api.Repositories.Contracts;
+﻿namespace FakeFutbin.Api.Repositories.Contracts;
 
 public interface IPlayerRepository
 {

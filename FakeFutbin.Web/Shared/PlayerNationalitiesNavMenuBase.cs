@@ -1,9 +1,4 @@
-﻿using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services.Contracts;
-using Microsoft.AspNetCore.Components;
-using System.Runtime.CompilerServices;
-
-namespace FakeFutbin.Web.Shared;
+﻿namespace FakeFutbin.Web.Shared;
 
 public class PlayerNationalitiesNavMenuBase:ComponentBase 
 {

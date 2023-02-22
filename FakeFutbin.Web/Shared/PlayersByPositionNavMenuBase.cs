@@ -1,10 +1,4 @@
-﻿using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Pages;
-using FakeFutbin.Web.Services;
-using FakeFutbin.Web.Services.Contracts;
-using Microsoft.AspNetCore.Components;
-
-namespace FakeFutbin.Web.Shared;
+﻿namespace FakeFutbin.Web.Shared;
 
 public class PlayersByPositionNavMenuBase : ComponentBase
 {

@@ -1,9 +1,4 @@
-﻿using FakeFutbin.Api.Data;
-using FakeFutbin.Api.Entities;
-using FakeFutbin.Api.Repositories.Contracts;
-using Microsoft.EntityFrameworkCore;
-
-namespace FakeFutbin.Api.Repositories;
+﻿namespace FakeFutbin.Api.Repositories;
 
 public class PlayerRepository : IPlayerRepository
 {

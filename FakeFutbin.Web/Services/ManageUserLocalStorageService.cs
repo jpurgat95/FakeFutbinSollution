@@ -1,8 +1,4 @@
-﻿using Blazored.LocalStorage;
-using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services.Contracts;
-
-namespace FakeFutbin.Web.Services;
+﻿namespace FakeFutbin.Web.Services;
 
 public class ManageUserLocalStorageService : IManageUserLocalStorageService
 {
@@ -16,9 +12,9 @@ public class ManageUserLocalStorageService : IManageUserLocalStorageService
         _localStorage = localStorage;
         _userService = userService;
     }
-    public async Task<List<UserDto2>> GetCollection()
+    public async Task<List<UserWalletDto>> GetCollection()
     {
-        return await _localStorage.GetItemAsync<List<UserDto2>>(key)
+        return await _localStorage.GetItemAsync<List<UserWalletDto>>(key)
         ?? await AddCollection();
     }
 
@@ -27,11 +23,11 @@ public class ManageUserLocalStorageService : IManageUserLocalStorageService
         await _localStorage.RemoveItemAsync(key);
     }
 
-    public async Task SaveColleciotn(List<UserDto2> userDtos)
+    public async Task SaveColleciotn(List<UserWalletDto> userDtos)
     {
         await _localStorage.SetItemAsync(key, userDtos);
     }
-    private async Task<List<UserDto2>> AddCollection()
+    private async Task<List<UserWalletDto>> AddCollection()
     {
         var userCollection = await _userService.GetUsers();
 

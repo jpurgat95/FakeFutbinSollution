@@ -1,11 +1,4 @@
-﻿using FakeFutbin.Api.Data;
-using FakeFutbin.Api.Entities;
-using FakeFutbin.Api.Repositories.Contracts;
-using FakeFutbin.Models.Dto;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata.Ecma335;
-
-namespace FakeFutbin.Api.Repositories;
+﻿namespace FakeFutbin.Api.Repositories;
 
 public class UserRepository : IUserRepository
 {

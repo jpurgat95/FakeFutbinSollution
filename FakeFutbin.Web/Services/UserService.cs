@@ -1,8 +1,4 @@
-﻿using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Pages;
-using FakeFutbin.Web.Services.Contracts;
-using Newtonsoft.Json;
-using System.Net.Http.Json;
+﻿using Newtonsoft.Json;
 using System.Text;
 
 namespace FakeFutbin.Web.Services;
@@ -88,7 +84,7 @@ public class UserService : IUserService
             throw;
         }
     }
-    public async Task<UserDto2> GetUser(int userId)
+    public async Task<UserWalletDto> GetUser(int userId)
     {
         try
         {
@@ -99,7 +95,7 @@ public class UserService : IUserService
                 {
                     return null;
                 }
-                return await response.Content.ReadFromJsonAsync<UserDto2>();
+                return await response.Content.ReadFromJsonAsync<UserWalletDto>();
             }
             else
             {
@@ -114,7 +110,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<List<UserDto2>> GetUsers()
+    public async Task<List<UserWalletDto>> GetUsers()
     {
         try
         {
@@ -123,9 +119,9 @@ public class UserService : IUserService
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return Enumerable.Empty<UserDto2>().ToList();
+                    return Enumerable.Empty<UserWalletDto>().ToList();
                 }
-                return await response.Content.ReadFromJsonAsync<List<UserDto2>>();
+                return await response.Content.ReadFromJsonAsync<List<UserWalletDto>>();
             }
             else
             {
@@ -177,7 +173,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<UserDto2> UpdateWallet(int userId,UserWalletUpdateDto userWalletUpdateDto)
+    public async Task<UserWalletDto> UpdateWallet(int userId,UserWalletUpdateDto userWalletUpdateDto)
     {
         try
         {
@@ -188,7 +184,7 @@ public class UserService : IUserService
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<UserDto2>();
+                return await response.Content.ReadFromJsonAsync<UserWalletDto>();
             }
             return null;
         }
@@ -198,7 +194,7 @@ public class UserService : IUserService
             throw;
         }
     }
-    public async Task<UserPlayerDto2> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto)
+    public async Task<UserPlayerPositionDto> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto)
     {
         try
         {
@@ -209,7 +205,7 @@ public class UserService : IUserService
 
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadFromJsonAsync<UserPlayerDto2>();
+                return await response.Content.ReadFromJsonAsync<UserPlayerPositionDto>();
             }
             return null;
         }

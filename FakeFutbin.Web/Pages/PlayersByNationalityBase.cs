@@ -1,8 +1,4 @@
-﻿using FakeFutbin.Models.Dto;
-using FakeFutbin.Web.Services.Contracts;
-using Microsoft.AspNetCore.Components;
-
-namespace FakeFutbin.Web.Pages;
+﻿namespace FakeFutbin.Web.Pages;
 
 public class PlayersByNationalityBase : ComponentBase
 {
