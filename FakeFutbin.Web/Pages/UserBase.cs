@@ -11,6 +11,8 @@ public class UserBase : ComponentBase
     [Inject]
     public IUserService UserService { get; set; }
     [Inject]
+    public IPositionService PositionService { get; set; }
+    [Inject]
     public IManageUserPlayersLocalStorageService ManageUserPlayersLocalStorageService { get; set; }
     [Inject]
     public IUserIdService UserIdService { get; set; }
@@ -251,7 +253,7 @@ public class UserBase : ComponentBase
     public async void OnClickPositionChange(int id)
     {
         var pos = Position;
-        UserService.UpdatePosition(id, new UserPlayerPositionUpdateDto
+        PositionService.UpdatePosition(id, new UserPlayerPositionUpdateDto
         {
             Position = pos,
         });

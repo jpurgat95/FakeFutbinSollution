@@ -10,5 +10,4 @@ public interface IUserRepository
     Task<User> UpdateWallet(int id, UserWalletUpdateDto userWalletUpdateDto);
     Task <User> GetUser(int id);
     Task<IEnumerable<User>> GetUsers();
-    Task<UserPlayer> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto);
 }

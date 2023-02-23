@@ -189,24 +189,5 @@
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpPatch]
-        [Route("UpdatePosition/{id}")]
-        public async Task<ActionResult<UserPlayerPositionDto>> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdate)
-        {
-            try
-            {
-                var updatedUserPlayer = await _userRepository.UpdatePosition(id, userPlayerPositionUpdate);
-                if (updatedUserPlayer == null)
-                {
-                    return NotFound();
-                }
-                var userPlayerDto = updatedUserPlayer.ConvertToDto();
-                return Ok(userPlayerDto);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
     }
 }

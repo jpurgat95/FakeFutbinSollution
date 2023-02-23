@@ -13,6 +13,5 @@ public interface IUserService
     event Action<int> OnUserChanged;
     event Action<int> OnWalletChanged;
     void RaiseEventOnUserChanged(int totalQty);
-    void RaiseEventOnWalletChanged(int wallet);
-    Task<UserPlayerPositionDto> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto);   
+    void RaiseEventOnWalletChanged(int wallet); 
 }

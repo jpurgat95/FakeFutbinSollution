@@ -194,25 +194,4 @@ public class UserService : IUserService
             throw;
         }
     }
-    public async Task<UserPlayerPositionDto> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto)
-    {
-        try
-        {
-            var jsonRequest = JsonConvert.SerializeObject(userPlayerPositionUpdateDto);
-            var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
-
-            var response = await _httpClient.PatchAsync($"api/User/UpdatePosition/{id}", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadFromJsonAsync<UserPlayerPositionDto>();
-            }
-            return null;
-        }
-        catch (Exception)
-        {
-            //log exception
-            throw;
-        }
-    }
 }

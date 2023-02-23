@@ -115,16 +115,4 @@ public class UserRepository : IUserRepository
                    .ToListAsync();
         return users;
     }
-
-    public async Task<UserPlayer> UpdatePosition(int id, UserPlayerPositionUpdateDto userPlayerPositionUpdateDto)
-    {
-        var userPlayer = await _fakeFutbinDbContext.UserPlayers.SingleOrDefaultAsync(p => p.PlayerId == id);
-        if(userPlayer != null)
-        {
-            userPlayer.Position = userPlayerPositionUpdateDto.Position;
-            await _fakeFutbinDbContext.SaveChangesAsync();
-            return userPlayer;
-        }
-        return null;
-    }
 }
