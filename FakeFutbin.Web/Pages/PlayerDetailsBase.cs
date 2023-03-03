@@ -117,10 +117,10 @@ public class PlayerDetailsBase : ComponentBase
 
             
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
-            //Log Exception
+            ErrorMessage = ex.Message;
         }
     }
 

@@ -23,21 +23,23 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 //DI registrations
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-builder.Services.AddScoped<IUserIdService, UserIdService>();
 builder.Services.AddScoped<IPositionService, PositionService>();
-builder.Services.AddAuthorizationCore();
 
 //Local Storage
 builder.Services.AddBlazoredLocalStorage();
 
-//Toast Notification
-builder.Services.AddBlazoredToast();
-
 //DI registrations
+builder.Services.AddScoped<IUserIdService, UserIdService>();
 builder.Services.AddScoped<IManagePlayersLocalStorageService, ManagePlayersLocalStorageService>();
 builder.Services.AddScoped<IManageUserPlayersLocalStorageService, ManageUserPlayersLocalStorageService>();
 builder.Services.AddScoped<IManageUserLocalStorageService, ManageUserLocalStorageService>();
+
+//DI registrations
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddAuthorizationCore();
+
+//Toast Notification
+builder.Services.AddBlazoredToast();
 
 //Radzen DI registrations
 builder.Services.AddScoped<DialogService>();

@@ -36,28 +36,6 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
 
         return state;
     }
-    //public async Task<int> GetUserId()
-    //{
-    //    string token = await _localStorage.GetItemAsStringAsync("token");
-    //    var identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-
-    //    try
-    //    {
-    //        if (_http.DefaultRequestHeaders.Authorization != null)
-    //        {
-    //            var userClaims = identity.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier", StringComparison.InvariantCultureIgnoreCase));
-    //            var userId = userClaims.Value;
-    //            var userIdInt = Int32.Parse(userId.ToString());
-    //            return userIdInt;
-    //        }
-    //        return 0;
-    //    }
-    //    catch (Exception ex)
-    //    {
-
-    //        throw ex;
-    //    }
-    //}
     public static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
         var payload = jwt.Split('.')[1];

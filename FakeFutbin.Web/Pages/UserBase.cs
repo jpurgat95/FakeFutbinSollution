@@ -268,9 +268,9 @@ public class UserBase : ComponentBase
         }
         Position = null;
     }
-    public sealed class CsvRaportMap : ClassMap<CsvRaport>
+    public sealed class CsvReportMap : ClassMap<CsvReport>
     {
-        public CsvRaportMap()
+        public CsvReportMap()
         {
             Map(m => m.DateTime).Name("Date & Time");
             Map(m => m.Name).Name("Username");
@@ -285,13 +285,13 @@ public class UserBase : ComponentBase
             Map(m => m.AvailablePositions).Name("Player Available Posotions");
         }
     }
-    public byte[] WriteCsv(List<CsvRaport> records)
+    public byte[] WriteCsv(List<CsvReport> records)
     {
         using (var memoryStream = new MemoryStream())
         using (var streamWriter = new StreamWriter(memoryStream))
         using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture, true))
         {
-            csvWriter.Context.RegisterClassMap<CsvRaportMap>();
+            csvWriter.Context.RegisterClassMap<CsvReportMap>();
             csvWriter.WriteRecords(records);
             streamWriter.Flush();
             return memoryStream.ToArray();
@@ -300,7 +300,7 @@ public class UserBase : ComponentBase
     public Stream ExportPayments()
     {
         var records = (from player in UserPlayers
-                       select new CsvRaport
+                       select new CsvReport
                        {
                            Name = Username,
                            Cash = WalletValue,
@@ -323,7 +323,7 @@ public class UserBase : ComponentBase
     public async Task DownloadFileFromStream()
     {
         var fileStream = ExportPayments();
-        var fileName = "Raport.csv";
+        var fileName = "Report.csv";
 
         using var streamRef = new DotNetStreamReference(stream: fileStream);
 

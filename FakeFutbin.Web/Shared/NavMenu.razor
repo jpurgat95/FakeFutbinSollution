@@ -29,8 +29,11 @@
                     <Authorized>
                     <NavLink class="nav-link" href="User">
                         <span class="fa-solid fa-user" aria-hidden="true"></span>
-                            &nbsp;@context.User.Identity.Name (Players: <b>@userPlayersCount</b>&nbsp;
-                            Wallet: <b>@userWallet.ToString("C")</b>)
+                        &nbsp;@context.User.Identity.Name (Players: <b>@userPlayersCount</b>&nbsp;
+                        Wallet: <b>@userWallet.ToString("C")</b>)
+                    </NavLink>
+                    <NavLink class="nav-link">
+                        <LoginLogoutButton />
                     </NavLink>
                     </Authorized>
             </AuthorizeView>

@@ -115,7 +115,7 @@
                 var player = await _playerRepository.GetPlayer(newUserPlayer.PlayerId);
                 if (player == null)
                 {
-                    throw new Exception($"Something went wrong when attempting to retrieve product (productId:({userPlayerToAddDto.PlayerId})");
+                    throw new Exception($"Something went wrong when attempting to retrieve player (playerId:({userPlayerToAddDto.PlayerId})");
                 }
                 var newUserPlayerDto = newUserPlayer.ConvertToDto(player);
                 return CreatedAtAction(nameof(GetPlayer), new { id = newUserPlayerDto.Id }, newUserPlayerDto);

@@ -1,6 +1,6 @@
 ﻿namespace FakeFutbin.Models.Dto;
 
-public class CsvRaport
+public class CsvReport
 {
     public DateTime DateTime { get; set; }
     public string Name { get; set; }

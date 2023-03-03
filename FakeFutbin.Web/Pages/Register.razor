@@ -32,7 +32,6 @@
                 if (resultLogin.IsSuccessStatusCode)
                 {
                     var token = await resultLogin.Content.ReadAsStringAsync();
-                    //Console.WriteLine(token);
                     await LocalStorage.SetItemAsync("token", token);
                     await AuthStateProvider.GetAuthenticationStateAsync();
                     NavigationManager.NavigateTo("");
