@@ -1,8 +1,26 @@
 # FakeFutbinSollution
 ### `Learning project which combines ASP.NET Web Core API and Blazor Web Assembly App`
 #### Short description
-FakeFutbin's structure [on diagram](https://user-images.githubusercontent.com/94840984/222980850-7b15f9cf-8187-496f-aa58-fe7eed318a23.png) and in [Microsoft Visual Studio](https://user-images.githubusercontent.com/94840984/222981823-c6ba150d-5b7f-40fa-9787-6fcbafe6a4c3.png).
-[Local database](https://user-images.githubusercontent.com/94840984/222980946-b7be3798-b8f4-4024-afa4-6e4dc93ce337.png) which could be displayed by MS SQL Server Management Studio is connected with Api Client which manipulates it and could be displayed in Internet browser using [`Swagger UI`](https://user-images.githubusercontent.com/94840984/222981145-e5dd747e-bc1c-421c-8f64-492c5ee5d5d7.png). Api Client is connected with Blazor Web Assembly App which provides  [graphical user interface](https://user-images.githubusercontent.com/94840984/222981419-f419c4f1-c26f-4132-9f9a-1aaa0f3626f5.png) and allows logged in user to display, add, delete and change amount of user's players.
+FakeFutbin's structure on diagram:
+
+![diagram](https://user-images.githubusercontent.com/94840984/222980850-7b15f9cf-8187-496f-aa58-fe7eed318a23.png) 
+
+and in Microsoft Visual Studio:
+
+![MS VS](https://user-images.githubusercontent.com/94840984/222981823-c6ba150d-5b7f-40fa-9787-6fcbafe6a4c3.png)
+
+Local database which could be displayed by MS SQL Server Management Studio:
+
+![db](https://user-images.githubusercontent.com/94840984/222980946-b7be3798-b8f4-4024-afa4-6e4dc93ce337.png) 
+
+is connected with Api Client which manipulates it and could be displayed in Internet browser using `Swagger UI`:
+
+![swagger](https://user-images.githubusercontent.com/94840984/222981145-e5dd747e-bc1c-421c-8f64-492c5ee5d5d7.png)
+
+Api Client is connected with Blazor Web Assembly App which provides graphical user interface and allows logged in user to display, add, delete and change amount of user's players:
+
+![gui](https://user-images.githubusercontent.com/94840984/222981419-f419c4f1-c26f-4132-9f9a-1aaa0f3626f5.png) 
+
 #### I Database creation
 1) Two NuGet Packages: [Tools and Sql](https://user-images.githubusercontent.com/94840984/220696122-b70c0cd6-c6d1-4eda-b129-b046b39773e2.png) added.
 2) [Entities](https://user-images.githubusercontent.com/94840984/220696557-b6148828-3982-448a-8aeb-2868ca74df04.png) which represent database tables created.
